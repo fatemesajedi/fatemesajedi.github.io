@@ -152,12 +152,17 @@
   }
   window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", function () { col = colors(); });
   var rt;
-  window.addEventListener("resize", function () { clearTimeout(rt); rt = setTimeout(resize, 200); });
+  window.addEventListener("resize", function () { clearTimeout(rt); rt = setTimeout(function () { resize(); draw(); }, 200); });
 
   resize();
   if (reduceMotion) {
-    for (var s = 0; s < 400; s++) step();   // show a mixed state, no animation
+    // "Reduce motion" is on: show a still picture, animate only once the visitor reaches for it
+    for (var s = 0; s < 400; s++) step();
     draw();
+    var started = false;
+    canvas.addEventListener("pointerdown", start);
+    canvas.addEventListener("pointerenter", start);
+    function start() { if (!started) { started = true; loop(); } }
   } else {
     loop();
   }

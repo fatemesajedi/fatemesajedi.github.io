@@ -310,3 +310,10 @@ main.container { padding-top: 2.5rem; padding-bottom: 4rem; min-height: 70vh; }
   .simple { grid-template-columns: 1fr; }
   .coffee { max-width: 320px; margin: 0 auto; }
 }
+.coffee-buttons { flex-wrap: wrap; }
+.coffee-buttons button { white-space: nowrap; }
+@media (max-width: 420px) {
+  .mix-meter { grid-template-columns: 1fr auto; }
+  .mix-meter span { grid-column: 1 / -1; text-align: left; }
+}
+@media (prefers-reduced-motion: reduce) { .coffee-hint { animation: none; } }

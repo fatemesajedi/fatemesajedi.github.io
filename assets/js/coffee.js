@@ -241,7 +241,7 @@
     var g = toGrid(e);
     if (g.out) { spoon = null; return; }
     if (e.pointerType !== "mouse" && !e.buttons) return;
-    spoon = g;
+    spoon = g; visible = true;
     if (!interacted) { interacted = true; if (hint) hint.classList.add("gone"); }
   });
   canvas.addEventListener("pointerdown", function (e) { spoon = toGrid(e); lastSpoon = spoon; });
@@ -261,22 +261,22 @@
   }
 
   resize(); setupGrid();
-  window.addEventListener("resize", resize);
+  window.addEventListener("resize", function () { resize(); render(); });
 
+  // Stirring is started by the visitor, so it always runs. With "reduce motion"
+  // switched on, the milk is already in the cup instead of being poured.
+  if (reduceMotion) {
+    pour(); while (pouring > 0) step();
+    render();
+  }
   if ("IntersectionObserver" in window) {
     new IntersectionObserver(function (entries) {
-      visible = entries[0].isIntersecting;
-      if (visible && !poured) setTimeout(pour, 400);   // pour when the cup scrolls into view
-    }, { threshold: 0.4 }).observe(canvas);
+      var e = entries[0];
+      visible = e.isIntersecting;
+      if (!poured && e.intersectionRatio >= 0.4) setTimeout(pour, 400);   // pour when the cup scrolls into view
+    }, { threshold: [0, 0.4] }).observe(canvas);
   } else {
     pour();
   }
-
-  if (reduceMotion) {
-    pour(); for (var s = 0; s < 40; s++) step();
-    render(); updateMeter();
-    visible = false;
-  } else {
-    loop();
-  }
+  loop();
 })();
