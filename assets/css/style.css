@@ -499,3 +499,12 @@ main.container { padding-top: 2.5rem; padding-bottom: 4rem; min-height: 70vh; }
   .container { max-width: 1240px; }
   #mixing-canvas { height: 300px; }
 }
+
+/* Sections on event and project pages: title, description, photos / GIFs / videos */
+.entry-section { margin-top: 2.4rem; }
+.entry-section h2 { margin: 0 0 .7rem; }
+.section-media { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: .7rem; margin-top: 1rem; }
+.section-media.single { grid-template-columns: 1fr; }
+.section-media img, .section-media video { width: 100%; border-radius: 10px; display: block; background: #000; }
+.section-media:not(.single) img, .section-media:not(.single) video { aspect-ratio: 4 / 3; object-fit: cover; }
+.gallery video { background: #000; }

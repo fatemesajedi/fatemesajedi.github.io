@@ -17,12 +17,11 @@ layout: default
   <img class="cover" src="{{ page.cover | relative_url }}" alt="{{ page.title }}">
   {% endif %}
   <div class="prose">{{ content }}</div>
+  {% include sections.html sections=page.sections %}
   {% if page.gallery and page.gallery.size > 0 %}
-  <h2>Photos</h2>
+  <h2>Gallery</h2>
   <div class="gallery">
-    {% for img in page.gallery %}
-    <a href="{{ img | relative_url }}" target="_blank" rel="noopener"><img src="{{ img | relative_url }}" loading="lazy" alt="Photo from {{ page.title }}"></a>
-    {% endfor %}
+    {% for m in page.gallery %}{% include media-item.html src=m %}{% endfor %}
   </div>
   {% endif %}
   {% if page.website and page.website != "" %}

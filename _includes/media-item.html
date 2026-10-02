@@ -1,0 +1,7 @@
+{% comment %} One photo, GIF or video. Usage: include media-item.html src=... {% endcomment %}
+{% assign ext = include.src | split: "." | last | downcase %}
+{% if ext == "mp4" or ext == "webm" or ext == "mov" %}
+  <video src="{{ include.src | relative_url }}" autoplay muted loop playsinline controls preload="metadata"></video>
+{% else %}
+  <a href="{{ include.src | relative_url }}" target="_blank" rel="noopener"><img src="{{ include.src | relative_url }}" loading="lazy" alt=""></a>
+{% endif %}

@@ -1,7 +1,23 @@
 # Control panel configuration for Pages CMS (https://app.pagescms.org)
 media:
-  input: assets
-  output: /assets
+  - name: images
+    label: Photos & GIFs
+    input: assets/images
+    output: /assets/images
+    rename: safe
+    extensions: [jpg, jpeg, png, webp, gif]
+  - name: media
+    label: Photos, GIFs & videos
+    input: assets/media
+    output: /assets/media
+    rename: safe
+    extensions: [jpg, jpeg, png, webp, gif, mp4, webm, mov]
+  - name: files
+    label: PDFs
+    input: assets/files
+    output: /assets/files
+    rename: safe
+    extensions: [pdf]
 
 content:
   # ---------- Profile / About ----------
@@ -15,7 +31,7 @@ content:
       - { name: role, label: Position, type: string, description: "e.g. PhD Student" }
       - { name: lab, label: Lab, type: string }
       - { name: institution, label: University / Institution, type: string }
-      - { name: photo, label: Profile photo, type: image }
+      - { name: photo, label: Profile photo, type: image, options: { media: images } }
       - { name: bio, label: Bio, type: text, description: "Use **double asterisks** for bold. Leave an empty line between paragraphs." }
       - { name: interests, label: Research interests, type: string, list: true }
       - name: fun_facts
@@ -25,10 +41,10 @@ content:
         fields:
           - { name: emoji, label: Emoji (shown on the map pin), type: string, description: "One emoji, e.g. 🧗 🎬 🍳 (Windows: press Win + . to open the emoji picker)" }
           - { name: text, label: Text, type: string }
-          - { name: photo, label: Photo (optional), type: image, description: "Shown as a polaroid. Landscape photos look best." }
+          - { name: photo, label: Photo (optional), type: image, options: { media: images }, description: "Shown as a polaroid. Landscape photos look best." }
       - { name: say_hi, label: "'Say hi' message", type: text, description: "Friendly invitation shown at the bottom of the home page" }
       - { name: email, label: Email, type: string }
-      - { name: cv, label: CV (PDF), type: file }
+      - { name: cv, label: CV (PDF), type: file, options: { media: files } }
       - { name: highlight_name, label: Name to bold in author lists, type: string, description: "Usually your surname" }
       - name: links
         label: Profile links (paste full URLs)
@@ -71,9 +87,17 @@ content:
           values: [Talk, Poster, Invited talk, Workshop, Summer school, Attendee, Organizer]
       - { name: contribution, label: Talk / poster title, type: string }
       - { name: website, label: Conference website, type: string }
-      - { name: cover, label: Cover photo, type: image, description: "Shown on the card" }
-      - { name: gallery, label: Photo gallery, type: image, list: true }
+      - { name: cover, label: Cover photo, type: image, options: { media: images }, description: "Shown on the card" }
+      - { name: gallery, label: "Gallery (photos, GIFs, short videos)", type: file, options: { media: media, multiple: true } }
       - { name: body, label: My story / memories, type: rich-text }
+      - name: sections
+        label: "Sections (title + description + photos, GIFs or videos)"
+        type: object
+        list: true
+        fields:
+          - { name: title, label: Title, type: string }
+          - { name: text, label: Description, type: rich-text }
+          - { name: media, label: "Photos, GIFs or videos", type: file, options: { media: media, multiple: true } }
 
   # ---------- Publications ----------
   - name: publications
@@ -95,7 +119,7 @@ content:
           values: [Journal article, Conference paper, Conference abstract, Poster, Preprint, Thesis, Other]
       - { name: status, label: Status, type: string, description: "Optional, e.g. Under review, In preparation" }
       - { name: doi, label: DOI, type: string, description: "Only the DOI, e.g. 10.1029/2024WR012345" }
-      - { name: pdf, label: PDF file, type: file }
+      - { name: pdf, label: PDF file, type: file, options: { media: files } }
       - { name: link, label: Other link, type: string }
       - { name: code, label: Code / data link, type: string }
 
@@ -110,11 +134,19 @@ content:
       - { name: title, label: Project title, type: string, required: true }
       - { name: summary, label: Short summary, type: text, description: "1–2 sentences for the Research page" }
       - { name: order, label: Order on page, type: number, description: "1 = first" }
-      - { name: image, label: Main image (a GIF works too!), type: image }
-      - { name: video, label: Main video, type: string, description: "Paste a YouTube/Vimeo link, or the path of an uploaded .mp4 (e.g. /assets/videos/flow.mp4). Shown instead of the main image." }
-      - { name: media, label: "Gallery (images, GIFs, short .mp4 clips)", type: file, list: true }
+      - { name: image, label: Main image (a GIF works too!), type: image, options: { media: images } }
+      - { name: video, label: Main video, type: string, description: "Paste a YouTube/Vimeo link, or the path of an uploaded video (e.g. /assets/media/flow.mp4). Shown instead of the main image." }
+      - { name: media, label: "Gallery (photos, GIFs, short videos)", type: file, options: { media: media, multiple: true } }
       - { name: methods, label: Methods / tags, type: string, list: true }
       - { name: body, label: Full description, type: rich-text }
+      - name: sections
+        label: "Sections (title + description + photos, GIFs or videos)"
+        type: object
+        list: true
+        fields:
+          - { name: title, label: Title, type: string }
+          - { name: text, label: Description, type: rich-text }
+          - { name: media, label: "Photos, GIFs or videos", type: file, options: { media: media, multiple: true } }
 
   # ---------- News ----------
   - name: news

@@ -11,17 +11,11 @@ layout: default
     <img class="cover" src="{{ page.image | relative_url }}" alt="{{ page.title }}">
   {% endif %}
   <div class="prose">{{ content }}</div>
+  {% include sections.html sections=page.sections %}
   {% if page.media and page.media.size > 0 %}
   <h2>Gallery</h2>
   <div class="gallery">
-    {% for m in page.media %}
-      {% assign ext = m | split: "." | last | downcase %}
-      {% if ext == "mp4" or ext == "webm" or ext == "mov" %}
-        <video src="{{ m | relative_url }}" autoplay muted loop playsinline></video>
-      {% else %}
-        <a href="{{ m | relative_url }}" target="_blank" rel="noopener"><img src="{{ m | relative_url }}" loading="lazy" alt=""></a>
-      {% endif %}
-    {% endfor %}
+    {% for m in page.media %}{% include media-item.html src=m %}{% endfor %}
   </div>
   {% endif %}
 </article>

@@ -1,0 +1,12 @@
+{% comment %} Extra sections of an event or project: title, description, photos/GIFs/videos {% endcomment %}
+{% for s in include.sections %}
+<section class="entry-section">
+  {% if s.title and s.title != "" %}<h2>{{ s.title }}</h2>{% endif %}
+  {% if s.text and s.text != "" %}<div class="prose">{{ s.text | markdownify }}</div>{% endif %}
+  {% if s.media and s.media.size > 0 %}
+  <div class="section-media{% if s.media.size == 1 %} single{% endif %}">
+    {% for m in s.media %}{% include media-item.html src=m %}{% endfor %}
+  </div>
+  {% endif %}
+</section>
+{% endfor %}
