@@ -367,3 +367,9 @@ main.container { padding-top: 2.5rem; padding-bottom: 4rem; min-height: 70vh; }
   .connect { grid-template-columns: 1fr; }
   .connect-or { padding: .2rem 0; }
 }
+.connect > * { min-width: 0; }
+.message-form input, .message-form textarea { width: 100%; box-sizing: border-box; }
+@media (max-width: 520px) {
+  .say-hi { padding: 1.6rem .9rem; }
+  .connect-card { padding: 1rem; }
+}
