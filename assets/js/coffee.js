@@ -231,7 +231,9 @@
     var cv = Math.sqrt(Math.max(0, sum2 / vals.length - mean * mean)) / mean;
     if (cv > cv0) cv0 = cv;
     var floor = 1 / Math.sqrt(mean);   // random noise level = "perfectly mixed"
-    var m = Math.max(0, Math.min(1, (cv0 - cv) / Math.max(0.01, cv0 - floor * 1.15)));
+    var target = floor * 1.15;   // log scale: halving the unevenness counts the same at every stage
+    var m = cv0 <= target ? 1 : Math.max(0, Math.min(1, Math.log(cv0 / Math.max(cv, target)) / Math.log(cv0 / target)));
+    m = m * m;                   // be strict: only a truly uniform latte reaches 100%
     var pct = Math.round(m * 100);
     meterFill.style.width = pct + "%";
     meterText.textContent = pct + "%";
