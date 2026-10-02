@@ -1,0 +1,10 @@
+{% assign p = site.data.profile %}
+<ul class="social">
+  {% if p.email and p.email != "" %}<li><a href="mailto:{{ p.email }}">Email</a></li>{% endif %}
+  {% if p.cv and p.cv != "" %}<li><a href="{{ p.cv | relative_url }}">CV (PDF)</a></li>{% endif %}
+  {% if p.links.google_scholar != "" %}<li><a href="{{ p.links.google_scholar }}">Google Scholar</a></li>{% endif %}
+  {% if p.links.orcid != "" %}<li><a href="{{ p.links.orcid }}">ORCID</a></li>{% endif %}
+  {% if p.links.researchgate != "" %}<li><a href="{{ p.links.researchgate }}">ResearchGate</a></li>{% endif %}
+  {% if p.links.linkedin != "" %}<li><a href="{{ p.links.linkedin }}">LinkedIn</a></li>{% endif %}
+  {% if p.links.github != "" %}<li><a href="{{ p.links.github }}">GitHub</a></li>{% endif %}
+</ul>

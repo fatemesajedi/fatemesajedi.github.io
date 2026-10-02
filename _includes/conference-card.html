@@ -1,0 +1,13 @@
+{% assign c = include.c %}
+<a class="card" href="{{ c.url | relative_url }}">
+  {% if c.cover and c.cover != "" %}
+    <img class="card-img" src="{{ c.cover | relative_url }}" alt="" loading="lazy">
+  {% else %}
+    <div class="card-img placeholder" aria-hidden="true"></div>
+  {% endif %}
+  <div class="card-body">
+    <p class="meta">{{ c.date | date: "%b %Y" }}{% if c.location and c.location != "" %} · {{ c.location }}{% endif %}</p>
+    <h3>{{ c.title }}</h3>
+    {% if c.role and c.role != "" %}<span class="badge">{{ c.role }}</span>{% endif %}
+  </div>
+</a>

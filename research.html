@@ -1,0 +1,22 @@
+---
+title: Research
+permalink: /research/
+intro: I study how mixing and mixing-driven reactions in porous media depend on scale, combining numerical simulations with microfluidics experiments.
+---
+{% assign projects = site.projects | sort: "order" %}
+<div class="projects">
+  {% for pr in projects %}
+  <a class="project" href="{{ pr.url | relative_url }}">
+    {% if pr.image and pr.image != "" %}
+      <img class="project-img" src="{{ pr.image | relative_url }}" alt="" loading="lazy">
+    {% else %}
+      <div class="project-img placeholder" aria-hidden="true"></div>
+    {% endif %}
+    <div>
+      <h2>{{ pr.title }}</h2>
+      <p>{{ pr.summary }}</p>
+      {% if pr.methods %}<ul class="chips small">{% for m in pr.methods %}<li>{{ m }}</li>{% endfor %}</ul>{% endif %}
+    </div>
+  </a>
+  {% endfor %}
+</div>

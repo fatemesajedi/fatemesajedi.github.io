@@ -1,0 +1,38 @@
+# Site settings. Most personal info lives in _data/profile.yml (editable from the control panel).
+title: Fateme Sajedi
+description: PhD student at EFMLab researching mixing and mixing-driven reactions in porous media.
+url: "https://fatemesajedi.github.io"
+baseurl: ""
+lang: en
+
+markdown: kramdown
+permalink: pretty
+
+plugins:
+  - jekyll-seo-tag
+  - jekyll-sitemap
+
+collections:
+  conferences:
+    output: true
+    permalink: /conferences/:name/
+  projects:
+    output: true
+    permalink: /research/:name/
+  publications:
+    output: false
+  news:
+    output: false
+
+defaults:
+  - scope: { path: "" }
+    values: { layout: page }
+  - scope: { path: "", type: conferences }
+    values: { layout: conference }
+  - scope: { path: "", type: projects }
+    values: { layout: project }
+
+exclude:
+  - README.md
+  - Gemfile
+  - Gemfile.lock

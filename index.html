@@ -1,0 +1,63 @@
+---
+layout: default
+title: About
+---
+{% assign p = site.data.profile %}
+{% assign parts = p.name | split: " " %}
+<section class="hero">
+  <div class="hero-photo">
+    {% if p.photo and p.photo != "" %}
+      <img src="{{ p.photo | relative_url }}" alt="{{ p.name }}">
+    {% else %}
+      <div class="avatar">{{ parts.first | slice: 0 }}{{ parts.last | slice: 0 }}</div>
+    {% endif %}
+  </div>
+  <div class="hero-text">
+    <h1>{{ p.name }}</h1>
+    <p class="role">
+      {{ p.role }}{% if p.lab != "" %} · {{ p.lab }}{% endif %}{% if p.institution != "" %} · {{ p.institution }}{% endif %}
+    </p>
+    {% include social.html %}
+  </div>
+</section>
+
+<section class="bio prose">
+  {{ p.bio | markdownify }}
+</section>
+
+{% if p.interests.size > 0 %}
+<section>
+  <h2>Research interests</h2>
+  <ul class="chips">
+    {% for i in p.interests %}<li>{{ i }}</li>{% endfor %}
+  </ul>
+</section>
+{% endif %}
+
+{% assign news = site.news | sort: "date" | reverse %}
+{% if news.size > 0 %}
+<section>
+  <h2>News</h2>
+  <ul class="news">
+    {% for n in news limit: 6 %}
+    <li>
+      <time>{{ n.date | date: "%b %Y" }}</time>
+      <div>{{ n.content | markdownify | remove: "<p>" | remove: "</p>" }}</div>
+    </li>
+    {% endfor %}
+  </ul>
+</section>
+{% endif %}
+
+{% assign confs = site.conferences | sort: "date" | reverse %}
+{% if confs.size > 0 %}
+<section>
+  <div class="section-head">
+    <h2>Recent conferences</h2>
+    <a href="{{ '/conferences/' | relative_url }}">See all →</a>
+  </div>
+  <div class="cards">
+    {% for c in confs limit: 3 %}{% include conference-card.html c=c %}{% endfor %}
+  </div>
+</section>
+{% endif %}

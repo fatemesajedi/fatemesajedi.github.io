@@ -1,0 +1,6 @@
+_site/
+.jekyll-cache/
+.sass-cache/
+Gemfile.lock
+Thumbs.db
+desktop.ini

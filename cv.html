@@ -1,0 +1,21 @@
+---
+title: CV
+permalink: /cv/
+---
+{% assign p = site.data.profile %}
+{% if p.cv and p.cv != "" %}
+<p><a class="button" href="{{ p.cv | relative_url }}">Download full CV (PDF)</a></p>
+{% endif %}
+
+<h2>Education</h2>
+<ul class="timeline">
+  {% for e in p.education %}
+  <li>
+    <span class="when">{{ e.years }}</span>
+    <div>
+      <strong>{{ e.degree }}</strong>{% if e.field != "" %} in {{ e.field }}{% endif %}
+      {% if e.place != "" %}<br><span class="muted">{{ e.place }}</span>{% endif %}
+    </div>
+  </li>
+  {% endfor %}
+</ul>

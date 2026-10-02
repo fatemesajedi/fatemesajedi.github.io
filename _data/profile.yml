@@ -1,0 +1,36 @@
+name: Fateme Sajedi
+role: PhD Student
+lab: EFMLab
+institution: ""
+# Path to your photo after uploading it in the control panel, e.g. /assets/images/profile.jpg
+photo: ""
+# Surname to highlight in bold in publication author lists
+highlight_name: Sajedi
+bio: |
+  Hello, I am Fateme. I am a PhD student at the EFMLab with a background in mechanical engineering.
+
+  My current research focuses on **mixing in porous media**, where I investigate the crucial role that **scale** plays in mixing and mixing-driven reactions. My work uses and develops both **numerical simulations** and **microfluidics experiments**.
+interests:
+  - Mixing in porous media
+  - Mixing-driven reactions
+  - Scale effects
+  - Microfluidics
+  - Numerical simulation
+email: ""
+# Path to your CV PDF after uploading it, e.g. /assets/files/cv.pdf
+cv: ""
+links:
+  google_scholar: ""
+  orcid: ""
+  researchgate: ""
+  linkedin: ""
+  github: "https://github.com/fatemesajedi"
+education:
+  - degree: PhD
+    field: ""
+    place: EFMLab
+    years: "– present"
+  - degree: Master's / Bachelor's
+    field: Mechanical Engineering
+    place: ""
+    years: ""

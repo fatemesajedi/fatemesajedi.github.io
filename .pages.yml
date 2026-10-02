@@ -1,0 +1,117 @@
+# Control panel configuration for Pages CMS (https://app.pagescms.org)
+media:
+  input: assets
+  output: /assets
+
+content:
+  # ---------- Profile / About ----------
+  - name: profile
+    label: About me (profile)
+    type: file
+    path: _data/profile.yml
+    format: yaml
+    fields:
+      - { name: name, label: Full name, type: string, required: true }
+      - { name: role, label: Position, type: string, description: "e.g. PhD Student" }
+      - { name: lab, label: Lab, type: string }
+      - { name: institution, label: University / Institution, type: string }
+      - { name: photo, label: Profile photo, type: image }
+      - { name: bio, label: Bio, type: text, description: "Use **double asterisks** for bold. Leave an empty line between paragraphs." }
+      - { name: interests, label: Research interests, type: string, list: true }
+      - { name: email, label: Email, type: string }
+      - { name: cv, label: CV (PDF), type: file }
+      - { name: highlight_name, label: Name to bold in author lists, type: string, description: "Usually your surname" }
+      - name: links
+        label: Profile links (paste full URLs)
+        type: object
+        fields:
+          - { name: google_scholar, label: Google Scholar, type: string }
+          - { name: orcid, label: ORCID, type: string }
+          - { name: researchgate, label: ResearchGate, type: string }
+          - { name: linkedin, label: LinkedIn, type: string }
+          - { name: github, label: GitHub, type: string }
+      - name: education
+        label: Education (shown on CV page)
+        type: object
+        list: true
+        fields:
+          - { name: degree, label: Degree, type: string }
+          - { name: field, label: Field, type: string }
+          - { name: place, label: University, type: string }
+          - { name: years, label: Years, type: string, description: "e.g. 2023 – present" }
+
+  # ---------- Conferences ----------
+  - name: conferences
+    label: Conferences & Events
+    type: collection
+    path: _conferences
+    filename: "{year}-{month}-{day}-{primary}.md"
+    view:
+      fields: [title, date, location]
+      sort: [date]
+      default: { sort: date, order: desc }
+    fields:
+      - { name: title, label: Conference name, type: string, required: true }
+      - { name: date, label: Date, type: date, required: true }
+      - { name: location, label: Location, type: string, description: "e.g. Paris, France" }
+      - name: role
+        label: My participation
+        type: select
+        options:
+          values: [Talk, Poster, Invited talk, Workshop, Summer school, Attendee, Organizer]
+      - { name: contribution, label: Talk / poster title, type: string }
+      - { name: website, label: Conference website, type: string }
+      - { name: cover, label: Cover photo, type: image, description: "Shown on the card" }
+      - { name: gallery, label: Photo gallery, type: image, list: true }
+      - { name: body, label: My story / memories, type: rich-text }
+
+  # ---------- Publications ----------
+  - name: publications
+    label: Publications
+    type: collection
+    path: _publications
+    filename: "{year}-{primary}.md"
+    view:
+      fields: [title, year, type]
+    fields:
+      - { name: title, label: Title, type: string, required: true }
+      - { name: authors, label: Authors, type: string, description: "e.g. F. Sajedi, A. Author, B. Author" }
+      - { name: venue, label: Journal / conference, type: string }
+      - { name: year, label: Year, type: number, required: true }
+      - name: type
+        label: Type
+        type: select
+        options:
+          values: [Journal article, Conference paper, Conference abstract, Poster, Preprint, Thesis, Other]
+      - { name: status, label: Status, type: string, description: "Optional, e.g. Under review, In preparation" }
+      - { name: doi, label: DOI, type: string, description: "Only the DOI, e.g. 10.1029/2024WR012345" }
+      - { name: pdf, label: PDF file, type: file }
+      - { name: link, label: Other link, type: string }
+      - { name: code, label: Code / data link, type: string }
+
+  # ---------- Research projects ----------
+  - name: projects
+    label: Research projects
+    type: collection
+    path: _projects
+    view:
+      fields: [title, order]
+    fields:
+      - { name: title, label: Project title, type: string, required: true }
+      - { name: summary, label: Short summary, type: text, description: "1–2 sentences for the Research page" }
+      - { name: order, label: Order on page, type: number, description: "1 = first" }
+      - { name: image, label: Main image, type: image }
+      - { name: methods, label: Methods / tags, type: string, list: true }
+      - { name: body, label: Full description, type: rich-text }
+
+  # ---------- News ----------
+  - name: news
+    label: News (home page)
+    type: collection
+    path: _news
+    filename: "{year}-{month}-{day}-news.md"
+    view:
+      fields: [date, body]
+    fields:
+      - { name: date, label: Date, type: date, required: true }
+      - { name: body, label: News text, type: rich-text, description: "One or two sentences" }

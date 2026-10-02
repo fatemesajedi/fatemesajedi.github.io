@@ -1,0 +1,15 @@
+---
+title: Conferences & Events
+permalink: /conferences/
+intro: Conferences, workshops and schools I have attended, with talks, posters and memories along the way.
+---
+{% assign confs = site.conferences | sort: "date" | reverse %}
+{% assign by_year = confs | group_by_exp: "c", "c.date | date: '%Y'" %}
+{% for y in by_year %}
+<section>
+  <h2 class="year">{{ y.name }}</h2>
+  <div class="cards">
+    {% for c in y.items %}{% include conference-card.html c=c %}{% endfor %}
+  </div>
+</section>
+{% endfor %}

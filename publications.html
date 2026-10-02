@@ -1,0 +1,30 @@
+---
+title: Publications
+permalink: /publications/
+intro: Journal articles, conference contributions and other outputs.
+---
+{% assign hl = site.data.profile.highlight_name %}
+{% capture hl_html %}<strong>{{ hl }}</strong>{% endcapture %}
+{% assign pubs = site.publications | sort: "year" | reverse %}
+{% assign by_year = pubs | group_by: "year" %}
+{% for y in by_year %}
+<section>
+  <h2 class="year">{{ y.name }}</h2>
+  <ol class="pubs">
+    {% for pub in y.items %}
+    <li class="pub">
+      {% if pub.type and pub.type != "" %}<span class="badge">{{ pub.type }}</span>{% endif %}
+      <p class="pub-title">{{ pub.title }}</p>
+      <p class="pub-authors">{{ pub.authors | replace: hl, hl_html }}</p>
+      <p class="pub-venue"><em>{{ pub.venue }}</em>{% if pub.status and pub.status != "" %} · {{ pub.status }}{% endif %}</p>
+      <p class="pub-links">
+        {% if pub.doi and pub.doi != "" %}<a href="https://doi.org/{{ pub.doi }}">DOI</a>{% endif %}
+        {% if pub.pdf and pub.pdf != "" %}<a href="{{ pub.pdf | relative_url }}">PDF</a>{% endif %}
+        {% if pub.link and pub.link != "" %}<a href="{{ pub.link }}">Link</a>{% endif %}
+        {% if pub.code and pub.code != "" %}<a href="{{ pub.code }}">Code</a>{% endif %}
+      </p>
+    </li>
+    {% endfor %}
+  </ol>
+</section>
+{% endfor %}
