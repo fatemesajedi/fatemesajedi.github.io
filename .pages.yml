@@ -5,19 +5,19 @@ media:
     input: assets/images
     output: /assets/images
     rename: safe
-    extensions: [jpg, jpeg, png, webp, gif]
+    extensions: [jpg, jpeg, png, webp, gif, JPG, JPEG, PNG, WEBP, GIF]
   - name: media
     label: Photos, GIFs & videos
     input: assets/media
     output: /assets/media
     rename: safe
-    extensions: [jpg, jpeg, png, webp, gif, mp4, webm, mov]
+    extensions: [jpg, jpeg, png, webp, gif, mp4, webm, mov, JPG, JPEG, PNG, WEBP, GIF, MP4, MOV]
   - name: files
     label: PDFs
     input: assets/files
     output: /assets/files
     rename: safe
-    extensions: [pdf]
+    extensions: [pdf, PDF]
 
 content:
   # ---------- Profile / About ----------
