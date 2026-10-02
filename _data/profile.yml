@@ -40,8 +40,9 @@ fun_facts:
     text: "EXAMPLE — Replace me: a hobby, sport or place you love"
   - emoji: 📚
     text: "EXAMPLE — Replace me: a book, series or podcast you recommend"
-say_hi: Whether you're a fellow researcher, a student curious about porous
-  media, or simply want to chat about science, I'd love to hear from you!
+say_hi: Curious about fluid dynamics, interested in porous media, or just enjoy
+  talking about science? Don’t be shy, come say hello! I’m always happy to meet
+  new people and exchange ideas.
 highlight_name: Sajedi
 links:
   github: https://github.com/fatemesajedi
