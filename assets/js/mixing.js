@@ -14,8 +14,8 @@
   var caption = document.getElementById("scene-caption");
   var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  var DURATION = [16, 20, 20];      // seconds per scene
-  var CROSS = [0.6, 0.45, 0.7];     // fraction of the scene the front needs to cross the domain
+  var DURATION = [22, 20, 20];      // seconds per scene
+  var CROSS = [0.75, 0.45, 0.7];     // fraction of the scene the front needs to cross the domain
   var DIFF = [0.004, 0.03, 0.02];   // diffusion (cells^2 / sub-step)
   var SUB = 4;                      // transport sub-steps per frame
   var UP = 2;                       // render resolution = UP x grid
@@ -58,70 +58,64 @@
     circles.forEach(function (c) { stamp(c.x, c.y, c.r, 1); });
   }
 
-  function deadEndPores() {                      // wavy channel + kidney-shaped dead-end pores
-    solid.fill(1);
-    var ph1 = Math.random() * 6, ph2 = Math.random() * 6;
-    function centre(x) { return NY * 0.5 + NY * 0.05 * Math.sin(2 * Math.PI * x / (NX * 0.55) + ph1); }
-    function half(x) { return NY * 0.22 + NY * 0.035 * Math.sin(2 * Math.PI * x / (NX * 0.33) + ph2); }
-    var pores = [], grains = [];                 // circles: dead-end pores (fluid), grains in the channel (rock)
-    function isFluid(x, y) {
-      for (var g = 0; g < grains.length; g++) { var o = grains[g], gx = x - o.x, gy = y - o.y; if (gx * gx + gy * gy < o.r * o.r) return false; }
-      if (Math.abs(y - centre(x)) < half(x)) return true;
-      for (var q = 0; q < pores.length; q++) { var o = pores[q], dx = x - o.x, dy = y - o.y; if (dx * dx + dy * dy < o.r * o.r) return true; }
-      return false;
-    }
-    var spacing = Math.max(26, NX / 5.5), side = Math.random() < 0.5 ? -1 : 1;
-    for (var x = spacing * 0.7; x < NX - spacing * 0.5; x += spacing * (0.8 + Math.random() * 0.4)) {
-      var wallY = centre(x) + side * half(x);
-      var tilt = (Math.random() - 0.5) * 1.2, bend = (Math.random() < 0.5 ? -1 : 1) * (0.6 + Math.random() * 0.6);
-      var len = NY * (0.12 + Math.random() * 0.05), steps = 14;
-      for (var s = 0; s <= steps; s++) {           // a curved chain of circles: neck, then a fat body
-        var f = s / steps;
-        var px = x + tilt * f * len + bend * Math.sin(f * Math.PI) * len * 0.35;
-        var py = wallY + side * (f * len - 1);
-        var r = f < 0.2 ? NY * 0.05 : NY * 0.05 + (NY * 0.045) * Math.sin(Math.min(1, (f - 0.2) / 0.8) * Math.PI * 0.85);
-        py = Math.max(r + 2.5, Math.min(NY - r - 2.5, py));
-        pores.push({ x: px, y: py, r: r });
+  function deadEndPores() {                      // labyrinth-like porous medium (random field, one pore scale)
+    var porosity = 0.56, tries = 0;
+    while (true) {
+      tries++;
+      // random field from waves of one wavelength -> worm-like grains, as in micromodels
+      var K = 70, lam = 15, ks = [];
+      for (var m = 0; m < K; m++) {
+        var th = Math.random() * Math.PI, kk = 2 * Math.PI / (lam * (0.85 + Math.random() * 0.3));
+        ks.push([kk * Math.cos(th), kk * Math.sin(th), Math.random() * 2 * Math.PI]);
       }
-      side = -side;
-    }
-    // a few small grains in the channel split the flow, so the front breaks into fingers
-    var want = Math.round(NX / 20);
-    for (var t = 0; t < 600 && grains.length < want; t++) {
-      var gx0 = NX * 0.07 + Math.random() * (NX * 0.88), gr = 2.2 + Math.random() * 1.6;
-      var gy0 = centre(gx0) + (Math.random() * 2 - 1) * (half(gx0) - gr - 3.5), ok = true;
-      for (var a8 = 0; a8 < 8 && ok; a8++) {          // keep a clear gap to the walls
-        var an = a8 / 8 * 2 * Math.PI;
-        if (!isFluid(gx0 + (gr + 3) * Math.cos(an), gy0 + (gr + 3) * Math.sin(an))) ok = false;
+      var NXn = NX + 1, nodes = new Float32Array(NXn * (NY + 1));
+      for (var j = 0; j <= NY; j++) for (var i = 0; i <= NX; i++) {
+        var s = 0;
+        for (m = 0; m < K; m++) s += Math.cos(ks[m][0] * i + ks[m][1] * j + ks[m][2]);
+        nodes[j * NXn + i] = s;
       }
-      for (var g2 = 0; g2 < grains.length && ok; g2++) {
-        var o2 = grains[g2], ddx = o2.x - gx0, ddy = o2.y - gy0;
-        if (ddx * ddx + ddy * ddy < Math.pow(o2.r + gr + 4, 2)) ok = false;
+      var sorted = Array.prototype.slice.call(nodes).sort(function (a, b) { return a - b; });
+      var thr = sorted[Math.floor(sorted.length * porosity)];   // rock where the field is above this
+      var BUF = 5;                                // open strips at inlet and outlet
+      for (j = 0; j < NY; j++) for (i = 0; i < NX; i++) {
+        var k = idx(i, j), n = 0;
+        if (i < BUF || i >= NX - BUF) { mass[k] = 0; solid[k] = 0; continue; }
+        var a00 = nodes[j * NXn + i], a10 = nodes[j * NXn + i + 1], a01 = nodes[(j + 1) * NXn + i], a11 = nodes[(j + 1) * NXn + i + 1];
+        for (var sy = 0; sy < 4; sy++) for (var sx = 0; sx < 4; sx++) {
+          var fx = (sx + 0.5) / 4, fy = (sy + 0.5) / 4;
+          if (a00 * (1 - fx) * (1 - fy) + a10 * fx * (1 - fy) + a01 * (1 - fx) * fy + a11 * fx * fy > thr) n++;
+        }
+        mass[k] = n / 16; solid[k] = mass[k] > 0.5 ? 1 : 0;
       }
-      if (ok) grains.push({ x: gx0, y: gy0, r: gr });
-    }
-    // rock fraction of each cell from the smooth shape (4x4 sub-samples): smooth walls when drawn
-    for (var j = 0; j < NY; j++) for (var i = 0; i < NX; i++) {
-      var n = 0;
-      for (var sy = 0; sy < 4; sy++) for (var sx = 0; sx < 4; sx++) if (!isFluid(i + (sx + 0.5) / 4, j + (sy + 0.5) / 4)) n++;
-      var k = idx(i, j);
-      mass[k] = n / 16;
-      solid[k] = mass[k] > 0.5 ? 1 : 0;
+      for (i = 0; i < NX; i++) { solid[i] = 1; mass[i] = 1; solid[(NY - 1) * NX + i] = 1; mass[(NY - 1) * NX + i] = 1; }   // walls
+      // keep only pore space reachable from the inlet (dead ends stay, isolated pockets become rock)
+      var seen = new Uint8Array(N), stack = [];
+      for (j = 0; j < NY; j++) { k = j * NX; if (!solid[k]) { seen[k] = 1; stack.push(k); } }
+      while (stack.length) {
+        k = stack.pop(); var ci = k % NX, cj = (k / NX) | 0;
+        var nb = [ci > 0 ? k - 1 : -1, ci < NX - 1 ? k + 1 : -1, cj > 0 ? k - NX : -1, cj < NY - 1 ? k + NX : -1];
+        for (var q = 0; q < 4; q++) { var nn = nb[q]; if (nn >= 0 && !solid[nn] && !seen[nn]) { seen[nn] = 1; stack.push(nn); } }
+      }
+      var through = false;
+      for (j = 0; j < NY; j++) if (seen[j * NX + NX - 1]) through = true;
+      if (!through && tries < 6) { porosity += 0.03; continue; }   // no path across: open it up a little
+      for (k = 0; k < N; k++) if (!solid[k] && !seen[k]) { solid[k] = 1; mass[k] = 1; }
+      break;
     }
     // label solids: 1 = top wall, 2 = bottom wall, 3.. = each grain (stream function is constant on each)
-    comp = new Uint8Array(N);
+    comp = new Uint16Array(N);
     function flood(start, id) {
-      var stack = [start]; comp[start] = id;
-      while (stack.length) {
-        var k = stack.pop(), ci = k % NX, cj = (k / NX) | 0;
-        var nb = [ci > 0 ? k - 1 : -1, ci < NX - 1 ? k + 1 : -1, cj > 0 ? k - NX : -1, cj < NY - 1 ? k + NX : -1];
-        for (var q = 0; q < 4; q++) { var n = nb[q]; if (n >= 0 && solid[n] && !comp[n]) { comp[n] = id; stack.push(n); } }
+      var st = [start]; comp[start] = id;
+      while (st.length) {
+        var k2 = st.pop(), ci2 = k2 % NX, cj2 = (k2 / NX) | 0;
+        var nb2 = [ci2 > 0 ? k2 - 1 : -1, ci2 < NX - 1 ? k2 + 1 : -1, cj2 > 0 ? k2 - NX : -1, cj2 < NY - 1 ? k2 + NX : -1];
+        for (var q2 = 0; q2 < 4; q2++) { var n2 = nb2[q2]; if (n2 >= 0 && solid[n2] && !comp[n2]) { comp[n2] = id; st.push(n2); } }
       }
     }
     for (i = 0; i < NX; i++) if (solid[i] && !comp[i]) flood(i, 1);
     for (i = 0; i < NX; i++) { var kb = (NY - 1) * NX + i; if (solid[kb] && !comp[kb]) flood(kb, 2); }
     var nextId = 3;
-    for (k = 0; k < N; k++) if (solid[k] && !comp[k]) flood(k, Math.min(255, nextId++));
+    for (k = 0; k < N; k++) if (solid[k] && !comp[k]) flood(k, nextId++);
   }
 
   function cover(cx, cy, r) {                    // fraction of each cell covered by a pillar
@@ -179,7 +173,7 @@
   function stokes() {
     var NXn = NX + 1, NYn = NY + 1, M = NXn * NYn;
     var psi = new Float32Array(M), om = new Float32Array(M), type = new Uint8Array(M);   // 0 interior, 1 wall, 2 fixed
-    var wallId = new Uint8Array(M);
+    var wallId = new Uint16Array(M);
     function cellComp(i, j) {
       if (j < 0) return 1; if (j >= NY) return 2;
       if (i < 0) i = 0; if (i >= NX) i = NX - 1;
@@ -408,9 +402,10 @@
         if (scene === 0) {
           var mi = Math.round(a * 255) * 3; r = HOT[mi]; gr = HOT[mi + 1]; bl = HOT[mi + 2];
         } else if (scene === 1) {                 // microscopy look: red invading, cyan resident
-          r = 4 + 211 * a * 0.8 + 21 * b * 0.65; gr = 14 + 41 * a * 0.8 + 171 * b * 0.65; bl = 18 + 27 * a * 0.8 + 177 * b * 0.65;
-          var pc = Math.max(0, 1 - a - b);          // reaction product: warm amber, so there is no dark tail
-          r += 205 * pc * 0.75; gr += 105 * pc * 0.75; bl += 55 * pc * 0.75;
+          // invading fluid: deep red; resident: cyan; reacted (product) a similar deep red, so no dark tail.
+          // The bright lines come from the reaction rate, highest at the interfaces where gradients are.
+          var pc = Math.max(0, 1 - a - b);
+          r = 4 + 148 * a + 21 * b * 0.65 + 160 * pc; gr = 14 + 24 * a + 171 * b * 0.65 + 38 * pc; bl = 18 + 18 * a + 177 * b * 0.65 + 24 * pc;
           var h = Math.sqrt(g / gmax);
           if (h > 0.05) { var hi = Math.round(Math.min(1, h) * 255) * 3; r = Math.max(r, GLOW[hi]); gr = Math.max(gr, GLOW[hi + 1]); bl = Math.max(bl, GLOW[hi + 2]); }
         } else {
