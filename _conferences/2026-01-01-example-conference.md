@@ -1,14 +1,10 @@
 ---
-title: "EXAMPLE — Replace or delete me: Conference name"
-date: 2026-01-01
-location: "City, Country"
-role: Talk
-contribution: "Title of your talk or poster"
-website: ""
-cover: ""
-gallery: []
+title: French Chapter of Interpore
+date: 2025-11-27
+end_date: 2026-10-31
+location: Orleon, France
+role: Poster
+contribution: "Mixing in confined and heterogenous porous media "
+gallery:
+  - /assets/media/2026-10-02-205853.jpg
 ---
-
-Write your memories here: what you presented, who you met, what you learned, a nice moment from the trip…
-
-Upload photos in the control panel; they appear in a gallery below this text.
