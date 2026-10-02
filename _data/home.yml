@@ -1,0 +1,55 @@
+# Texts of the home page sections (editable in the control panel: "Home page texts")
+
+banner:
+  mixing:
+    title: Mixing
+    caption: A solute flows into a porous rock from the left. Squeezing between the grains, the front breaks into fingers, and stretching those fingers is what makes it mix.
+  reaction:
+    title: Reaction hotspots
+    caption: The main flow (red) sweeps past dead-end pores, where the fluid only slowly swirls in tiny eddies (cyan). Where the two meet they react, so the dead-end pores glow as reaction hotspots.
+  dissolution:
+    title: Rock dissolution
+    caption: An acidic fluid slowly eats away the rock as it flows. The grains shrink bit by bit, and those near the inlet, exposed the longest, shrink the most.
+
+research_30s:
+  heading: "☕ My research in 30 seconds"
+  text: |
+    Imagine pouring milk into your coffee: give it a stir and the two mix in seconds. Now imagine the coffee has to squeeze through a sponge, or a rock, full of tiny grains and winding channels. How quickly do the two liquids find each other? And if they are chemicals that **react when they meet**, where and how fast does that reaction happen?
+
+    That is the question I work on. Underground, it shapes how pollutants break down in groundwater and how minerals form inside rocks. The twist is that the answer changes depending on whether you look at a single tiny pore or at a whole rock. That **scale puzzle** is at the heart of my PhD. I explore it with computer simulations and with tiny transparent micro-channels on a glass chip, called microfluidics.
+  link_text: Dive into the details →
+  cup_hint: "🥄 Grab the spoon and stir!"
+  cup_caption: Measuring *how mixed* things are is exactly what I do, just inside rocks instead of cups.
+
+lesson:
+  heading: "🧪 Let's learn mixing together!"
+  step1_title: 1 · Meet the droplets
+  step1_text: |
+    Here are two droplets, one red and one blue, sitting side by side. Right now they are completely **segregated**: each colour has its own space.
+
+    How do they become one uniform mixture? Let's find out.
+  step1_button: Start stirring →
+  step2_title: 2 · Stir (no diffusion yet)
+  step2_text: |
+    **Drag inside the box** to stir, or let me stir for you.
+
+    Watch closely: stirring does not blend the colours. It **stretches and folds** the interface between them into longer and thinner sheets, while the colours stay perfectly pure.
+  step2_limit: "🤯 Wow, stretched ×100! The sheets are now thinner than a hair. Stirring alone can't do more: time to add diffusion!"
+  step2_button: Now add diffusion →
+  step3_title: 3 · Switch on diffusion
+  step3_text: |
+    Now molecular **diffusion** joins in. It is slow over long distances, but the sheets you made are so thin that it smooths them out quickly, and the colours finally blend.
+
+    Keep stirring: the thinner the sheets, the faster they mix!
+  step3_button: Finish 🎓
+  step4_title: 🎉 You just did mixing science!
+  step4_text: |
+    What you saw is the fundamental picture behind all of mixing: **stirring stretches** the interface between the substances (Ottino, 1989), and **diffusion** then erases the thin sheets it creates.
+
+    As Villermaux & Duplat (2003) put it, a mixture is only a *transient state* between the initial segregation of the ingredients and their final homogeneity.
+
+    This idea, stretching plus diffusion, is the foundation of mixing science, and it is exactly what I study inside porous rocks. 🪨
+  references: |
+    Ottino, J. M. (1989). *The Kinematics of Mixing: Stretching, Chaos, and Transport.* Cambridge University Press.
+
+    Villermaux, E. & Duplat, J. (2003). Mixing as an aggregation process. *Physical Review Letters*, 91, 184501.

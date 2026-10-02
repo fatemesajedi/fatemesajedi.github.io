@@ -484,3 +484,4 @@ main.container { padding-top: 2.5rem; padding-bottom: 4rem; min-height: 70vh; }
 .nn-wide { max-width: 720px; }
 .been-there .year { margin: 1.4rem 0 .8rem; }
 @media (max-width: 760px) { .connect > .connect-or { padding-top: .2rem; } }
+.lm-refs p { margin: .3rem 0 0; }

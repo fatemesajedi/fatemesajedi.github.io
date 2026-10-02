@@ -17,7 +17,6 @@ content:
       - { name: institution, label: University / Institution, type: string }
       - { name: photo, label: Profile photo, type: image }
       - { name: bio, label: Bio, type: text, description: "Use **double asterisks** for bold. Leave an empty line between paragraphs." }
-      - { name: research_simple, label: "My research in 30 seconds (plain language)", type: text, description: "Explain your research so your grandma or a high-school student would get it." }
       - { name: interests, label: Research interests, type: string, list: true }
       - name: fun_facts
         label: "When I'm not in the lab… (fun facts)"
@@ -128,3 +127,60 @@ content:
     fields:
       - { name: date, label: Date, type: date, required: true }
       - { name: body, label: News text, type: rich-text, description: "One or two sentences" }
+
+  # ---------- Home page texts ----------
+  - name: home
+    label: Home page texts
+    type: file
+    path: _data/home.yml
+    format: yaml
+    fields:
+      - name: banner
+        label: Banner (the 3 animations at the top)
+        type: object
+        fields:
+          - name: mixing
+            label: "1 · Mixing"
+            type: object
+            fields:
+              - { name: title, label: Tab name, type: string }
+              - { name: caption, label: Caption, type: text }
+          - name: reaction
+            label: "2 · Reaction hotspots"
+            type: object
+            fields:
+              - { name: title, label: Tab name, type: string }
+              - { name: caption, label: Caption, type: text }
+          - name: dissolution
+            label: "3 · Rock dissolution"
+            type: object
+            fields:
+              - { name: title, label: Tab name, type: string }
+              - { name: caption, label: Caption, type: text }
+      - name: research_30s
+        label: My research in 30 seconds (with the coffee cup)
+        type: object
+        fields:
+          - { name: heading, label: Heading, type: string }
+          - { name: text, label: Text, type: text, description: "Plain language! Use **double asterisks** for bold, and an empty line between paragraphs." }
+          - { name: link_text, label: Link to the Research page, type: string }
+          - { name: cup_hint, label: Hint on the cup, type: string }
+          - { name: cup_caption, label: Caption under the cup, type: text }
+      - name: lesson
+        label: "Let's learn mixing together (the droplets)"
+        type: object
+        fields:
+          - { name: heading, label: Heading, type: string }
+          - { name: step1_title, label: "Step 1 · title", type: string }
+          - { name: step1_text, label: "Step 1 · text", type: text }
+          - { name: step1_button, label: "Step 1 · button", type: string }
+          - { name: step2_title, label: "Step 2 · title", type: string }
+          - { name: step2_text, label: "Step 2 · text", type: text }
+          - { name: step2_limit, label: "Step 2 · message when stirring reaches ×100", type: text }
+          - { name: step2_button, label: "Step 2 · button", type: string }
+          - { name: step3_title, label: "Step 3 · title", type: string }
+          - { name: step3_text, label: "Step 3 · text", type: text }
+          - { name: step3_button, label: "Step 3 · button", type: string }
+          - { name: step4_title, label: "Step 4 · title", type: string }
+          - { name: step4_text, label: "Step 4 · text", type: text }
+          - { name: references, label: References, type: text, description: "One reference per paragraph (empty line between them). *Asterisks* make italics." }
