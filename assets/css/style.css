@@ -317,3 +317,28 @@ main.container { padding-top: 2.5rem; padding-bottom: 4rem; min-height: 70vh; }
   .mix-meter span { grid-column: 1 / -1; text-align: left; }
 }
 @media (prefers-reduced-motion: reduce) { .coffee-hint { animation: none; } }
+
+/* Banner: three research scenes */
+#mixing-canvas { background: #0b131e; border-color: #1c2733; cursor: pointer; }
+.scene-tabs { display: flex; gap: .5rem; margin-top: .7rem; flex-wrap: wrap; }
+.scene-tab {
+  flex: 1 1 0; min-width: 0; position: relative; font: inherit; font-size: .88rem; font-weight: 500; cursor: pointer;
+  display: flex; align-items: center; gap: .45rem; padding: .5rem .7rem .7rem; text-align: left;
+  background: var(--surface); color: var(--muted); border: 1px solid var(--border); border-radius: 10px;
+  transition: color .15s, border-color .15s;
+}
+.scene-tab:hover { color: var(--text); border-color: var(--accent); }
+.scene-tab.active { color: var(--text); border-color: var(--accent); }
+.scene-tab .num {
+  display: grid; place-items: center; width: 1.4rem; height: 1.4rem; flex-shrink: 0; border-radius: 50%;
+  font-size: .75rem; background: var(--accent-soft); color: var(--accent);
+}
+.scene-tab.active .num { background: var(--accent); color: var(--bg); }
+.scene-tab .track { position: absolute; left: .7rem; right: .7rem; bottom: .3rem; height: 3px; border-radius: 3px; background: var(--border); overflow: hidden; }
+.scene-tab .track i { display: block; height: 100%; width: 0; background: var(--accent); }
+.scene-tab:not(.active) .track i { width: 0 !important; }
+#scene-caption { display: block; font-size: .9rem; min-height: 2.8em; margin-top: .6rem; }
+@media (max-width: 600px) {
+  .scene-tab { font-size: .78rem; padding: .45rem .5rem .65rem; gap: .3rem; }
+  .scene-tab .num { display: none; }
+}

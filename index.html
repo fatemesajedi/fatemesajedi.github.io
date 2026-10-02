@@ -6,13 +6,22 @@ title: About
 {% assign parts = p.name | split: " " %}
 
 <section class="banner">
-  <canvas id="mixing-canvas" aria-label="Animation of two liquids mixing and reacting as they flow between grains"></canvas>
-  <p class="banner-caption">
-    <span class="key"><span class="dot a"></span>Liquid A</span>
-    <span class="key"><span class="dot b"></span>Liquid B</span>
-    <span class="key"><span class="dot c"></span>They meet &amp; react!</span>
-    <span class="hint">🖱️ move your mouse over it to stir</span>
-  </p>
+  <canvas id="mixing-canvas" aria-label="Live simulations of mixing, reaction and rock dissolution in porous media"></canvas>
+  <div class="scene-tabs" role="tablist">
+    <button type="button" class="scene-tab active" role="tab" aria-selected="true"
+      data-caption="A solute flows into a porous rock from the left. Squeezing between the grains, the front stretches into fingers, and that is what makes it mix.">
+      <span class="num">1</span> Mixing <span class="track"><i></i></span>
+    </button>
+    <button type="button" class="scene-tab" role="tab" aria-selected="false"
+      data-caption="Two fluids react where they meet. In dead-end pores the old fluid stays trapped, so they keep glowing as reaction hotspots long after the front has passed.">
+      <span class="num">2</span> Reaction hotspots <span class="track"><i></i></span>
+    </button>
+    <button type="button" class="scene-tab" role="tab" aria-selected="false"
+      data-caption="An acidic fluid eats away the rock as it flows. Pillars near the inlet dissolve first, opening new paths for the flow.">
+      <span class="num">3</span> Rock dissolution <span class="track"><i></i></span>
+    </button>
+  </div>
+  <p class="banner-caption" id="scene-caption" aria-live="polite"></p>
 </section>
 
 <section class="hero">
