@@ -21,7 +21,7 @@
   var NX, NY = 72, N, W, H, D;
   var solid, p, ux, uy, A, B, dA, dB, glow, mass, scale;
   var off = document.createElement("canvas"), offCtx = off.getContext("2d"), img;
-  var scene = 0, t0 = 0, visible = true, started = !reduceMotion, gmax = 1e-6;
+  var scene = 0, t0 = 0, visible = true, started = !reduceMotion, gmax = 1e-6, circles = [];
 
   // ---------- geometry ----------
   function idx(i, j) { return j * NX + i; }
@@ -35,17 +35,17 @@
   }
 
   function scatter(x0, x1, y0, y1, rmin, rmax, gap, tries) {   // random non-overlapping grains
-    var circles = [];
+    var start = circles.length;
     while (tries-- > 0) {
       var u = Math.random(), r = rmin + (rmax - rmin) * u * u;
       var c = { x: x0 + Math.random() * (x1 - x0), y: y0 + Math.random() * (y1 - y0), r: r }, ok = true;
-      for (var q = 0; q < circles.length; q++) {
+      for (var q = start; q < circles.length; q++) {
         var o = circles[q], dx = o.x - c.x, dy = o.y - c.y, m = o.r + c.r + gap;
         if (dx * dx + dy * dy < m * m) { ok = false; break; }
       }
       if (ok) circles.push(c);
     }
-    circles.forEach(function (c) { stamp(c.x, c.y, c.r, 1); });
+    for (var q2 = start; q2 < circles.length; q2++) stamp(circles[q2].x, circles[q2].y, circles[q2].r, 1);
   }
 
   function grainPack() {
@@ -270,11 +270,23 @@
     ctx.imageSmoothingEnabled = true;
     ctx.imageSmoothingQuality = "high";
     ctx.drawImage(off, 0, 0, W, H);
+    if (scene !== 2) {                         // crisp round grains on top
+      var sx = W / NX, sy = H / NY, sc = SOLID[scene];
+      ctx.fillStyle = "rgb(" + sc[0] + "," + sc[1] + "," + sc[2] + ")";
+      ctx.beginPath();
+      for (var c = 0; c < circles.length; c++) {
+        var g = circles[c];
+        var rr = g.r + 0.35;                   // cover the pixelated edge underneath
+        ctx.moveTo(g.x * sx + rr * sx, g.y * sy);
+        ctx.ellipse(g.x * sx, g.y * sy, rr * sx, rr * sy, 0, 0, Math.PI * 2);
+      }
+      ctx.fill();
+    }
   }
 
   // ---------- scenes ----------
   function setup(s) {
-    scene = s; D = DIFF[s];
+    scene = s; D = DIFF[s]; circles = [];
     NX = Math.max(90, Math.round(NY * W / H));
     N = NX * NY;
     solid = new Uint8Array(N); p = new Float32Array(N);
