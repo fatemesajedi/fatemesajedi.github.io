@@ -7,8 +7,9 @@ intro: I study how mixing and mixing-driven reactions in porous media depend on 
 <div class="projects">
   {% for pr in projects %}
   <a class="project" href="{{ pr.url | relative_url }}">
-    {% if pr.image and pr.image != "" %}
-      <img class="project-img" src="{{ pr.image | relative_url }}" alt="" loading="lazy">
+    {% include to-list.html value=pr.image %}
+    {% if list.size > 0 %}
+      <img class="project-img" src="{{ list[0] | relative_url }}" alt="" loading="lazy">
     {% else %}
       <div class="project-img placeholder" aria-hidden="true"></div>
     {% endif %}

@@ -162,8 +162,9 @@ title: About
       <li class="stop">
         <span class="pin">{% if f.emoji and f.emoji != "" %}{{ f.emoji }}{% else %}✨{% endif %}</span>
         <figure class="polaroid">
-          {% if f.photo and f.photo != "" %}
-            <img src="{{ f.photo | relative_url }}" alt="" loading="lazy">
+          {% include to-list.html value=f.photo %}
+          {% if list.size > 0 %}
+            {% include slideshow.html list=list alt="" class="polaroid-slides" %}
           {% else %}
             <div class="polaroid-empty"><span>{% if f.emoji and f.emoji != "" %}{{ f.emoji }}{% else %}✨{% endif %}</span></div>
           {% endif %}

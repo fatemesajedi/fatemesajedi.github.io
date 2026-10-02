@@ -41,7 +41,7 @@ content:
         fields:
           - { name: emoji, label: Emoji (shown on the map pin), type: string, description: "One emoji, e.g. 🧗 🎬 🍳 (Windows: press Win + . to open the emoji picker)" }
           - { name: text, label: Text, type: string }
-          - { name: photo, label: Photo (optional), type: image, options: { media: images }, description: "Shown as a polaroid. Landscape photos look best." }
+          - { name: photo, label: Photos (optional), type: image, options: { media: images, multiple: true }, description: "Shown as a polaroid; several photos become a little slideshow. Landscape photos look best." }
       - { name: say_hi, label: "'Say hi' message", type: text, description: "Friendly invitation shown at the bottom of the home page" }
       - { name: email, label: Email, type: string }
       - { name: cv, label: CV (PDF), type: file, options: { media: files } }
@@ -87,7 +87,7 @@ content:
           values: [Talk, Poster, Invited talk, Workshop, Summer school, Attendee, Organizer]
       - { name: contribution, label: Talk / poster title, type: string }
       - { name: website, label: Conference website, type: string }
-      - { name: cover, label: Cover photo, type: image, options: { media: images }, description: "Shown on the card" }
+      - { name: cover, label: Cover photos, type: image, options: { media: images, multiple: true }, description: "The first one is shown on the card; all of them as a slideshow on the event page" }
       - { name: gallery, label: "Gallery (photos, GIFs, short videos)", type: file, options: { media: media, multiple: true } }
       - { name: body, label: My story / memories, type: rich-text }
       - name: sections
@@ -134,7 +134,7 @@ content:
       - { name: title, label: Project title, type: string, required: true }
       - { name: summary, label: Short summary, type: text, description: "1–2 sentences for the Research page" }
       - { name: order, label: Order on page, type: number, description: "1 = first" }
-      - { name: image, label: Main image (a GIF works too!), type: image, options: { media: images } }
+      - { name: image, label: Main images (GIFs work too!), type: image, options: { media: images, multiple: true }, description: "The first one is shown on the Research page; all of them as a slideshow on the project page" }
       - { name: video, label: Main video, type: string, description: "Paste a YouTube/Vimeo link, or the path of an uploaded video (e.g. /assets/media/flow.mp4). Shown instead of the main image." }
       - { name: media, label: "Gallery (photos, GIFs, short videos)", type: file, options: { media: media, multiple: true } }
       - { name: methods, label: Methods / tags, type: string, list: true }

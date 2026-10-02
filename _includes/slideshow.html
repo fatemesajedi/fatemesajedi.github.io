@@ -1,0 +1,10 @@
+{% comment %} One photo, or a fading slideshow of several. Params: list, alt, class (slideshow), single_class (one photo) {% endcomment %}
+{% assign sl = include.list %}
+{% if sl.size > 1 %}
+<div class="slides {{ include.class }}" data-slides>
+  {% for s in sl %}<img src="{{ s | relative_url }}" alt="{{ include.alt }}" loading="lazy"{% if forloop.first %} class="on"{% endif %}>{% endfor %}
+  <div class="slide-dots">{% for s in sl %}<button type="button" aria-label="Show photo {{ forloop.index }}"{% if forloop.first %} class="on"{% endif %}></button>{% endfor %}</div>
+</div>
+{% elsif sl.size == 1 %}
+<img class="{{ include.single_class }}" src="{{ sl[0] | relative_url }}" alt="{{ include.alt }}" loading="lazy">
+{% endif %}

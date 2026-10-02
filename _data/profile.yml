@@ -21,11 +21,14 @@ interests:
   - Microfluidic Experiment
 fun_facts:
   - text: Regularly hiking, barely camping!😄
-    photo: /assets/images/2026-10-02-201238.jpg
+    photo:
+      - /assets/images/2026-10-02-201238.jpg
   - text: Movies & series. A binge-watcher (not proud of it 😅)
-    photo: /assets/images/2026-10-02-201251.jpg
+    photo:
+      - /assets/images/2026-10-02-201251.jpg
   - text: Cooking! I really enjoy eating too 😄
-    photo: /assets/images/2026-10-02-201245.jpg
+    photo:
+      - /assets/images/2026-10-02-201245.jpg
 say_hi: Interested in fluid dynamics, porous media, or just want to say hi? Feel
   free to reach out! I’m always happy to chat, exchange ideas, and meet new
   people.

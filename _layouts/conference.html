@@ -13,9 +13,8 @@ layout: default
     {% if page.contribution and page.contribution != "" %}<span>{{ page.contribution }}</span>{% endif %}
   </p>
   {% endif %}
-  {% if page.cover and page.cover != "" %}
-  <img class="cover" src="{{ page.cover | relative_url }}" alt="{{ page.title }}">
-  {% endif %}
+  {% include to-list.html value=page.cover %}
+  {% include slideshow.html list=list alt=page.title class="cover-slides" single_class="cover" %}
   <div class="prose">{{ content }}</div>
   {% include sections.html sections=page.sections %}
   {% if page.gallery and page.gallery.size > 0 %}

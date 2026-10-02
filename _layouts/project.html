@@ -7,8 +7,9 @@ layout: default
   {% if page.summary and page.summary != "" %}<p class="lead">{{ page.summary }}</p>{% endif %}
   {% if page.video and page.video != "" %}
     {% include video.html src=page.video %}
-  {% elsif page.image and page.image != "" %}
-    <img class="cover" src="{{ page.image | relative_url }}" alt="{{ page.title }}">
+  {% else %}
+    {% include to-list.html value=page.image %}
+    {% include slideshow.html list=list alt=page.title class="cover-slides" single_class="cover" %}
   {% endif %}
   <div class="prose">{{ content }}</div>
   {% include sections.html sections=page.sections %}
