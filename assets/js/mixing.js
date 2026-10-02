@@ -39,17 +39,22 @@
       }
   }
 
-  function grainPack() {                         // dense, polydisperse grains (as in the GIF)
-    var tries = 14000;
+  function randomGrains(rmin, rmax, gap) {       // dense, polydisperse, non-overlapping grains
+    var list = [], tries = 14000;
     while (tries-- > 0) {
-      var u = Math.random(), r = 1.4 + 4.6 * u * u * u;
+      var u = Math.random(), r = rmin + (rmax - rmin) * u * u * u;
       var c = { x: 5 + Math.random() * (NX - 8), y: -3 + Math.random() * (NY + 6), r: r }, ok = true;
-      for (var q = 0; q < circles.length; q++) {
-        var o = circles[q], dx = o.x - c.x, dy = o.y - c.y, m = o.r + c.r + 1.25;
+      for (var q = 0; q < list.length; q++) {
+        var o = list[q], dx = o.x - c.x, dy = o.y - c.y, m = o.r + c.r + gap;
         if (dx * dx + dy * dy < m * m) { ok = false; break; }
       }
-      if (ok) circles.push(c);
+      if (ok) list.push(c);
     }
+    return list;
+  }
+
+  function grainPack() {                         // as in the GIF
+    circles = randomGrains(1.4, 6, 1.25);
     circles.forEach(function (c) { stamp(c.x, c.y, c.r, 1); });
   }
 
@@ -132,11 +137,8 @@
       }
   }
 
-  function pillars() {                           // rock pillars on a jittered lattice
-    var s = NY / 5, r0 = s * 0.36;
-    for (var col = 0, x = 7 + r0; x < NX - r0 - 2; x += s * 0.87, col++)
-      for (var y = (col % 2 ? s / 2 : 0) + s / 2 - s; y < NY + r0; y += s)
-        cover(x + (Math.random() - 0.5) * 1.5, y + (Math.random() - 0.5) * 1.5, r0 * (0.85 + Math.random() * 0.3));
+  function pillars() {                           // heterogeneous rock grains, same style as the mixing scene
+    randomGrains(2.4, 7, 1.5).forEach(function (c) { cover(c.x, c.y, c.r); });
     for (var k = 0; k < N; k++) solid[k] = mass[k] > 0.5 ? 1 : 0;
     for (k = 0; k < N; k++) tex[k] = 0.86 + Math.random() * 0.22;   // rock texture: speckled grey
   }
