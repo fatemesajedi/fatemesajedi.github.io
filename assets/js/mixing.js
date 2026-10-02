@@ -232,7 +232,8 @@
         var isl = islands[id], s = 0;
         for (var u = 0; u < isl.adj.length; u++) s += psi[isl.adj[u]];
         var v = s / isl.adj.length;
-        for (u = 0; u < isl.nodes.length; u++) psi[isl.nodes[u]] = v;
+        var cur = psi[isl.nodes[0]] + 0.15 * (v - psi[isl.nodes[0]]);   // relaxed, for stability
+        for (u = 0; u < isl.nodes.length; u++) psi[isl.nodes[u]] = cur;
       }
     }
     updateIslands();
@@ -245,11 +246,11 @@
       }
       for (q = 0; q < inner.length; q++) {
         n = inner[q];
-        om[n] += 1.5 * ((om[n - 1] + om[n + 1] + om[n - NXn] + om[n + NXn]) / 4 - om[n]);
+        om[n] += 1.2 * ((om[n - 1] + om[n + 1] + om[n - NXn] + om[n + NXn]) / 4 - om[n]);
       }
       for (q = 0; q < inner.length; q++) {
         n = inner[q];
-        psi[n] += 1.7 * ((psi[n - 1] + psi[n + 1] + psi[n - NXn] + psi[n + NXn] + om[n]) / 4 - psi[n]);
+        psi[n] += 1.5 * ((psi[n - 1] + psi[n + 1] + psi[n - NXn] + psi[n + NXn] + om[n]) / 4 - psi[n]);
       }
     }
     // face velocities from corner stream function: exactly divergence-free
