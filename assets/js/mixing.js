@@ -223,23 +223,27 @@
     // grains are islands: their stream function value is whatever makes the flow consistent,
     // approximated here by the average of the fluid right around them
     var islands = {};
+    for (n = 0; n < M; n++) {                    // every boundary point of a grain shares one value
+      var gid = wallId[n]; if (gid < 3) continue;
+      (islands[gid] || (islands[gid] = { nodes: [], adj: [] })).nodes.push(n);
+    }
     walls.forEach(function (w) {
       var id = wallId[w[0]]; if (id < 3) return;
-      var isl = islands[id] || (islands[id] = { nodes: [], adj: [] });
-      isl.nodes.push(w[0]); isl.adj.push.apply(isl.adj, w[1]);
+      islands[id].adj.push.apply(islands[id].adj, w[1]);
     });
-    function updateIslands() {
+    function updateIslands(relax) {
       for (var id in islands) {
         var isl = islands[id], s = 0;
+        if (!isl.adj.length) continue;
         for (var u = 0; u < isl.adj.length; u++) s += psi[isl.adj[u]];
         var v = s / isl.adj.length;
-        var cur = psi[isl.nodes[0]] + 0.15 * (v - psi[isl.nodes[0]]);   // relaxed, for stability
+        var cur = psi[isl.nodes[0]] + relax * (v - psi[isl.nodes[0]]);   // relaxed, for stability
         for (u = 0; u < isl.nodes.length; u++) psi[isl.nodes[u]] = cur;
       }
     }
-    updateIslands();
+    updateIslands(1);
     for (var it = 0; it < 1600; it++) {
-      if (it % 4 === 0) updateIslands();
+      if (it % 4 === 0) updateIslands(0.15);
       for (q = 0; q < walls.length; q++) {
         var wn = walls[q][0], a = walls[q][1], sum = 0;
         for (var t = 0; t < a.length; t++) sum += psi[a[t]] - psi[wn];
