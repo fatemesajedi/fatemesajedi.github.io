@@ -15,11 +15,13 @@
   var unmixedBar = root.querySelector(".lm-bar i");
   var btnNext2 = root.querySelector("[data-go='3']"), btnNext3 = root.querySelector("[data-go='4']");
   var btnAuto = [].slice.call(root.querySelectorAll("[data-auto]"));
+  var capNote = root.querySelector(".lm-capped");
 
   var G = 220;                       // grid for the diffusion stage
-  var MAXSEG = 0.0035, MAXPTS = 160000;
+  var MAXSEG = 0.0035;
   var R = new Float32Array(G * G), C = new Float32Array(G * G), R2 = new Float32Array(G * G), C2 = new Float32Array(G * G);
   var red, cyan, len0 = 1, var0 = 1;
+  var STRETCH_MAX = 100, capped = false;
   var stage = 1, diffusing = false, auto = false, autoT = 0, pointer = null, lastPointer = null;
   var frame = 0, PX, visible = true;
   var off = document.createElement("canvas"), offCtx = off.getContext("2d"), offImg;
@@ -60,7 +62,7 @@
     }
     vel[0] = u; vel[1] = v; return vel;
   }
-  function stirring() { return auto || (pointer && lastPointer && (pointer.x !== lastPointer.x || pointer.y !== lastPointer.y)); }
+  function stirring() { if (capped && !diffusing) return false; return auto || (pointer && lastPointer && (pointer.x !== lastPointer.x || pointer.y !== lastPointer.y)); }
 
   // ----- stage 2: move the boundaries, refine where they stretch -----
   function advectCurve(c) {
@@ -154,7 +156,9 @@
     } else {
       var od = offImg.data;
       for (var k = 0; k < G * G; k++) {
-        var r = Math.min(1, R[k]), c = Math.min(1, C[k]), b = Math.max(0, 1 - r - c), o = k * 4;
+        var r = R[k], c = C[k], t = r + c;
+        if (t > 1) { r /= t; c /= t; }                              // never brighter than the pure dyes
+        var b = Math.max(0, 1 - r - c), o = k * 4;
         od[o] = 16 * b + 235 * r + 40 * c; od[o + 1] = 18 * b + 55 * r + 220 * c; od[o + 2] = 24 * b + 40 * r + 230 * c; od[o + 3] = 255;
       }
       offCtx.putImageData(offImg, 0, 0);
@@ -172,7 +176,7 @@
   }
   function reset() {
     makeDroplets();
-    diffusing = false; auto = false; autoT = 0;
+    diffusing = false; auto = false; autoT = 0; capped = false; capNote.hidden = true;
     btnAuto.forEach(function (b) { b.classList.remove("on"); });
     len0 = perimeter(red) + perimeter(cyan);
     stretchOut.textContent = "×1.0"; unmixedOut.textContent = "100%"; unmixedBar.style.width = "100%";
@@ -219,7 +223,7 @@
       var moving = stirring();
       if (!diffusing && moving) {
         advectCurve(red); advectCurve(cyan);
-        if (red.x.length + cyan.x.length < MAXPTS) { refine(red); refine(cyan); }
+        refine(red); refine(cyan);
         draw();
       }
       if (diffusing) { diffuseStep(); draw(); }
@@ -230,6 +234,10 @@
           var st = (perimeter(red) + perimeter(cyan)) / len0;
           stretchOut.textContent = "×" + (st < 10 ? st.toFixed(1) : Math.round(st));
           if (st >= 4) btnNext2.disabled = false;
+          if (st >= STRETCH_MAX) {                  // enough: sheets are thinner than the screen can show
+            capped = true; auto = false; capNote.hidden = false;
+            btnAuto.forEach(function (b) { b.classList.remove("on"); });
+          }
         }
         if (diffusing) {
           var u = Math.max(0, Math.min(1, variance(R) / var0));

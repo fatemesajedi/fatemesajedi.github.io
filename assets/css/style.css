@@ -478,3 +478,4 @@ main.container { padding-top: 2.5rem; padding-bottom: 4rem; min-height: 70vh; }
   .lm-grid { grid-template-columns: 1fr; gap: 1.2rem; }
   .lm-stage { max-width: 360px; margin: 0 auto; width: 100%; }
 }
+.lm-capped { background: rgba(40,220,230,.12); border: 1px solid rgba(40,220,230,.35); color: #e8fbfc !important; border-radius: 10px; padding: .6rem .8rem; font-size: .92rem; }
