@@ -12,20 +12,6 @@ bio: >+
   I use a combination of numerical simulations and microfluidic experiments to
   investigate these processes.
 
-research_simple: >
-  Imagine pouring milk into your coffee: give it a stir and the two mix in
-  seconds. Now imagine the coffee has to squeeze through a sponge, or a rock,
-  full of tiny grains and winding channels. How quickly do the two liquids find
-  each other? And if they are chemicals that **react when they meet**, where and
-  how fast does that reaction happen?
-
-
-  That is the question I work on. Underground, it shapes how pollutants break
-  down in groundwater and how minerals form inside rocks. The twist is that the
-  answer changes depending on whether you look at a single tiny pore or at a
-  whole rock. That **scale puzzle** is at the heart of my PhD. I explore it with
-  computer simulations and with tiny transparent micro-channels on a glass chip,
-  called microfluidics.
 interests:
   - Mixing in porous media
   - Mixing-driven reactions
