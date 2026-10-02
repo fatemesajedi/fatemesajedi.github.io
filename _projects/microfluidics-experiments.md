@@ -3,6 +3,8 @@ title: Microfluidics experiments of mixing-driven reactions
 summary: Visualising mixing and reactions directly inside micro-scale porous
   media on a chip, and comparing the experiments to simulations.
 order: 2
+image:
+  - /assets/images/2026-10-02-210659.jpg
 methods:
   - Microfluidics
   - Imaging
