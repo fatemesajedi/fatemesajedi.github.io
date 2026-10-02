@@ -13,8 +13,8 @@ permalink: /cv/
   <li>
     <span class="when">{{ e.years }}</span>
     <div>
-      <strong>{{ e.degree }}</strong>{% if e.field != "" %} in {{ e.field }}{% endif %}
-      {% if e.place != "" %}<br><span class="muted">{{ e.place }}</span>{% endif %}
+      <strong>{{ e.degree }}</strong>{% if e.field and e.field != "" %} in {{ e.field }}{% endif %}
+      {% if e.place and e.place != "" %}<br><span class="muted">{{ e.place }}</span>{% endif %}
     </div>
   </li>
   {% endfor %}
