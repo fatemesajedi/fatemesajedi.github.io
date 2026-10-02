@@ -72,6 +72,66 @@ title: About
 </section>
 {% endif %}
 
+<section class="learn-mixing" id="learn-mixing">
+  <h2>🧪 Let's learn mixing together!</h2>
+  <ol class="lm-progress" aria-label="Lesson progress">
+    <li class="now">Meet the droplets</li><li>Stir</li><li>Add diffusion</li><li>🎓</li>
+  </ol>
+  <div class="lm-grid">
+    <div class="lm-stage">
+      <canvas aria-label="Interactive simulation: a red and a blue droplet that you can stir and let diffuse"></canvas>
+      <span class="lm-hint">👆 drag to stir</span>
+    </div>
+    <div class="lm-text">
+      <div class="lm-step" data-step="1">
+        <h3>1 · Meet the droplets</h3>
+        <p>Here are two droplets, one red and one blue, sitting side by side. Right now they are completely <strong>segregated</strong>: each colour has its own space.</p>
+        <p>How do they become one uniform mixture? Let's find out.</p>
+        <button type="button" class="button" data-go="2">Start stirring →</button>
+      </div>
+      <div class="lm-step" data-step="2" hidden>
+        <h3>2 · Stir (no diffusion yet)</h3>
+        <p><strong>Drag inside the box</strong> to stir, or let me stir for you.</p>
+        <p>Watch closely: stirring does not blend the colours. It <strong>stretches and folds</strong> the interface between them into longer and thinner sheets, while the colours stay perfectly pure.</p>
+        <div class="lm-readout">
+          <span>Interface stretched <b data-out="stretch">×1.0</b></span>
+          <span>Still unmixed <b>100%</b></span>
+        </div>
+        <div class="lm-buttons">
+          <button type="button" class="lm-btn" data-auto>🌀 Stir for me</button>
+          <button type="button" class="button" data-go="3" disabled title="Stretch the interface at least ×4 first">Now add diffusion →</button>
+        </div>
+      </div>
+      <div class="lm-step" data-step="3" hidden>
+        <h3>3 · Switch on diffusion</h3>
+        <p>Now molecular <strong>diffusion</strong> joins in. It is slow over long distances, but the sheets you made are so thin that it smooths them out quickly, and the colours finally blend.</p>
+        <p>Keep stirring: the thinner the sheets, the faster they mix!</p>
+        <div class="lm-readout">
+          <span>Still unmixed <b data-out="unmixed">100%</b></span>
+        </div>
+        <div class="lm-bar"><i></i></div>
+        <div class="lm-buttons">
+          <button type="button" class="lm-btn" data-auto>🌀 Stir for me</button>
+          <button type="button" class="button" data-go="4" disabled title="Mix a bit more first">Finish 🎓</button>
+        </div>
+      </div>
+      <div class="lm-step" data-step="4" hidden>
+        <h3>🎉 You just did mixing science!</h3>
+        <p>What you saw is the fundamental picture behind all of mixing: <strong>stirring stretches</strong> the interface between the substances (Ottino, 1989), and <strong>diffusion</strong> then erases the thin sheets it creates.</p>
+        <p>As Villermaux &amp; Duplat (2003) put it, a mixture is only a <em>transient state</em> between the initial segregation of the ingredients and their final homogeneity.</p>
+        <p>This idea, stretching plus diffusion, is the foundation of mixing science, and it is exactly what I study inside porous rocks. 🪨</p>
+        <button type="button" class="lm-btn" data-reset>↺ Try again</button>
+      </div>
+    </div>
+  </div>
+  <p class="lm-refs">
+    <b>References</b><br>
+    Ottino, J. M. (1989). <em>The Kinematics of Mixing: Stretching, Chaos, and Transport.</em> Cambridge University Press.<br>
+    Villermaux, E. &amp; Duplat, J. (2003). Mixing as an aggregation process. <em>Physical Review Letters</em>, 91, 184501.
+  </p>
+</section>
+<script src="{{ '/assets/js/learn-mixing.js' | relative_url }}?v={{ site.time | date: '%s' }}" defer></script>
+
 {% if p.interests.size > 0 %}
 <section>
   <h2>🔬 What I'm curious about</h2>
