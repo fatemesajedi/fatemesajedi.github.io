@@ -373,3 +373,5 @@ main.container { padding-top: 2.5rem; padding-bottom: 4rem; min-height: 70vh; }
   .say-hi { padding: 1.6rem .9rem; }
   .connect-card { padding: 1rem; }
 }
+.role { line-height: 1.5; }
+.role-title { color: var(--text); font-weight: 500; }

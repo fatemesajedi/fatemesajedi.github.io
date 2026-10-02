@@ -36,7 +36,7 @@ title: About
     <p class="wave">Hi there! 👋</p>
     <h1>{{ p.name }}</h1>
     <p class="role">
-      {{ p.role }}{% if p.lab and p.lab != "" %} · {{ p.lab }}{% endif %}{% if p.institution and p.institution != "" %} · {{ p.institution }}{% endif %}
+      <span class="role-title">{{ p.role }}</span>{% if p.lab and p.lab != "" %}<br>{{ p.lab }}{% endif %}{% if p.institution and p.institution != "" %}<br>{{ p.institution }}{% endif %}
     </p>
     {% include social.html %}
   </div>
