@@ -79,7 +79,7 @@
       var BUF = 5;                                // open strips at inlet and outlet
       for (j = 0; j < NY; j++) for (i = 0; i < NX; i++) {
         var k = idx(i, j), n = 0;
-        if (i < BUF || i >= NX - BUF) { mass[k] = 0; solid[k] = 0; continue; }
+        if (i < BUF || i >= NX - BUF || j < 3 || j > NY - 4) { mass[k] = 0; solid[k] = 0; continue; }   // grains stay clear of the walls
         var a00 = nodes[j * NXn + i], a10 = nodes[j * NXn + i + 1], a01 = nodes[(j + 1) * NXn + i], a11 = nodes[(j + 1) * NXn + i + 1];
         for (var sy = 0; sy < 4; sy++) for (var sx = 0; sx < 4; sx++) {
           var fx = (sx + 0.5) / 4, fy = (sy + 0.5) / 4;
