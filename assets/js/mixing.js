@@ -17,7 +17,7 @@
   var DURATION = [22, 20, 20];      // seconds per scene
   var CROSS = [0.75, 0.45, 0.7];     // fraction of the scene the front needs to cross the domain
   var DIFF = [0.004, 0.03, 0.02];   // diffusion (cells^2 / sub-step)
-  var SUB = 4;                      // transport sub-steps per frame
+  var SUBS = [4, 8, 4], SUB = 4;    // transport sub-steps per frame (per scene)
   var UP = 2;                       // render resolution = UP x grid
   var KDISS = 0.0017;               // dissolution rate (rock mass / frame / unit acid): slow, grains shrink but survive
 
@@ -108,8 +108,13 @@
       var st = [start]; comp[start] = id;
       while (st.length) {
         var k2 = st.pop(), ci2 = k2 % NX, cj2 = (k2 / NX) | 0;
-        var nb2 = [ci2 > 0 ? k2 - 1 : -1, ci2 < NX - 1 ? k2 + 1 : -1, cj2 > 0 ? k2 - NX : -1, cj2 < NY - 1 ? k2 + NX : -1];
-        for (var q2 = 0; q2 < 4; q2++) { var n2 = nb2[q2]; if (n2 >= 0 && solid[n2] && !comp[n2]) { comp[n2] = id; st.push(n2); } }
+        var nb2 = [];                              // 8 neighbours: grains touching at a corner are one solid
+        for (var oy = -1; oy <= 1; oy++) for (var ox = -1; ox <= 1; ox++) {
+          if (!ox && !oy) continue;
+          var xx = ci2 + ox, yy = cj2 + oy;
+          nb2.push(xx >= 0 && xx < NX && yy >= 0 && yy < NY ? yy * NX + xx : -1);
+        }
+        for (var q2 = 0; q2 < nb2.length; q2++) { var n2 = nb2[q2]; if (n2 >= 0 && solid[n2] && !comp[n2]) { comp[n2] = id; st.push(n2); } }
       }
     }
     for (i = 0; i < NX; i++) if (solid[i] && !comp[i]) flood(i, 1);
@@ -439,7 +444,7 @@
 
   // ---------- scenes ----------
   function setup(s) {
-    scene = s; D = DIFF[s];
+    scene = s; D = DIFF[s]; SUB = SUBS[s];
     NX = Math.max(90, Math.round(NY * W / H));
     N = NX * NY;
     solid = new Uint8Array(N); p = new Float32Array(N);
