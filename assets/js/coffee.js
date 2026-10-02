@@ -19,7 +19,7 @@
   var L = 320;                    // milk image resolution
   var F = 128;                    // milk grid once the outline gets too long
   var MAXSEG = 0.35, MAXPTS = 40000;
-  var D_IDLE = 0.0012, D_MIX = 0.004, SHARP_UNTIL = 0.3;   // diffusion (grid units^2 per frame)
+  var D_IDLE = 0.0006, D_MIX = 0.004, SHARP_UNTIL = 0.3;   // diffusion (grid units^2 per frame)
   var S, R, CX, CY, dpr;
   var vx = new Float32Array(G * G), vy = new Float32Array(G * G);
   var tmpx = new Float32Array(G * G), tmpy = new Float32Array(G * G);
