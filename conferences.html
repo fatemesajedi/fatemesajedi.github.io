@@ -23,3 +23,16 @@ intro: Conferences, workshops and schools I have attended, with talks, posters a
   </div>
 </section>
 {% endfor %}
+<script>
+  // tag events that haven't happened yet
+  (function () {
+    var today = new Date(); today.setHours(0, 0, 0, 0);
+    document.querySelectorAll(".card[data-end]").forEach(function (c) {
+      var p = c.dataset.end.split("-");
+      if (new Date(+p[0], p[1] - 1, +p[2]) >= today) {
+        var b = document.createElement("span"); b.className = "badge upcoming"; b.textContent = "✈️ Upcoming";
+        c.querySelector(".card-body").prepend(b);
+      }
+    });
+  })();
+</script>

@@ -63,6 +63,7 @@ content:
     fields:
       - { name: title, label: Conference name, type: string, required: true }
       - { name: date, label: Date, type: date, required: true }
+      - { name: end_date, label: End date (optional), type: date, description: "For events lasting several days" }
       - { name: location, label: Location, type: string, description: "e.g. Paris, France" }
       - name: role
         label: My participation

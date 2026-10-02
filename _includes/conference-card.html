@@ -1,5 +1,6 @@
 {% assign c = include.c %}
-<a class="card" href="{{ c.url | relative_url }}">
+{% assign ev_end = c.end_date | default: c.date %}
+<a class="card" href="{{ c.url | relative_url }}" data-end="{{ ev_end | date: '%Y-%m-%d' }}">
   {% if c.cover and c.cover != "" %}
     <img class="card-img" src="{{ c.cover | relative_url }}" alt="" loading="lazy">
   {% else %}

@@ -96,17 +96,62 @@ title: About
 </section>
 {% endif %}
 
-{% assign confs = site.conferences | sort: "date" | reverse %}
+{% assign confs = site.conferences | sort: "date" %}
 {% if confs.size > 0 %}
-<section>
+<section class="now-next">
   <div class="section-head">
-    <h2>✈️ On the road</h2>
-    <a href="{{ '/conferences/' | relative_url }}">All conferences →</a>
+    <h2>📅 Now &amp; next</h2>
+    <a href="{{ '/conferences/' | relative_url }}">All events →</a>
   </div>
-  <div class="cards">
-    {% for c in confs limit: 3 %}{% include conference-card.html c=c %}{% endfor %}
+  <div class="nn-grid">
+    <div class="nn-col">
+      <h3>✈️ Coming up</h3>
+      <ol class="nn-list" id="nn-upcoming"></ol>
+      <p class="nn-empty" id="nn-upcoming-empty" hidden>Nothing booked yet. Stay tuned! 👀</p>
+    </div>
+    <div class="nn-col">
+      <h3>📍 Been there</h3>
+      <ol class="nn-list" id="nn-past"></ol>
+    </div>
   </div>
+  <ol class="nn-list" id="nn-all">
+    {% for c in confs %}
+    {% assign ev_end = c.end_date | default: c.date %}
+    <li class="nn-item" data-start="{{ c.date | date: '%Y-%m-%d' }}" data-end="{{ ev_end | date: '%Y-%m-%d' }}">
+      <a href="{{ c.url | relative_url }}">
+        <span class="nn-date"><b>{{ c.date | date: "%-d" }}</b>{{ c.date | date: "%b %Y" }}</span>
+        <span class="nn-body">
+          <strong>{{ c.title }}</strong>
+          <span class="nn-meta">{% if c.location and c.location != "" %}📍 {{ c.location }}{% endif %}{% if c.role and c.role != "" %} · {{ c.role }}{% endif %}</span>
+          <span class="nn-countdown"></span>
+        </span>
+        {% if c.cover and c.cover != "" %}<img class="nn-thumb" src="{{ c.cover | relative_url }}" alt="" loading="lazy">{% endif %}
+      </a>
+    </li>
+    {% endfor %}
+  </ol>
 </section>
+<script>
+  // sort events into "coming up" / "been there" using today's date (in the visitor's browser)
+  (function () {
+    var all = document.getElementById("nn-all"), up = document.getElementById("nn-upcoming"), past = document.getElementById("nn-past");
+    if (!all) return;
+    var today = new Date(); today.setHours(0, 0, 0, 0);
+    function day(s) { var p = s.split("-"); return new Date(+p[0], p[1] - 1, +p[2]); }
+    var items = [].slice.call(all.children), pastItems = [];
+    items.forEach(function (li) {
+      var start = day(li.dataset.start), end = day(li.dataset.end), cd = li.querySelector(".nn-countdown");
+      if (end >= today) {
+        var days = Math.round((start - today) / 864e5);
+        cd.textContent = start <= today ? "happening now 🎉" : days === 1 ? "tomorrow!" : days < 60 ? "in " + days + " days" : "in " + Math.round(days / 30) + " months";
+        up.appendChild(li);
+      } else pastItems.unshift(li);
+    });
+    pastItems.slice(0, 4).forEach(function (li) { past.appendChild(li); });
+    all.remove();
+    document.getElementById("nn-upcoming-empty").hidden = up.children.length > 0;
+  })();
+</script>
 {% endif %}
 
 {% if p.fun_facts.size > 0 %}
