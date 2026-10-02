@@ -354,12 +354,12 @@
     if (mean < 1) { mix = 0; meterFill.style.width = "0%"; meterText.textContent = "0%"; return; }
     var cv = Math.sqrt(Math.max(0, sum2 / vals.length - mean * mean)) / mean;
     if (!pours.length && cv > cv0) cv0 = cv;
-    var target = 0.05;
+    var target = 0.2;                 // unevenness at which the cup looks fully mixed = 100%
     var m = cv0 <= target ? 1 : Math.max(0, Math.min(1, Math.log(cv0 / Math.max(cv, target)) / Math.log(cv0 / target)));
     mix = m;
     var pct = Math.round(m * 100);
     meterFill.style.width = pct + "%";
-    meterText.textContent = pct + "%";
+    meterText.textContent = pct >= 100 ? "100% ✨" : pct + "%";
   }
 
   function toGrid(e) {
