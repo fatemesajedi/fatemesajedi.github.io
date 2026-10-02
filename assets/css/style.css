@@ -375,3 +375,7 @@ main.container { padding-top: 2.5rem; padding-bottom: 4rem; min-height: 70vh; }
 }
 .role { line-height: 1.5; }
 .role-title { color: var(--text); font-weight: 500; }
+/* email card only as tall as its content */
+.connect > .connect-card:first-child { align-self: center; }
+.linkedin-link { display: inline-flex; align-items: center; gap: .5rem; font-weight: 500; margin-top: .4rem; }
+.linkedin-link svg { color: #0a66c2; }
