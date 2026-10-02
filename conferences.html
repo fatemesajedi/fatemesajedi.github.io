@@ -1,11 +1,32 @@
 ---
-title: Conferences & Events
+title: Now & next
 permalink: /conferences/
-intro: Conferences, workshops and schools I have attended, with talks, posters and memories along the way.
+intro: Conferences, workshops and schools, the ones coming up and the ones I've been to, with talks, posters and memories along the way.
 ---
-{% assign confs = site.conferences | sort: "date" | reverse %}
+{% assign confs = site.conferences | sort: "date" %}
 
-{% capture wall %}{% for c in confs %}{% if c.cover and c.cover != "" %}<a href="{{ c.url | relative_url }}" title="{{ c.title }}"><img src="{{ c.cover | relative_url }}" alt="Photo from {{ c.title }}" loading="lazy"></a>{% endif %}{% for img in c.gallery %}<a href="{{ c.url | relative_url }}" title="{{ c.title }}"><img src="{{ img | relative_url }}" alt="Photo from {{ c.title }}" loading="lazy"></a>{% endfor %}{% endfor %}{% endcapture %}
+<section class="nn-upcoming-section">
+  <h2>✈️ Coming up</h2>
+  <ol class="nn-list nn-wide" id="nn-upcoming">
+    {% for c in confs %}
+    {% assign ev_end = c.end_date | default: c.date %}
+    <li class="nn-item" data-start="{{ c.date | date: '%Y-%m-%d' }}" data-end="{{ ev_end | date: '%Y-%m-%d' }}">
+      <a href="{{ c.url | relative_url }}">
+        <span class="nn-date"><b>{{ c.date | date: "%-d" }}</b>{{ c.date | date: "%b %Y" }}</span>
+        <span class="nn-body">
+          <strong>{{ c.title }}</strong>
+          <span class="nn-meta">{% if c.location and c.location != "" %}📍 {{ c.location }}{% endif %}{% if c.role and c.role != "" %} · {{ c.role }}{% endif %}</span>
+          <span class="nn-countdown"></span>
+        </span>
+      </a>
+    </li>
+    {% endfor %}
+  </ol>
+  <p class="nn-empty" id="nn-upcoming-empty" hidden>Nothing booked yet. Stay tuned! 👀</p>
+</section>
+
+{% assign past_first = site.conferences | sort: "date" | reverse %}
+{% capture wall %}{% for c in past_first %}{% if c.cover and c.cover != "" %}<a href="{{ c.url | relative_url }}" title="{{ c.title }}"><img src="{{ c.cover | relative_url }}" alt="Photo from {{ c.title }}" loading="lazy"></a>{% endif %}{% for img in c.gallery %}<a href="{{ c.url | relative_url }}" title="{{ c.title }}"><img src="{{ img | relative_url }}" alt="Photo from {{ c.title }}" loading="lazy"></a>{% endfor %}{% endfor %}{% endcapture %}
 {% assign wall = wall | strip %}
 {% if wall != "" %}
 <section>
@@ -14,25 +35,38 @@ intro: Conferences, workshops and schools I have attended, with talks, posters a
 </section>
 {% endif %}
 
-{% assign by_year = confs | group_by_exp: "c", "c.date | date: '%Y'" %}
-{% for y in by_year %}
-<section>
-  <h2 class="year">{{ y.name }}</h2>
-  <div class="cards">
-    {% for c in y.items %}{% include conference-card.html c=c %}{% endfor %}
+<section class="been-there">
+  <h2>📍 Been there</h2>
+  {% assign by_year = past_first | group_by_exp: "c", "c.date | date: '%Y'" %}
+  {% for y in by_year %}
+  <div class="year-group">
+    <h3 class="year">{{ y.name }}</h3>
+    <div class="cards">
+      {% for c in y.items %}{% include conference-card.html c=c %}{% endfor %}
+    </div>
   </div>
+  {% endfor %}
 </section>
-{% endfor %}
+
 <script>
-  // tag events that haven't happened yet
+  // split events into "coming up" and "been there" using today's date (in the visitor's browser)
   (function () {
     var today = new Date(); today.setHours(0, 0, 0, 0);
-    document.querySelectorAll(".card[data-end]").forEach(function (c) {
-      var p = c.dataset.end.split("-");
-      if (new Date(+p[0], p[1] - 1, +p[2]) >= today) {
-        var b = document.createElement("span"); b.className = "badge upcoming"; b.textContent = "✈️ Upcoming";
-        c.querySelector(".card-body").prepend(b);
-      }
+    function day(s) { var p = s.split("-"); return new Date(+p[0], p[1] - 1, +p[2]); }
+    var up = document.getElementById("nn-upcoming");
+    [].slice.call(up.children).forEach(function (li) {
+      var start = day(li.dataset.start), end = day(li.dataset.end);
+      if (end < today) { li.remove(); return; }
+      var days = Math.round((start - today) / 864e5);
+      li.querySelector(".nn-countdown").textContent = start <= today ? "happening now 🎉" : days === 1 ? "tomorrow!" : days < 60 ? "in " + days + " days" : "in " + Math.round(days / 30) + " months";
     });
+    document.getElementById("nn-upcoming-empty").hidden = up.children.length > 0;
+    document.querySelectorAll(".been-there .card[data-end]").forEach(function (c) {    // upcoming ones are listed above
+      if (day(c.dataset.end) >= today) c.remove();
+    });
+    document.querySelectorAll(".been-there .year-group").forEach(function (g) {
+      if (!g.querySelector(".card")) g.remove();
+    });
+    if (!document.querySelector(".been-there .card")) document.querySelector(".been-there").hidden = true;
   })();
 </script>

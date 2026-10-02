@@ -2,7 +2,7 @@
 layout: default
 ---
 <article class="entry">
-  <a class="back" href="{{ '/conferences/' | relative_url }}">← All conferences</a>
+  <a class="back" href="{{ '/conferences/' | relative_url }}">← Now &amp; next</a>
   <p class="meta">
     {{ page.date | date: "%-d %B %Y" }}{% if page.end_date %} – {{ page.end_date | date: "%-d %B %Y" }}{% endif %}{% if page.location and page.location != "" %} · {{ page.location }}{% endif %}
   </p>

@@ -479,3 +479,6 @@ main.container { padding-top: 2.5rem; padding-bottom: 4rem; min-height: 70vh; }
   .lm-stage { max-width: 360px; margin: 0 auto; width: 100%; }
 }
 .lm-capped { background: rgba(40,220,230,.12); border: 1px solid rgba(40,220,230,.35); color: #e8fbfc !important; border-radius: 10px; padding: .6rem .8rem; font-size: .92rem; }
+.nn-upcoming-section { margin-top: 1.5rem; }
+.nn-wide { max-width: 720px; }
+.been-there .year { margin: 1.4rem 0 .8rem; }
