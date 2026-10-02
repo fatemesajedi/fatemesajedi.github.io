@@ -71,12 +71,25 @@
     }
   }
 
+  function cover(cx, cy, r) {                // fraction of each cell covered by a pillar (4x4 sub-samples)
+    for (var j = Math.max(0, Math.floor(cy - r - 1)); j <= Math.min(NY - 1, Math.ceil(cy + r)); j++)
+      for (var i = Math.max(0, Math.floor(cx - r - 1)); i <= Math.min(NX - 1, Math.ceil(cx + r)); i++) {
+        var n = 0;
+        for (var sy = 0; sy < 4; sy++) for (var sx = 0; sx < 4; sx++) {
+          var dx = i + (sx + 0.5) / 4 - cx, dy = j + (sy + 0.5) / 4 - cy;
+          if (dx * dx + dy * dy <= r * r) n++;
+        }
+        var k = idx(i, j);
+        if (n / 16 > mass[k]) mass[k] = n / 16;
+      }
+  }
+
   function pillars() {                          // rock pillars on a jittered lattice
     var s = NY / 5, r0 = s * 0.36;
     for (var col = 0, x = 7 + r0; x < NX - r0 - 2; x += s * 0.87, col++)
       for (var y = (col % 2 ? s / 2 : 0) + s / 2 - s; y < NY + r0; y += s)
-        stamp(x + (Math.random() - 0.5) * 1.5, y + (Math.random() - 0.5) * 1.5, r0 * (0.85 + Math.random() * 0.3), 1);
-    for (var k = 0; k < N; k++) mass[k] = solid[k] ? 1 : 0;
+        cover(x + (Math.random() - 0.5) * 1.5, y + (Math.random() - 0.5) * 1.5, r0 * (0.85 + Math.random() * 0.3));
+    for (var k = 0; k < N; k++) solid[k] = mass[k] > 0.5 ? 1 : 0;
   }
 
   // ---------- flow ----------
@@ -184,7 +197,7 @@
     for (var j = 0; j < NY; j++) for (var i = 0; i < NX; i++) {
       var k = idx(i, j);
       glow[k] *= 0.9;
-      if (!solid[k]) continue;
+      if (!solid[k]) { if (mass[k] > 0 && A[k] > 0.01) mass[k] = Math.max(0, mass[k] - 0.06 * A[k]); continue; }
       var n = 0, acid = 0;
       if (i > 0 && !solid[k - 1]) nb[n++] = k - 1;
       if (i < NX - 1 && !solid[k + 1]) nb[n++] = k + 1;
@@ -192,11 +205,11 @@
       if (j < NY - 1 && !solid[k + NX]) nb[n++] = k + NX;
       for (var q = 0; q < n; q++) acid += A[nb[q]];
       if (acid < 0.01) continue;
-      var d = 0.04 * acid;
+      var d = 0.06 * acid;
       mass[k] -= d; glow[k] += d * 5;
-      for (q = 0; q < n; q++) A[nb[q]] *= 0.86;               // acid is used up by the reaction
-      if (mass[k] <= 0) {
-        solid[k] = 0; mass[k] = 0; changed = true;
+      for (q = 0; q < n; q++) A[nb[q]] *= 0.9;                // acid is used up by the reaction
+      if (mass[k] <= 0.5) {                                     // less than half rock left: now pore space
+        solid[k] = 0; changed = true;
         var pa = 0; for (q = 0; q < n; q++) pa += p[nb[q]];
         p[k] = pa / n; A[k] = 0;
       }
@@ -216,7 +229,7 @@
   var DARK = [11, 19, 30];
   var MIX = lut([DARK, [14, 110, 122], [120, 205, 210], [236, 248, 248]]);
   var HOT = lut([[0, 0, 0], [150, 20, 10], [235, 90, 20], [255, 200, 60], [255, 250, 220]]);
-  var SOLID = [[58, 68, 80], [36, 42, 50], [196, 142, 98]];
+  var SOLID = [[58, 68, 80], [46, 52, 62], [196, 142, 98]];
   var ks = new Int32Array(4), ws = new Float32Array(4);
 
   function draw() {
@@ -236,11 +249,11 @@
         ks[0] = k; ks[1] = k + 1; ks[2] = k + NX; ks[3] = k + NX + 1;
         ws[0] = (1 - fx) * (1 - fy); ws[1] = fx * (1 - fy); ws[2] = (1 - fx) * fy; ws[3] = fx * fy;
         // solid fraction (dissolving rock counts by its remaining mass) and fluid-weighted fields
-        var sf = 0, fw = 0, a = 0, b = 0, g = 0, ms = 0;
+        var sf = 0, fw = 0, a = 0, b = 0, g = 0;
         for (var q = 0; q < 4; q++) {
           var kk = ks[q], w = ws[q];
-          if (solid[kk]) { var sv = scene === 2 ? mass[kk] : 1; sf += w * sv; ms += w * mass[kk]; }
-          else { fw += w; a += w * A[kk]; b += w * B[kk]; }
+          if (scene === 2) sf += w * mass[kk]; else if (solid[kk]) sf += w;
+          if (!solid[kk]) { fw += w; a += w * A[kk]; b += w * B[kk]; }
           g += w * glow[kk];
         }
         if (fw > 0) { a /= fw; b /= fw; }
@@ -249,17 +262,16 @@
           var mi = Math.round(a * 255) * 3; r = MIX[mi]; gr = MIX[mi + 1]; bl = MIX[mi + 2];
         } else if (scene === 1) {
           r = DARK[0] + (40 - DARK[0]) * a * 0.55; gr = DARK[1] + (90 - DARK[1]) * a * 0.55; bl = DARK[2] + (170 - DARK[2]) * a * 0.55;
-          r += (24 - r) * b * 0.45; gr += (70 - gr) * b * 0.45; bl += (60 - bl) * b * 0.45;
+          r += (22 - r) * b * 0.7; gr += (92 - gr) * b * 0.7; bl += (84 - bl) * b * 0.7;
           var h = Math.sqrt(g / gmax);
           if (h > 0.04) { var hi = Math.round(Math.min(1, h) * 255) * 3; r = Math.max(r, HOT[hi]); gr = Math.max(gr, HOT[hi + 1]); bl = Math.max(bl, HOT[hi + 2]); }
         } else {
           r = DARK[0] + (80 - DARK[0]) * a * 0.75; gr = DARK[1] + (150 - DARK[1]) * a * 0.75; bl = DARK[2] + (255 - DARK[2]) * a * 0.75;
         }
         // blend in the grain with a soft (anti-aliased) edge
-        var alpha = Math.max(0, Math.min(1, (sf - 0.35) / 0.3));
+        var alpha = Math.max(0, Math.min(1, (sf - 0.4) / 0.2));
         if (alpha > 0) {
           var sc = SOLID[scene], sr = sc[0], sg = sc[1], sb = sc[2];
-          if (scene === 2) { var t = 0.45 + 0.55 * Math.min(1, ms / Math.max(sf, 1e-6)); sr *= t; sg *= t; sb *= t; }
           r += (sr - r) * alpha; gr += (sg - gr) * alpha; bl += (sb - bl) * alpha;
         }
         if (scene === 2 && g > 0.02) { var gg = Math.min(1, g * 1.6); r += (255 - r) * gg; gr += (170 - gr) * gg; bl += (60 - bl) * gg; }
