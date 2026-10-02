@@ -5,10 +5,10 @@ banner:
       grains, the front breaks into fingers, and stretching those fingers is
       what makes it mix.
   reaction:
-    title: Reaction hotspots
-    caption: The main flow (red) sweeps past dead-end pores, where the fluid only
-      slowly swirls in tiny eddies (cyan). Where the two meet they react, so the
-      dead-end pores glow as reaction hotspots.
+    title: Reaction in DEPs
+    caption: The main flow (red) sweeps past dead-end pores (DEPs), where the fluid
+      only slowly swirls in tiny eddies (cyan). Where the two meet they react,
+      so the dead-end pores glow as reaction hotspots.
   dissolution:
     title: Rock dissolution
     caption: An acidic fluid slowly eats away the rock as it flows. The grains
