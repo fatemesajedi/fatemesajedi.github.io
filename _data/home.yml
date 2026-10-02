@@ -43,7 +43,7 @@ lesson:
 
 
     How do they become one uniform mixture? Let's find out.
-  step1_button: Start stirring →
+  step1_button: "Start stirring "
   step2_title: 2 · Stir (no diffusion yet)
   step2_text: >
     **Drag inside the box** to stir, or let me stir for you.
