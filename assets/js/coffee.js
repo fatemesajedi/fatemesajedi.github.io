@@ -99,7 +99,8 @@
 
     // spoon pushes the coffee
     if (spoon && lastSpoon) {
-      var dx = spoon.x - lastSpoon.x, dy = spoon.y - lastSpoon.y;
+      var dx = spoon.x - lastSpoon.x, dy = spoon.y - lastSpoon.y, sl = Math.sqrt(dx * dx + dy * dy);
+      if (sl > 1.2) { dx *= 1.2 / sl; dy *= 1.2 / sl; }   // very fast flicks shouldn't explode the cup
       var gx = spoon.x, gy = spoon.y, rad = 4.5;
       for (var j = Math.max(0, (gy - rad) | 0); j < Math.min(G, gy + rad + 1); j++)
         for (var i = Math.max(0, (gx - rad) | 0); i < Math.min(G, gx + rad + 1); i++) {
@@ -114,6 +115,8 @@
     for (var k2 = 0; k2 < G * G; k2++) {
       if (!inside[k2]) { vx[k2] = vy[k2] = 0; continue; }
       vx[k2] *= 0.988; vy[k2] *= 0.988;
+      var sp = vx[k2] * vx[k2] + vy[k2] * vy[k2];
+      if (sp > 0.64) { var f = 0.8 / Math.sqrt(sp); vx[k2] *= f; vy[k2] *= f; }
       var cx = (k2 % G) + 0.5 - G / 2, cy = ((k2 / G) | 0) + 0.5 - G / 2, r2 = cx * cx + cy * cy;
       if (r2 > (G * 0.43) * (G * 0.43)) {      // near the wall: slide along it
         var r = Math.sqrt(r2), nx = cx / r, ny = cy / r, vn = vx[k2] * nx + vy[k2] * ny;
@@ -121,14 +124,19 @@
       }
     }
 
-    // move milk
+    // move milk (midpoint method, so swirls don't spiral outwards)
     var lim = G / 2 * 0.97;
     for (var p = 0; p < count; p++) {
       var ux = sample(vx, px[p], py[p]), uy = sample(vy, px[p], py[p]);
-      px[p] += ux + (Math.random() - 0.5) * 0.12;
-      py[p] += uy + (Math.random() - 0.5) * 0.12;
+      var mx = px[p] + ux * 0.5, my = py[p] + uy * 0.5;
+      ux = sample(vx, mx, my); uy = sample(vy, mx, my);
+      px[p] += ux + (Math.random() - 0.5) * 0.2;
+      py[p] += uy + (Math.random() - 0.5) * 0.2;
       var ox = px[p] - G / 2, oy = py[p] - G / 2, od = Math.sqrt(ox * ox + oy * oy);
-      if (od > lim) { px[p] = G / 2 + ox / od * lim; py[p] = G / 2 + oy / od * lim; }
+      if (od > lim) {   // bounce off the wall instead of sticking to it
+        var back = Math.max(0, lim - (od - lim));
+        px[p] = G / 2 + ox / od * back; py[p] = G / 2 + oy / od * back;
+      }
     }
   }
 
