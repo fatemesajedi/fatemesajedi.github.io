@@ -58,9 +58,11 @@
     var ph1 = Math.random() * 6, ph2 = Math.random() * 6;
     function centre(x) { return NY * 0.5 + NY * 0.07 * Math.sin(2 * Math.PI * x / (NX * 0.55) + ph1); }
     function half(x) { return NY * 0.15 + NY * 0.04 * Math.sin(2 * Math.PI * x / (NX * 0.33) + ph2); }
-    for (var i = 0; i < NX; i++) {
-      var c = centre(i + 0.5), h = half(i + 0.5);
-      for (var j = 0; j < NY; j++) if (Math.abs(j + 0.5 - c) < h) solid[idx(i, j)] = 0;
+    var pores = [];                              // circles that make up the dead-end pores
+    function isFluid(x, y) {
+      if (Math.abs(y - centre(x)) < half(x)) return true;
+      for (var q = 0; q < pores.length; q++) { var o = pores[q], dx = x - o.x, dy = y - o.y; if (dx * dx + dy * dy < o.r * o.r) return true; }
+      return false;
     }
     var spacing = Math.max(26, NX / 5.5), side = Math.random() < 0.5 ? -1 : 1;
     for (var x = spacing * 0.7; x < NX - spacing * 0.5; x += spacing * (0.8 + Math.random() * 0.4)) {
@@ -73,9 +75,17 @@
         var py = wallY + side * (f * len - 1);
         var r = f < 0.2 ? NY * 0.06 : NY * 0.06 + (NY * 0.05) * Math.sin(Math.min(1, (f - 0.2) / 0.8) * Math.PI * 0.85);
         py = Math.max(r + 2.5, Math.min(NY - r - 2.5, py));
-        stamp(px, py, r, 0);
+        pores.push({ x: px, y: py, r: r });
       }
       side = -side;
+    }
+    // rock fraction of each cell from the smooth shape (4x4 sub-samples): smooth walls when drawn
+    for (var j = 0; j < NY; j++) for (var i = 0; i < NX; i++) {
+      var n = 0;
+      for (var sy = 0; sy < 4; sy++) for (var sx = 0; sx < 4; sx++) if (!isFluid(i + (sx + 0.5) / 4, j + (sy + 0.5) / 4)) n++;
+      var k = idx(i, j);
+      mass[k] = n / 16;
+      solid[k] = mass[k] > 0.5 ? 1 : 0;
     }
     // label the two walls (stream function is constant on each)
     comp = new Uint8Array(N);
@@ -347,7 +357,7 @@
         var sf = 0, fw = 0, a = 0, b = 0, g = 0, tx = 0;
         for (var q = 0; q < 4; q++) {
           var kk = ks[q], w = ws[q];
-          if (scene === 2) { sf += w * mass[kk]; tx += w * tex[kk]; } else if (solid[kk]) sf += w;
+          if (scene === 2) { sf += w * mass[kk]; tx += w * tex[kk]; } else if (scene === 1) sf += w * mass[kk]; else if (solid[kk]) sf += w;
           if (!solid[kk]) { fw += w; a += w * A[kk]; b += w * B[kk]; }
           g += w * glow[kk];
         }
