@@ -156,8 +156,8 @@
       var ux = sample(vx, px[p], py[p]), uy = sample(vy, px[p], py[p]);
       var mx = px[p] + ux * 0.5, my = py[p] + uy * 0.5;
       ux = sample(vx, mx, my); uy = sample(vy, mx, my);
-      px[p] += ux + (Math.random() - 0.5) * 0.2;
-      py[p] += uy + (Math.random() - 0.5) * 0.2;
+      px[p] += ux + (Math.random() - 0.5) * 0.3;
+      py[p] += uy + (Math.random() - 0.5) * 0.3;
       var ox = px[p] - G / 2, oy = py[p] - G / 2, od = Math.sqrt(ox * ox + oy * oy);
       if (od > lim) {   // bounce off the wall instead of sticking to it
         var back = Math.max(0, lim - (od - lim));
@@ -259,7 +259,7 @@
     var floor = 1 / Math.sqrt(mean);   // random noise level = "perfectly mixed"
     var target = floor * 1.15;   // log scale: halving the unevenness counts the same at every stage
     var m = cv0 <= target ? 1 : Math.max(0, Math.min(1, Math.log(cv0 / Math.max(cv, target)) / Math.log(cv0 / target)));
-    m = m * m;                   // be strict: only a truly uniform latte reaches 100%
+    m = Math.pow(m, 1.3);        // a little strict: only a smooth latte reaches 100%
     var pct = Math.round(m * 100);
     meterFill.style.width = pct + "%";
     meterText.textContent = pct + "%";
