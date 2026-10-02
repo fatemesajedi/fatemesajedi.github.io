@@ -50,6 +50,12 @@ education:
   - degree: PhD
     field: Fluid Mechanics
     place: University of Lausanne
-    years: – present
+    years: 2024-now
   - degree: Master's / Bachelor's
     field: Mechanical Engineering - Energy Conversion
+    years: 2010-2018
+  - degree: Mechanical Engineer
+    field: Oil & Gas
+    place: Petroleum Industry
+    years: 2018-2024
+  - {}
