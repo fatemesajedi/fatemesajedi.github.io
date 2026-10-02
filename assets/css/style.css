@@ -210,9 +210,9 @@ main.container { padding-top: 2.5rem; padding-bottom: 4rem; min-height: 70vh; }
   background: var(--surface); border: 1px solid var(--border); box-shadow: var(--shadow);
   cursor: crosshair; touch-action: pan-y;
 }
-.banner-caption { font-size: .82rem; color: var(--muted); margin: .5rem .2rem 0; display: flex; align-items: center; flex-wrap: wrap; gap: .35rem; }
-.dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-left: .4rem; }
-.dot:first-child { margin-left: 0; }
+.banner-caption { font-size: .82rem; color: var(--muted); margin: .5rem .2rem 0; display: flex; align-items: center; flex-wrap: wrap; gap: .3rem 1rem; }
+.key { display: inline-flex; align-items: center; gap: .35rem; white-space: nowrap; }
+.dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; }
 .dot.a { background: var(--species-a); }
 .dot.b { background: var(--species-b); }
 .dot.c { background: var(--species-c); }
