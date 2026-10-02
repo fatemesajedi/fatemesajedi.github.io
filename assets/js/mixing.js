@@ -15,7 +15,7 @@
   var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   var DURATION = [16, 20, 20];      // seconds per scene
-  var CROSS = [0.6, 0.45, 0.95];    // fraction of the scene the front needs to cross the domain
+  var CROSS = [0.6, 0.45, 0.7];     // fraction of the scene the front needs to cross the domain
   var DIFF = [0.004, 0.03, 0.02];   // diffusion (cells^2 / sub-step)
   var SUB = 4;                      // transport sub-steps per frame
   var UP = 2;                       // render resolution = UP x grid
@@ -66,12 +66,12 @@
     for (var x = spacing * 0.7; x < NX - spacing * 0.5; x += spacing * (0.8 + Math.random() * 0.4)) {
       var wallY = centre(x) + side * half(x);
       var tilt = (Math.random() - 0.5) * 1.2, bend = (Math.random() < 0.5 ? -1 : 1) * (0.6 + Math.random() * 0.6);
-      var len = NY * (0.2 + Math.random() * 0.08), steps = 14;
+      var len = NY * (0.16 + Math.random() * 0.06), steps = 14;
       for (var s = 0; s <= steps; s++) {           // a curved chain of circles: neck, then a fat body
         var f = s / steps;
         var px = x + tilt * f * len + bend * Math.sin(f * Math.PI) * len * 0.35;
         var py = wallY + side * (f * len - 1);
-        var r = f < 0.2 ? 2.2 : 2.2 + (NY * 0.075) * Math.sin(Math.min(1, (f - 0.2) / 0.8) * Math.PI * 0.85);
+        var r = f < 0.2 ? NY * 0.06 : NY * 0.06 + (NY * 0.05) * Math.sin(Math.min(1, (f - 0.2) / 0.8) * Math.PI * 0.85);
         py = Math.max(r + 2.5, Math.min(NY - r - 2.5, py));
         stamp(px, py, r, 0);
       }
@@ -304,7 +304,7 @@
       if (acid < 0.01) continue;
       var d = KDISS * acid;
       mass[k] -= d; glow[k] += d * 40;
-      for (q = 0; q < n; q++) A[nb[q]] *= 0.985;  // a little acid is used up
+      for (q = 0; q < n; q++) A[nb[q]] *= 0.996;  // a little acid is used up
       if (mass[k] <= 0.5) {                       // less than half rock left: now pore space
         solid[k] = 0; changed = true;
         var pa = 0; for (q = 0; q < n; q++) pa += p[nb[q]];
@@ -415,7 +415,8 @@
         var t = tracers[q2], ti = Math.min(NX - 1, t.x | 0), tj = Math.min(NY - 1, t.y | 0), kt = idx(ti, tj);
         var inv = A[kt] > B[kt];
         ctx.strokeStyle = inv ? "rgba(255,90,80,.75)" : "rgba(70,235,240,.75)";
-        var L = 5;
+        // streak length grows slowly with speed, so the weak eddies in the pores still show as curls
+        var sp = Math.sqrt(t.vx * t.vx + t.vy * t.vy) + 1e-9, L = (1.2 + 3 * Math.pow(sp / 0.5, 0.4)) / sp;
         ctx.beginPath();
         ctx.moveTo((t.x - t.vx * L) * sx, (t.y - t.vy * L) * sy);
         ctx.lineTo(t.x * sx, t.y * sy);
