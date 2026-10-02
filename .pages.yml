@@ -24,8 +24,9 @@ content:
         type: object
         list: true
         fields:
-          - { name: emoji, label: Emoji, type: string, description: "One emoji, e.g. 🧗 🎨 🍕 (Windows: press Win + . to open the emoji picker)" }
+          - { name: emoji, label: Emoji (shown on the map pin), type: string, description: "One emoji, e.g. 🧗 🎬 🍳 (Windows: press Win + . to open the emoji picker)" }
           - { name: text, label: Text, type: string }
+          - { name: photo, label: Photo (optional), type: image, description: "Shown as a polaroid. Landscape photos look best." }
       - { name: say_hi, label: "'Say hi' message", type: text, description: "Friendly invitation shown at the bottom of the home page" }
       - { name: email, label: Email, type: string }
       - { name: cv, label: CV (PDF), type: file }

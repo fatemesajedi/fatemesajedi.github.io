@@ -379,3 +379,41 @@ main.container { padding-top: 2.5rem; padding-bottom: 4rem; min-height: 70vh; }
 .connect > .connect-card:first-child { align-self: center; }
 .linkedin-link { display: inline-flex; align-items: center; gap: .5rem; font-weight: 500; margin-top: .4rem; }
 .linkedin-link svg { color: #0a66c2; }
+
+/* "When I'm not in the lab" road map */
+.trail { position: relative; margin-top: 1.2rem; }
+.trail-path { position: absolute; left: 0; top: 0; pointer-events: none; overflow: visible; z-index: 0; }
+.trail-path path { fill: none; stroke: var(--species-b); stroke-width: 3; stroke-linecap: round; stroke-dasharray: 2 10; opacity: .7; }
+.trail-stops { list-style: none; margin: 0; padding: 0; position: relative; z-index: 1;
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 1.5rem 1.2rem; align-items: start; }
+.stop { display: flex; flex-direction: column; align-items: center; gap: .8rem; }
+.stop:nth-child(even) { margin-top: 3.2rem; }
+.pin {
+  display: grid; place-items: center; width: 3rem; height: 3rem; border-radius: 50%; font-size: 1.5rem;
+  background: var(--surface); border: 3px solid var(--species-b); box-shadow: var(--shadow);
+  transition: transform .2s ease;
+}
+.stop:hover .pin { transform: translateY(-4px) scale(1.06); }
+.polaroid {
+  margin: 0; width: 100%; max-width: 240px; background: #fff; padding: .55rem .55rem .9rem; border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0,0,0,.08), 0 10px 24px rgba(0,0,0,.10); transform: rotate(-2deg);
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+.stop:nth-child(even) .polaroid { transform: rotate(2.2deg); }
+.stop:nth-child(3n) .polaroid { transform: rotate(-1deg); }
+.stop:hover .polaroid { transform: rotate(0) scale(1.04); box-shadow: 0 4px 8px rgba(0,0,0,.1), 0 16px 32px rgba(0,0,0,.14); }
+.polaroid img, .polaroid-empty { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 2px; display: block; }
+.polaroid-empty { display: grid; place-items: center; background: linear-gradient(135deg, var(--warm-soft), var(--accent-soft)); font-size: 3rem; }
+.polaroid figcaption { font-family: "Caveat", cursive; font-size: 1.25rem; line-height: 1.25; color: #3a3a3a; margin-top: .6rem; text-align: center; }
+.stop-end { justify-content: flex-start; }
+.to-be-continued { font-family: "Caveat", cursive; font-size: 1.35rem; color: var(--muted); }
+@media (prefers-color-scheme: dark) { .polaroid { background: #f4f1ea; } }
+@media (max-width: 640px) {
+  .trail-stops { grid-template-columns: 1fr; gap: 1.6rem; }
+  .stop { flex-direction: row; align-items: flex-start; gap: 1rem; }
+  .stop:nth-child(even) { margin-top: 0; padding-left: 1.6rem; }
+  .pin { flex-shrink: 0; width: 2.6rem; height: 2.6rem; font-size: 1.25rem; }
+  .polaroid { max-width: none; }
+  .stop-end { align-items: center; }
+}
+@media (prefers-reduced-motion: reduce) { .stop:hover .polaroid, .stop:hover .pin { transform: none; } }

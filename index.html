@@ -110,14 +110,56 @@ title: About
 {% endif %}
 
 {% if p.fun_facts.size > 0 %}
-<section>
+<section class="trail-section">
   <h2>🌱 When I'm not in the lab…</h2>
-  <ul class="facts">
-    {% for f in p.fun_facts %}
-    <li><span class="fact-emoji">{{ f.emoji }}</span><span>{{ f.text }}</span></li>
-    {% endfor %}
-  </ul>
+  <div class="trail">
+    <svg class="trail-path" aria-hidden="true"><path d=""/></svg>
+    <ol class="trail-stops">
+      {% for f in p.fun_facts %}
+      <li class="stop">
+        <span class="pin">{% if f.emoji and f.emoji != "" %}{{ f.emoji }}{% else %}✨{% endif %}</span>
+        <figure class="polaroid">
+          {% if f.photo and f.photo != "" %}
+            <img src="{{ f.photo | relative_url }}" alt="" loading="lazy">
+          {% else %}
+            <div class="polaroid-empty"><span>{% if f.emoji and f.emoji != "" %}{{ f.emoji }}{% else %}✨{% endif %}</span></div>
+          {% endif %}
+          <figcaption>{{ f.text }}</figcaption>
+        </figure>
+      </li>
+      {% endfor %}
+      <li class="stop stop-end"><span class="pin">🚩</span><span class="to-be-continued">to be continued…</span></li>
+    </ol>
+  </div>
 </section>
+<script>
+  // draw a winding trail through the pins
+  (function () {
+    var trail = document.querySelector(".trail");
+    if (!trail) return;
+    var svg = trail.querySelector(".trail-path"), path = svg.querySelector("path");
+    function drawTrail() {
+      var box = trail.getBoundingClientRect(), pts = [];
+      trail.querySelectorAll(".pin").forEach(function (pin) {
+        var r = pin.getBoundingClientRect();
+        pts.push([r.left + r.width / 2 - box.left, r.top + r.height / 2 - box.top]);
+      });
+      svg.setAttribute("width", box.width); svg.setAttribute("height", box.height);
+      if (pts.length < 2) { path.setAttribute("d", ""); return; }
+      var d = "M" + pts[0][0] + " " + pts[0][1];
+      for (var i = 0; i < pts.length - 1; i++) {          // smooth curve with a gentle wiggle
+        var a = pts[i], b = pts[i + 1], mx = (a[0] + b[0]) / 2, my = (a[1] + b[1]) / 2;
+        var dx = b[0] - a[0], dy = b[1] - a[1], s = (i % 2 ? 1 : -1) * 0.18;
+        d += " Q" + (mx - dy * s) + " " + (my + dx * s) + " " + b[0] + " " + b[1];
+      }
+      path.setAttribute("d", d);
+    }
+    drawTrail();
+    window.addEventListener("resize", drawTrail);
+    window.addEventListener("load", drawTrail);
+    trail.querySelectorAll("img").forEach(function (im) { im.addEventListener("load", drawTrail); });
+  })();
+</script>
 {% endif %}
 
 <section class="say-hi" id="contact">
