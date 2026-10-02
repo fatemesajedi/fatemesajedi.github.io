@@ -1,6 +1,6 @@
 /* ---------- Colors (light / dark) ---------- */
 :root {
-  --bg: #fbfbf9;
+  --bg: #f3f6f7;            /* "Fog": cool light grey */
   --surface: #ffffff;
   --text: #1d2329;
   --muted: #5d6874;
