@@ -2,15 +2,16 @@ name: Fateme Sajedi
 role: PhD Student
 lab: Environmental Fluid Mechanics Laboratory (EFMLab)
 institution: University of Lausanne (UNIL)
-bio: >
-  Hello, I am Fateme. I am a PhD student at the EFMLab with a background in
-  mechanical engineering.
+bio: >+
+  Hello, I am Fateme. I am a mechanical engineer specialized in fluid mechanics,
+  and I’m currently a PhD student at EFMLab.
 
 
-  My current research focuses on **mixing in porous media**, where I investigate
-  the crucial role that **scale** plays in mixing and mixing-driven reactions.
-  My work uses and develops both **numerical simulations** and **microfluidics
-  experiments**.
+  My research focuses on mixing in porous media, particularly how the **scale**
+  at which we study a system affects **mixing** and the **reactions** it drives.
+  I use a combination of numerical simulations and microfluidic experiments to
+  investigate these processes.
+
 research_simple: >
   Imagine pouring milk into your coffee: give it a stir and the two mix in
   seconds. Now imagine the coffee has to squeeze through a sponge, or a rock,
