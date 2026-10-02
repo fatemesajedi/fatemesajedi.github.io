@@ -132,7 +132,7 @@
       }
       R.set(R2); C.set(C2);
     }
-    var D = 0.11;
+    var D = 0.045;                              // slow enough to watch the sheets blur
     for (var rep = 0; rep < 2; rep++) {
       for (j = 0; j < G; j++) for (i = 0; i < G; i++) {
         k = j * G + i;
