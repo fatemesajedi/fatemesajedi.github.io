@@ -19,11 +19,11 @@
   var DIFF = [0.004, 0.03, 0.02];   // diffusion (cells^2 / sub-step)
   var SUB = 4;                      // transport sub-steps per frame
   var UP = 2;                       // render resolution = UP x grid
-  var KDISS = 0.0065;               // dissolution rate (rock mass / frame / unit acid)
+  var KDISS = 0.0017;               // dissolution rate (rock mass / frame / unit acid): slow, grains shrink but survive
 
   var NX, NY = 72, N, W, H, D;
   var solid, p, ux, uy, A, B, dA, dB, glow, mass, scale, comp;
-  var tracers = [], circles = [];
+  var circles = [], tex;
   var off = document.createElement("canvas"), offCtx = off.getContext("2d"), img;
   var scene = 0, t0 = 0, visible = true, started = !reduceMotion, gmax = 1e-6;
   var ks = new Int32Array(4), ws = new Float32Array(4);
@@ -108,6 +108,7 @@
       for (var y = (col % 2 ? s / 2 : 0) + s / 2 - s; y < NY + r0; y += s)
         cover(x + (Math.random() - 0.5) * 1.5, y + (Math.random() - 0.5) * 1.5, r0 * (0.85 + Math.random() * 0.3));
     for (var k = 0; k < N; k++) solid[k] = mass[k] > 0.5 ? 1 : 0;
+    for (k = 0; k < N; k++) tex[k] = 0.86 + Math.random() * 0.22;   // rock texture: speckled grey
   }
 
   // ---------- flow: pressure (scenes 1 and 3) ----------
@@ -282,7 +283,6 @@
         }
       }
     }
-    if (scene === 1) moveTracers();
     if (scene === 2) dissolve();
   }
 
@@ -292,7 +292,7 @@
       var k = idx(i, j);
       glow[k] *= 0.9;
       if (!solid[k]) {                            // thin rims of rock in partly open cells
-        if (mass[k] > 0 && A[k] > 0.01) { mass[k] = Math.max(0, mass[k] - KDISS * 2 * A[k]); glow[k] += KDISS * 40 * A[k]; }
+        if (mass[k] > 0 && A[k] > 0.01) { mass[k] = Math.max(0, mass[k] - KDISS * 2 * A[k]); glow[k] += KDISS * 120 * A[k]; }
         continue;
       }
       var n = 0, acid = 0;
@@ -303,7 +303,7 @@
       for (var q = 0; q < n; q++) acid += A[nb[q]];
       if (acid < 0.01) continue;
       var d = KDISS * acid;
-      mass[k] -= d; glow[k] += d * 40;
+      mass[k] -= d; glow[k] += d * 120;
       for (q = 0; q < n; q++) A[nb[q]] *= 0.996;  // a little acid is used up
       if (mass[k] <= 0.5) {                       // less than half rock left: now pore space
         solid[k] = 0; changed = true;
@@ -312,31 +312,6 @@
       }
     }
     if (changed) { sor(25); pressureVelocities(); scaleVelocities(false); }
-  }
-
-  // ---------- tracer particles (streak look of the microfluidic images) ----------
-  function velAt(x, y) {
-    var i = Math.floor(x), j = Math.floor(y);
-    if (i < 0 || i >= NX || j < 0 || j >= NY) return [0, 0];
-    var fx = x - i, fy = y - j;
-    var u = ux[j * (NX + 1) + i] * (1 - fx) + ux[j * (NX + 1) + i + 1] * fx;
-    var v = (j > 0 ? uy[idx(i, j)] : 0) * (1 - fy) + (j < NY - 1 ? uy[idx(i, j + 1)] : 0) * fy;
-    return [u, v];
-  }
-  function seedTracer(t, atInlet) {
-    for (var tries = 0; tries < 40; tries++) {
-      var x = atInlet ? Math.random() * 1.5 : Math.random() * NX, y = Math.random() * NY;
-      if (!solid[idx(Math.min(NX - 1, x | 0), Math.min(NY - 1, y | 0))]) { t.x = x; t.y = y; return; }
-    }
-  }
-  function moveTracers() {
-    for (var q = 0; q < tracers.length; q++) {
-      var t = tracers[q], v1 = velAt(t.x, t.y);
-      var v2 = velAt(t.x + v1[0] * SUB * 0.5, t.y + v1[1] * SUB * 0.5);
-      t.vx = v2[0] * SUB; t.vy = v2[1] * SUB;
-      t.x += t.vx; t.y += t.vy;
-      if (t.x >= NX - 0.5 || t.x < 0 || t.y < 0 || t.y >= NY || solid[idx(t.x | 0, t.y | 0)]) seedTracer(t, t.x >= NX - 0.5);
-    }
   }
 
   // ---------- drawing ----------
@@ -351,7 +326,7 @@
   var DARK = [11, 19, 30];
   var HOT = lut([[6, 8, 14], [120, 10, 8], [220, 60, 15], [255, 170, 30], [255, 240, 140], [255, 255, 250]]);
   var GLOW = lut([[0, 0, 0], [150, 20, 10], [235, 90, 20], [255, 200, 60], [255, 250, 220]]);
-  var SOLID = [[78, 86, 98], [3, 8, 10], [196, 142, 98]];
+  var SOLID = [[78, 86, 98], [3, 8, 10], [146, 144, 138]];
 
   function draw() {
     var d = img.data, OW = NX * UP, OH = NY * UP;
@@ -369,10 +344,10 @@
         var k = j0 * NX + i0;
         ks[0] = k; ks[1] = k + 1; ks[2] = k + NX; ks[3] = k + NX + 1;
         ws[0] = (1 - fx) * (1 - fy); ws[1] = fx * (1 - fy); ws[2] = (1 - fx) * fy; ws[3] = fx * fy;
-        var sf = 0, fw = 0, a = 0, b = 0, g = 0;
+        var sf = 0, fw = 0, a = 0, b = 0, g = 0, tx = 0;
         for (var q = 0; q < 4; q++) {
           var kk = ks[q], w = ws[q];
-          if (scene === 2) sf += w * mass[kk]; else if (solid[kk]) sf += w;
+          if (scene === 2) { sf += w * mass[kk]; tx += w * tex[kk]; } else if (solid[kk]) sf += w;
           if (!solid[kk]) { fw += w; a += w * A[kk]; b += w * B[kk]; }
           g += w * glow[kk];
         }
@@ -381,15 +356,18 @@
         if (scene === 0) {
           var mi = Math.round(a * 255) * 3; r = HOT[mi]; gr = HOT[mi + 1]; bl = HOT[mi + 2];
         } else if (scene === 1) {                 // microscopy look: red invading, cyan resident
-          r = 4 + 150 * a * 0.45 + 10 * b * 0.4; gr = 16 + 30 * a * 0.45 + 150 * b * 0.4; bl = 20 + 30 * a * 0.45 + 160 * b * 0.4;
+          r = 4 + 211 * a * 0.8 + 21 * b * 0.65; gr = 14 + 41 * a * 0.8 + 171 * b * 0.65; bl = 18 + 27 * a * 0.8 + 177 * b * 0.65;
           var h = Math.sqrt(g / gmax);
           if (h > 0.05) { var hi = Math.round(Math.min(1, h) * 255) * 3; r = Math.max(r, GLOW[hi]); gr = Math.max(gr, GLOW[hi + 1]); bl = Math.max(bl, GLOW[hi + 2]); }
         } else {
           r = DARK[0] + (80 - DARK[0]) * a * 0.75; gr = DARK[1] + (150 - DARK[1]) * a * 0.75; bl = DARK[2] + (255 - DARK[2]) * a * 0.75;
         }
         var alpha = Math.max(0, Math.min(1, (sf - 0.4) / 0.2));
-        if (alpha > 0) { var sc = SOLID[scene]; r += (sc[0] - r) * alpha; gr += (sc[1] - gr) * alpha; bl += (sc[2] - bl) * alpha; }
-        if (scene === 2 && g > 0.02) { var gg = Math.min(1, g); r += (255 - r) * gg; gr += (170 - gr) * gg; bl += (60 - bl) * gg; }
+        if (alpha > 0) {
+          var sc = SOLID[scene], sh = scene === 2 ? tx : 1;   // rock gets a grainy texture
+          r += (sc[0] * sh - r) * alpha; gr += (sc[1] * sh - gr) * alpha; bl += (sc[2] * sh - bl) * alpha;
+        }
+        if (scene === 2 && g > 0.02) { var gg = Math.min(0.75, g); r += (255 - r) * gg; gr += (170 - gr) * gg; bl += (60 - bl) * gg; }
         d[o] = r; d[o + 1] = gr; d[o + 2] = bl; d[o + 3] = 255;
       }
     }
@@ -408,22 +386,6 @@
       });
       ctx.fill();
     }
-    if (scene === 1) {                            // flow streaks
-      ctx.lineCap = "round"; ctx.lineWidth = 1.4;
-      ctx.globalCompositeOperation = "lighter";
-      for (var q2 = 0; q2 < tracers.length; q2++) {
-        var t = tracers[q2], ti = Math.min(NX - 1, t.x | 0), tj = Math.min(NY - 1, t.y | 0), kt = idx(ti, tj);
-        var inv = A[kt] > B[kt];
-        ctx.strokeStyle = inv ? "rgba(255,90,80,.75)" : "rgba(70,235,240,.75)";
-        // streak length grows slowly with speed, so the weak eddies in the pores still show as curls
-        var sp = Math.sqrt(t.vx * t.vx + t.vy * t.vy) + 1e-9, L = (1.2 + 3 * Math.pow(sp / 0.5, 0.4)) / sp;
-        ctx.beginPath();
-        ctx.moveTo((t.x - t.vx * L) * sx, (t.y - t.vy * L) * sy);
-        ctx.lineTo(t.x * sx, t.y * sy);
-        ctx.stroke();
-      }
-      ctx.globalCompositeOperation = "source-over";
-    }
   }
 
   // ---------- scenes ----------
@@ -435,15 +397,13 @@
     ux = new Float32Array((NX + 1) * NY); uy = new Float32Array(N);
     A = new Float32Array(N); B = new Float32Array(N); dA = new Float32Array(N); dB = new Float32Array(N);
     glow = new Float32Array(N); mass = new Float32Array(N); gmax = 1e-6;
-    circles = []; tracers = [];
+    circles = []; tex = new Float32Array(N);
     off.width = NX * UP; off.height = NY * UP; img = offCtx.createImageData(NX * UP, NY * UP);
 
     if (s === 1) {
       deadEndPores();
       stokes();
       for (var k = 0; k < N; k++) B[k] = solid[k] ? 0 : 1;
-      var nt = Math.round(NX * 3.2);
-      for (var q = 0; q < nt; q++) { var t = { x: 0, y: 0, vx: 0, vy: 0 }; seedTracer(t, false); tracers.push(t); }
     } else {
       if (s === 0) grainPack(); else pillars();
       for (var i = 0; i < NX; i++) for (var j = 0; j < NY; j++) p[idx(i, j)] = 1 - (i + 0.5) / NX;
