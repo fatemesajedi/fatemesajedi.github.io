@@ -10,12 +10,27 @@ bio: |
   Hello, I am Fateme. I am a PhD student at the EFMLab with a background in mechanical engineering.
 
   My current research focuses on **mixing in porous media**, where I investigate the crucial role that **scale** plays in mixing and mixing-driven reactions. My work uses and develops both **numerical simulations** and **microfluidics experiments**.
+# Plain-language explanation for non-scientists (shown as "My research in 30 seconds")
+research_simple: |
+  Imagine pouring milk into your coffee: give it a stir and the two mix in seconds. Now imagine the coffee has to squeeze through a sponge, or a rock, full of tiny grains and winding channels. How quickly do the two liquids find each other? And if they are chemicals that **react when they meet**, where and how fast does that reaction happen?
+
+  That is the question I work on. Underground, it shapes how pollutants break down in groundwater and how minerals form inside rocks. The twist is that the answer changes depending on whether you look at a single tiny pore or at a whole rock. That **scale puzzle** is at the heart of my PhD. I explore it with computer simulations and with tiny transparent "rocks" on a chip, called microfluidics.
 interests:
   - Mixing in porous media
   - Mixing-driven reactions
   - Scale effects
   - Microfluidics
   - Numerical simulation
+# "When I'm not in the lab..." (emoji + short sentence)
+fun_facts:
+  - emoji: "☕"
+    text: "EXAMPLE — Replace me: your favourite coffee or tea"
+  - emoji: "🏔️"
+    text: "EXAMPLE — Replace me: a hobby, sport or place you love"
+  - emoji: "📚"
+    text: "EXAMPLE — Replace me: a book, series or podcast you recommend"
+# Friendly invitation at the bottom of the home page
+say_hi: "Whether you're a fellow researcher, a student curious about porous media, or simply want to chat about science, I'd love to hear from you!"
 email: ""
 # Path to your CV PDF after uploading it, e.g. /assets/files/cv.pdf
 cv: ""

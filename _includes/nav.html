@@ -11,7 +11,7 @@
         {% elsif page.url contains item.url %}
           {% assign active = true %}
         {% endif %}
-        <a href="{{ item.url | relative_url }}"{% if active %} class="active"{% endif %}>{{ item.title }}</a>
+        <a href="{{ item.url | relative_url }}" class="{% if active %}active{% endif %}{% if item.url contains '#' %} nav-cta{% endif %}">{{ item.title }}</a>
       {% endfor %}
     </nav>
   </div>

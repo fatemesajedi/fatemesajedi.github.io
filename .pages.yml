@@ -17,7 +17,16 @@ content:
       - { name: institution, label: University / Institution, type: string }
       - { name: photo, label: Profile photo, type: image }
       - { name: bio, label: Bio, type: text, description: "Use **double asterisks** for bold. Leave an empty line between paragraphs." }
+      - { name: research_simple, label: "My research in 30 seconds (plain language)", type: text, description: "Explain your research so your grandma or a high-school student would get it." }
       - { name: interests, label: Research interests, type: string, list: true }
+      - name: fun_facts
+        label: "When I'm not in the lab… (fun facts)"
+        type: object
+        list: true
+        fields:
+          - { name: emoji, label: Emoji, type: string, description: "One emoji, e.g. 🧗 🎨 🍕 (Windows: press Win + . to open the emoji picker)" }
+          - { name: text, label: Text, type: string }
+      - { name: say_hi, label: "'Say hi' message", type: text, description: "Friendly invitation shown at the bottom of the home page" }
       - { name: email, label: Email, type: string }
       - { name: cv, label: CV (PDF), type: file }
       - { name: highlight_name, label: Name to bold in author lists, type: string, description: "Usually your surname" }
@@ -100,7 +109,9 @@ content:
       - { name: title, label: Project title, type: string, required: true }
       - { name: summary, label: Short summary, type: text, description: "1–2 sentences for the Research page" }
       - { name: order, label: Order on page, type: number, description: "1 = first" }
-      - { name: image, label: Main image, type: image }
+      - { name: image, label: Main image (a GIF works too!), type: image }
+      - { name: video, label: Main video, type: string, description: "Paste a YouTube/Vimeo link, or the path of an uploaded .mp4 (e.g. /assets/videos/flow.mp4). Shown instead of the main image." }
+      - { name: media, label: "Gallery (images, GIFs, short .mp4 clips)", type: file, list: true }
       - { name: methods, label: Methods / tags, type: string, list: true }
       - { name: body, label: Full description, type: rich-text }
 

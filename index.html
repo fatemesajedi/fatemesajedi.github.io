@@ -4,6 +4,15 @@ title: About
 ---
 {% assign p = site.data.profile %}
 {% assign parts = p.name | split: " " %}
+
+<section class="banner">
+  <canvas id="mixing-canvas" aria-label="Animation of two liquids mixing and reacting as they flow between grains"></canvas>
+  <p class="banner-caption">
+    <span class="dot a"></span>Liquid A <span class="dot b"></span>Liquid B <span class="dot c"></span>Reaction!
+    <span class="hint">· move your mouse over it to stir</span>
+  </p>
+</section>
+
 <section class="hero">
   <div class="hero-photo">
     {% if p.photo and p.photo != "" %}
@@ -13,6 +22,7 @@ title: About
     {% endif %}
   </div>
   <div class="hero-text">
+    <p class="wave">Hi there! 👋</p>
     <h1>{{ p.name }}</h1>
     <p class="role">
       {{ p.role }}{% if p.lab != "" %} · {{ p.lab }}{% endif %}{% if p.institution != "" %} · {{ p.institution }}{% endif %}
@@ -25,9 +35,17 @@ title: About
   {{ p.bio | markdownify }}
 </section>
 
+{% if p.research_simple and p.research_simple != "" %}
+<section class="simple">
+  <h2>☕ My research in 30 seconds</h2>
+  <div class="prose">{{ p.research_simple | markdownify }}</div>
+  <a class="more" href="{{ '/research/' | relative_url }}">Dive into the details →</a>
+</section>
+{% endif %}
+
 {% if p.interests.size > 0 %}
 <section>
-  <h2>Research interests</h2>
+  <h2>🔬 What I'm curious about</h2>
   <ul class="chips">
     {% for i in p.interests %}<li>{{ i }}</li>{% endfor %}
   </ul>
@@ -37,7 +55,7 @@ title: About
 {% assign news = site.news | sort: "date" | reverse %}
 {% if news.size > 0 %}
 <section>
-  <h2>News</h2>
+  <h2>📣 What's new</h2>
   <ul class="news">
     {% for n in news limit: 6 %}
     <li>
@@ -53,11 +71,33 @@ title: About
 {% if confs.size > 0 %}
 <section>
   <div class="section-head">
-    <h2>Recent conferences</h2>
-    <a href="{{ '/conferences/' | relative_url }}">See all →</a>
+    <h2>✈️ On the road</h2>
+    <a href="{{ '/conferences/' | relative_url }}">All conferences →</a>
   </div>
   <div class="cards">
     {% for c in confs limit: 3 %}{% include conference-card.html c=c %}{% endfor %}
   </div>
 </section>
 {% endif %}
+
+{% if p.fun_facts.size > 0 %}
+<section>
+  <h2>🌱 When I'm not in the lab…</h2>
+  <ul class="facts">
+    {% for f in p.fun_facts %}
+    <li><span class="fact-emoji">{{ f.emoji }}</span><span>{{ f.text }}</span></li>
+    {% endfor %}
+  </ul>
+</section>
+{% endif %}
+
+<section class="say-hi" id="contact">
+  <h2>Say hi! 💬</h2>
+  {% if p.say_hi and p.say_hi != "" %}<p>{{ p.say_hi }}</p>{% endif %}
+  {% if p.email and p.email != "" %}
+    <a class="button big" href="mailto:{{ p.email }}">✉️ Send me an email</a>
+  {% endif %}
+  {% include social.html %}
+</section>
+
+<script src="{{ '/assets/js/mixing.js' | relative_url }}" defer></script>

@@ -5,8 +5,23 @@ layout: default
   <a class="back" href="{{ '/research/' | relative_url }}">← All research</a>
   <h1 class="page-title">{{ page.title }}</h1>
   {% if page.summary and page.summary != "" %}<p class="lead">{{ page.summary }}</p>{% endif %}
-  {% if page.image and page.image != "" %}
-  <img class="cover" src="{{ page.image | relative_url }}" alt="{{ page.title }}">
+  {% if page.video and page.video != "" %}
+    {% include video.html src=page.video %}
+  {% elsif page.image and page.image != "" %}
+    <img class="cover" src="{{ page.image | relative_url }}" alt="{{ page.title }}">
   {% endif %}
   <div class="prose">{{ content }}</div>
+  {% if page.media and page.media.size > 0 %}
+  <h2>Gallery</h2>
+  <div class="gallery">
+    {% for m in page.media %}
+      {% assign ext = m | split: "." | last | downcase %}
+      {% if ext == "mp4" or ext == "webm" or ext == "mov" %}
+        <video src="{{ m | relative_url }}" autoplay muted loop playsinline></video>
+      {% else %}
+        <a href="{{ m | relative_url }}" target="_blank" rel="noopener"><img src="{{ m | relative_url }}" loading="lazy" alt=""></a>
+      {% endif %}
+    {% endfor %}
+  </div>
+  {% endif %}
 </article>

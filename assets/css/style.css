@@ -8,6 +8,11 @@
   --accent: #0e7c86;
   --accent-soft: #e3f2f3;
   --shadow: 0 1px 2px rgba(20, 30, 40, .05), 0 4px 16px rgba(20, 30, 40, .05);
+  --grain: #e3e1da;
+  --species-a: #0e7c86;
+  --species-b: #e8833a;
+  --species-c: #8b5cf6;
+  --warm-soft: #fdf1e7;
 }
 @media (prefers-color-scheme: dark) {
   :root {
@@ -19,6 +24,11 @@
     --accent: #4fc3cc;
     --accent-soft: #173238;
     --shadow: none;
+    --grain: #262d34;
+    --species-a: #4fc3cc;
+    --species-b: #f4a261;
+    --species-c: #b197fc;
+    --warm-soft: #2b2219;
   }
 }
 
@@ -190,3 +200,78 @@ main.container { padding-top: 2.5rem; padding-bottom: 4rem; min-height: 70vh; }
 .site-footer { border-top: 1px solid var(--border); padding: 2rem 0; color: var(--muted); font-size: .9rem; }
 .site-footer .container { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
 .site-footer p { margin: 0; }
+
+/* ---------- Fun & friendly additions ---------- */
+
+/* Animated mixing banner */
+.banner { margin: -1rem 0 2rem; }
+#mixing-canvas {
+  display: block; width: 100%; height: 220px; border-radius: 16px;
+  background: var(--surface); border: 1px solid var(--border); box-shadow: var(--shadow);
+  cursor: crosshair; touch-action: pan-y;
+}
+.banner-caption { font-size: .82rem; color: var(--muted); margin: .5rem .2rem 0; display: flex; align-items: center; flex-wrap: wrap; gap: .35rem; }
+.dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-left: .4rem; }
+.dot:first-child { margin-left: 0; }
+.dot.a { background: var(--species-a); }
+.dot.b { background: var(--species-b); }
+.dot.c { background: var(--species-c); }
+.hint { opacity: .8; }
+@media (hover: none) { .hint { display: none; } }
+@media (max-width: 600px) { #mixing-canvas { height: 160px; } }
+
+/* Hero greeting */
+.wave { margin: 0; font-weight: 500; color: var(--accent); }
+.hero-photo img, .avatar { transition: transform .3s ease; }
+.hero-photo:hover img, .hero-photo:hover .avatar { transform: rotate(-4deg) scale(1.03); }
+
+/* Research in 30 seconds */
+.simple {
+  background: var(--warm-soft); border-radius: 16px; padding: 1.4rem 1.6rem 1.6rem; margin-top: 2.4rem;
+}
+.simple h2 { margin-top: 0; }
+.simple .prose { max-width: 720px; }
+.more { font-weight: 500; }
+
+/* Chips get a little bounce */
+.chips li { transition: transform .15s ease; }
+.chips li:hover { transform: translateY(-2px); }
+
+/* Fun facts */
+.facts { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: .9rem; }
+.facts li {
+  display: flex; gap: .8rem; align-items: center; background: var(--surface);
+  border: 1px solid var(--border); border-radius: 12px; padding: .9rem 1rem; box-shadow: var(--shadow);
+}
+.fact-emoji { font-size: 1.8rem; line-height: 1; }
+
+/* Say hi */
+.say-hi {
+  margin-top: 3rem; text-align: center; padding: 2.2rem 1.5rem;
+  border-radius: 16px; background: var(--accent-soft);
+}
+.say-hi h2 { margin-top: 0; }
+.say-hi p { max-width: 560px; margin: 0 auto 1.2rem; }
+.say-hi .social { justify-content: center; margin-top: 1rem; }
+.button.big { font-size: 1.05rem; padding: .75rem 1.5rem; border-radius: 999px; }
+
+/* "Say hi" in the menu */
+.nav-links a.nav-cta { color: var(--accent); border: 1.5px solid var(--accent); border-radius: 999px; padding: 3px 12px; }
+.nav-links a.nav-cta:hover { background: var(--accent); color: var(--bg); }
+@media (max-width: 680px) { .nav-links a.nav-cta { align-self: flex-start; margin-top: .4rem; padding: 4px 14px; } }
+
+/* Conference photo wall */
+.photo-wall { columns: 3 200px; column-gap: .6rem; }
+.photo-wall a { display: block; margin-bottom: .6rem; break-inside: avoid; }
+.photo-wall img { width: 100%; border-radius: 10px; transition: transform .2s ease, opacity .2s; }
+.photo-wall a:hover img { transform: scale(1.02); opacity: .9; }
+
+/* Videos */
+.video { position: relative; aspect-ratio: 16 / 9; margin: 1.5rem 0; border-radius: 12px; overflow: hidden; background: #000; }
+.video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.clip { width: 100%; border-radius: 12px; margin: 1.5rem 0; background: #000; }
+.gallery video { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 8px; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; }
+}

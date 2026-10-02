@@ -1,0 +1,14 @@
+{% comment %} Embeds a YouTube/Vimeo link or an uploaded video file (mp4/webm). Usage: include video.html src=... {% endcomment %}
+{% assign src = include.src %}
+{% if src contains "youtube.com/watch?v=" %}
+  {% assign id = src | split: "v=" | last | split: "&" | first %}
+  <div class="video"><iframe src="https://www.youtube-nocookie.com/embed/{{ id }}" title="Video" allowfullscreen loading="lazy"></iframe></div>
+{% elsif src contains "youtu.be/" %}
+  {% assign id = src | split: "youtu.be/" | last | split: "?" | first %}
+  <div class="video"><iframe src="https://www.youtube-nocookie.com/embed/{{ id }}" title="Video" allowfullscreen loading="lazy"></iframe></div>
+{% elsif src contains "vimeo.com/" %}
+  {% assign id = src | split: "vimeo.com/" | last | split: "?" | first %}
+  <div class="video"><iframe src="https://player.vimeo.com/video/{{ id }}" title="Video" allowfullscreen loading="lazy"></iframe></div>
+{% else %}
+  <video class="clip" src="{{ src | relative_url }}" autoplay muted loop playsinline controls></video>
+{% endif %}

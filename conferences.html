@@ -4,6 +4,16 @@ permalink: /conferences/
 intro: Conferences, workshops and schools I have attended, with talks, posters and memories along the way.
 ---
 {% assign confs = site.conferences | sort: "date" | reverse %}
+
+{% capture wall %}{% for c in confs %}{% if c.cover and c.cover != "" %}<a href="{{ c.url | relative_url }}" title="{{ c.title }}"><img src="{{ c.cover | relative_url }}" alt="Photo from {{ c.title }}" loading="lazy"></a>{% endif %}{% for img in c.gallery %}<a href="{{ c.url | relative_url }}" title="{{ c.title }}"><img src="{{ img | relative_url }}" alt="Photo from {{ c.title }}" loading="lazy"></a>{% endfor %}{% endfor %}{% endcapture %}
+{% assign wall = wall | strip %}
+{% if wall != "" %}
+<section>
+  <h2>📸 Memories</h2>
+  <div class="photo-wall">{{ wall }}</div>
+</section>
+{% endif %}
+
 {% assign by_year = confs | group_by_exp: "c", "c.date | date: '%Y'" %}
 {% for y in by_year %}
 <section>
