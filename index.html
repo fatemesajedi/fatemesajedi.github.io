@@ -121,13 +121,46 @@ title: About
 {% endif %}
 
 <section class="say-hi" id="contact">
-  <h2>Say hi! 💬</h2>
-  {% if p.say_hi and p.say_hi != "" %}<p>{{ p.say_hi }}</p>{% endif %}
-  {% if p.email and p.email != "" %}
-    <a class="button big" href="mailto:{{ p.email }}">✉️ Send me an email</a>
-  {% endif %}
+  <h2>Let's connect! 🤝</h2>
+  {% if p.say_hi and p.say_hi != "" %}<p class="say-hi-text">{{ p.say_hi }}</p>{% endif %}
+  <div class="connect">
+    {% if p.email and p.email != "" %}
+    <div class="connect-card">
+      <h3>✉️ Send me an email</h3>
+      <a class="email-address" href="mailto:{{ p.email }}">{{ p.email }}</a>
+      <button type="button" class="copy-email" data-email="{{ p.email }}">📋 Copy address</button>
+    </div>
+    <div class="connect-or" aria-hidden="true"><span>or</span></div>
+    <div class="connect-card">
+      <h3>💬 Drop me a message</h3>
+      <form class="message-form" action="https://formsubmit.co/{{ p.email }}" method="POST">
+        <input type="hidden" name="_subject" value="New message from your website">
+        <input type="hidden" name="_template" value="table">
+        <input type="hidden" name="_next" value="{{ site.url }}/?sent=1#contact">
+        <input type="text" name="_honey" class="honey" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <label>Your name<input type="text" name="name" required autocomplete="name"></label>
+        <label>Your email<input type="email" name="email" required autocomplete="email"></label>
+        <label>Message<textarea name="message" rows="4" required></textarea></label>
+        <button type="submit" class="button">Send message</button>
+        <p class="form-sent" hidden>🎉 Thank you! Your message is on its way. I'll get back to you soon.</p>
+      </form>
+    </div>
+    {% endif %}
+  </div>
   {% include social.html %}
 </section>
+<script>
+  (function () {
+    var sent = /[?&]sent=1/.test(location.search);
+    if (sent) { var n = document.querySelector(".form-sent"); if (n) n.hidden = false; }
+    var b = document.querySelector(".copy-email");
+    if (b) b.addEventListener("click", function () {
+      navigator.clipboard.writeText(b.getAttribute("data-email")).then(function () {
+        b.textContent = "✅ Copied!"; setTimeout(function () { b.textContent = "📋 Copy address"; }, 2000);
+      });
+    });
+  })();
+</script>
 
 <script src="{{ '/assets/js/mixing.js' | relative_url }}?v={{ site.time | date: '%s' }}" defer></script>
 {% if p.research_simple and p.research_simple != "" %}<script src="{{ '/assets/js/coffee.js' | relative_url }}?v={{ site.time | date: '%s' }}" defer></script>{% endif %}

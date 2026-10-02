@@ -342,3 +342,28 @@ main.container { padding-top: 2.5rem; padding-bottom: 4rem; min-height: 70vh; }
   .scene-tab { font-size: .78rem; padding: .45rem .5rem .65rem; gap: .3rem; }
   .scene-tab .num { display: none; }
 }
+
+/* Let's connect */
+.say-hi-text { max-width: 600px; }
+.connect { display: grid; grid-template-columns: 1fr auto 1.3fr; gap: 1rem; align-items: stretch; text-align: left; margin: 1.6rem auto 1.2rem; max-width: 860px; }
+.connect-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 1.2rem 1.3rem; box-shadow: var(--shadow); }
+.connect-card h3 { font-size: 1.05rem; margin: 0 0 .8rem; }
+.email-address { display: block; font-size: 1.05rem; font-weight: 600; word-break: break-all; margin-bottom: .8rem; }
+.copy-email { font: inherit; font-size: .85rem; cursor: pointer; background: var(--accent-soft); color: var(--accent); border: none; border-radius: 999px; padding: .35rem .9rem; }
+.copy-email:hover { filter: brightness(.96); }
+.connect-or { display: flex; align-items: center; justify-content: center; }
+.connect-or span { display: grid; place-items: center; width: 2.4rem; height: 2.4rem; border-radius: 50%; background: var(--bg); color: var(--muted); font-size: .85rem; font-weight: 600; border: 1px solid var(--border); }
+.message-form { display: flex; flex-direction: column; gap: .7rem; }
+.message-form label { display: flex; flex-direction: column; gap: .25rem; font-size: .85rem; font-weight: 500; color: var(--muted); }
+.message-form input, .message-form textarea {
+  font: inherit; font-size: .95rem; color: var(--text); background: var(--bg);
+  border: 1px solid var(--border); border-radius: 8px; padding: .55rem .7rem; resize: vertical;
+}
+.message-form input:focus, .message-form textarea:focus { outline: 2px solid var(--accent); outline-offset: 1px; border-color: transparent; }
+.message-form .button { border: none; cursor: pointer; font: inherit; font-weight: 600; align-self: flex-start; }
+.message-form .honey { display: none; }
+.form-sent { margin: 0; color: var(--accent); font-weight: 500; }
+@media (max-width: 760px) {
+  .connect { grid-template-columns: 1fr; }
+  .connect-or { padding: .2rem 0; }
+}
