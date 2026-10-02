@@ -125,7 +125,6 @@ title: About
           <span class="nn-meta">{% if c.location and c.location != "" %}📍 {{ c.location }}{% endif %}{% if c.role and c.role != "" %} · {{ c.role }}{% endif %}</span>
           <span class="nn-countdown"></span>
         </span>
-        {% if c.cover and c.cover != "" %}<img class="nn-thumb" src="{{ c.cover | relative_url }}" alt="" loading="lazy">{% endif %}
       </a>
     </li>
     {% endfor %}
@@ -142,12 +141,13 @@ title: About
     items.forEach(function (li) {
       var start = day(li.dataset.start), end = day(li.dataset.end), cd = li.querySelector(".nn-countdown");
       if (end >= today) {
+        if (up.children.length >= 3) { li.remove(); return; }   // keep the home page short
         var days = Math.round((start - today) / 864e5);
         cd.textContent = start <= today ? "happening now 🎉" : days === 1 ? "tomorrow!" : days < 60 ? "in " + days + " days" : "in " + Math.round(days / 30) + " months";
         up.appendChild(li);
       } else pastItems.unshift(li);
     });
-    pastItems.slice(0, 4).forEach(function (li) { past.appendChild(li); });
+    pastItems.slice(0, 3).forEach(function (li) { past.appendChild(li); });
     all.remove();
     document.getElementById("nn-upcoming-empty").hidden = up.children.length > 0;
   })();
