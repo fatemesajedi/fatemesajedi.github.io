@@ -15,6 +15,7 @@
   var vx = new Float32Array(G * G), vy = new Float32Array(G * G);
   var tmpx = new Float32Array(G * G), tmpy = new Float32Array(G * G);
   var dens = new Float32Array(G * G), tmpd = new Float32Array(G * G);
+  var pres = new Float32Array(G * G), divg = new Float32Array(G * G);
   var inside = new Uint8Array(G * G), insideCount = 0;
   var px = new Float32Array(N), py = new Float32Array(N), count = 0;
   var pouring = 0, pourX = 0, pourY = 0;
@@ -50,7 +51,7 @@
   // particle positions are in grid units [0, G)
   function newCup() {
     count = 0; cv0 = 0;
-    vx.fill(0); vy.fill(0);
+    vx.fill(0); vy.fill(0); pres.fill(0);
     pour();
   }
 
@@ -75,6 +76,35 @@
       tmp[k] = f[k] * (1 - w) + (f[k - 1] + f[k + 1] + f[k - G] + f[k + G]) * w / 4;
     }
     f.set(tmp);
+  }
+
+  // Coffee is incompressible: remove the divergent part of the flow
+  // (pressure projection, Jacobi iterations, solid cup wall).
+  function project() {
+    var k, i, j;
+    for (j = 1; j < G - 1; j++) for (i = 1; i < G - 1; i++) {
+      k = j * G + i;
+      divg[k] = inside[k] ? -0.5 * (vx[k + 1] - vx[k - 1] + vy[k + G] - vy[k - G]) : 0;
+    }
+    for (var it = 0; it < 24; it++) {
+      for (j = 1; j < G - 1; j++) for (i = 1; i < G - 1; i++) {
+        k = j * G + i;
+        if (!inside[k]) continue;
+        var pc = pres[k], n = 0, s = 0;
+        s += inside[k - 1] ? pres[k - 1] : pc;
+        s += inside[k + 1] ? pres[k + 1] : pc;
+        s += inside[k - G] ? pres[k - G] : pc;
+        s += inside[k + G] ? pres[k + G] : pc;
+        pres[k] = (divg[k] + s) / 4;
+      }
+    }
+    for (j = 1; j < G - 1; j++) for (i = 1; i < G - 1; i++) {
+      k = j * G + i;
+      if (!inside[k]) continue;
+      var pk = pres[k];
+      vx[k] -= 0.5 * ((inside[k + 1] ? pres[k + 1] : pk) - (inside[k - 1] ? pres[k - 1] : pk));
+      vy[k] -= 0.5 * ((inside[k + G] ? pres[k + G] : pk) - (inside[k - G] ? pres[k - G] : pk));
+    }
   }
 
   function step() {
@@ -110,19 +140,15 @@
     }
     lastSpoon = spoon;
 
-    // smooth + slow down the flow; keep it inside the cup
+    // viscosity: smooth + slow down the flow; keep it inside the cup
     blur(vx, tmpx, 0.35); blur(vy, tmpy, 0.35);
     for (var k2 = 0; k2 < G * G; k2++) {
       if (!inside[k2]) { vx[k2] = vy[k2] = 0; continue; }
       vx[k2] *= 0.988; vy[k2] *= 0.988;
       var sp = vx[k2] * vx[k2] + vy[k2] * vy[k2];
       if (sp > 0.64) { var f = 0.8 / Math.sqrt(sp); vx[k2] *= f; vy[k2] *= f; }
-      var cx = (k2 % G) + 0.5 - G / 2, cy = ((k2 / G) | 0) + 0.5 - G / 2, r2 = cx * cx + cy * cy;
-      if (r2 > (G * 0.43) * (G * 0.43)) {      // near the wall: slide along it
-        var r = Math.sqrt(r2), nx = cx / r, ny = cy / r, vn = vx[k2] * nx + vy[k2] * ny;
-        if (vn > 0) { vx[k2] -= vn * nx; vy[k2] -= vn * ny; }
-      }
     }
+    project();
 
     // move milk (midpoint method, so swirls don't spiral outwards)
     var lim = G / 2 * 0.97;
