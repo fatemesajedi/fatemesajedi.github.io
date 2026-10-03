@@ -28,9 +28,11 @@ fun_facts:
       😎)
     photo:
       - /assets/images/2026-10-02-201251.jpg
-  - text: Cooking! I really enjoy eating too 😄
+      - /assets/images/img8560.jpeg
+  - text: Cooking! and I really enjoy eating too 😄
     photo:
       - /assets/images/2026-10-02-201245.jpg
+      - /assets/images/img7503.jpeg
 say_hi: Interested in fluid dynamics, porous media, or just want to say hi? Feel
   free to reach out! I’m always happy to chat, exchange ideas, and meet new
   people.
