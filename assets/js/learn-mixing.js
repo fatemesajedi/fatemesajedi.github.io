@@ -212,7 +212,7 @@
   canvas.addEventListener("pointerup", up); canvas.addEventListener("pointercancel", up);
 
   function resize() {
-    PX = Math.min(480, Math.round(canvas.clientWidth * Math.min(2, window.devicePixelRatio || 1)));
+    PX = Math.min(800, Math.round(canvas.clientWidth * Math.min(2, window.devicePixelRatio || 1)));
     canvas.width = canvas.height = PX;
     off.width = off.height = G; offImg = offCtx.createImageData(G, G);
     if (red) draw();

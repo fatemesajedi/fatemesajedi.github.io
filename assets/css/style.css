@@ -771,3 +771,7 @@ body { container-type: inline-size; }
 .interests-line .kw { color: inherit; }
 .heroes-sub { margin: .15rem 0 0; font-family: "Literata", Georgia, serif; font-style: italic; font-size: .9rem; color: var(--muted); }
 .heroes-head { align-items: flex-start; }
+/* lesson: bigger simulation, narrower text */
+.lm-grid { grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: 2.6rem; }
+.lm-stage { max-width: 640px; width: 100%; }
+@media (max-width: 720px) { .lm-grid { grid-template-columns: 1fr; } .lm-stage { max-width: none; } }
