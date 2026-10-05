@@ -125,8 +125,8 @@ title: Home
   <div class="slides hg-slides" data-slides>
     {% assign n = 0 %}
     {% for it in gal %}
-      {% include to-list.html value=it.images %}
-      {% for img in list %}
+      {% include to-list.html value=it.images %}{% assign l1 = list %}{% include to-list.html value=it.videos %}{% assign all = l1 | concat: list %}
+      {% for img in all %}
       {% assign ext = img | split: "." | last | downcase %}
       {% if ext == "pdf" %}{% continue %}{% endif %}
       {% assign is_video = false %}{% if ext == "mp4" or ext == "webm" or ext == "mov" %}{% assign is_video = true %}{% endif %}
@@ -150,6 +150,7 @@ title: Home
 
 {% assign L = h.lesson %}
 <section class="learn-mixing" id="learn-mixing">
+  <p class="lm-eyebrow">Interactive · about 2 minutes</p>
   <h2>{{ L.heading }}</h2>
   <ol class="lm-progress" aria-label="Lesson progress">
     <li class="now">Meet the droplets</li><li>Stir</li><li>Add diffusion</li>
@@ -157,7 +158,7 @@ title: Home
   <div class="lm-grid">
     <div class="lm-stage">
       <canvas aria-label="Interactive simulation: a red and a blue droplet that you can stir and let diffuse"></canvas>
-      <span class="lm-hint">👆 drag to stir</span>
+      <p class="lm-cap"><span class="lm-live"></span>Live simulation · drag inside to stir</p>
     </div>
     <div class="lm-text">
       <div class="lm-step" data-step="1">

@@ -13,10 +13,11 @@ layout: default
   {% endif %}
   <div class="prose">{{ content }}</div>
   {% include sections.html sections=page.sections %}
-  {% if page.media and page.media.size > 0 %}
+  {% include to-list.html value=page.media %}{% assign l1 = list %}{% include to-list.html value=page.videos %}{% assign all = l1 | concat: list %}
+  {% if all.size > 0 %}
   <h2>Gallery</h2>
   <div class="gallery">
-    {% for m in page.media %}{% include media-item.html src=m %}{% endfor %}
+    {% for m in all %}{% include media-item.html src=m %}{% endfor %}
   </div>
   {% endif %}
 </article>

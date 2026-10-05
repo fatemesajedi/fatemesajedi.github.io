@@ -694,3 +694,77 @@ body { container-type: inline-size; }
 /* research interests as part of the intro text */
 .interests-line { max-width: 760px; font-size: 1.05rem; line-height: 1.7; margin: .2rem 0 0; }
 .interests-line .kw { color: var(--accent); font-weight: 500; }
+
+/* ---------- Requested tweaks ---------- */
+.interests-line .kw { font-weight: inherit; }
+.nav-links a { font-weight: 400; }
+.nav-links a.active { font-weight: 500; }
+
+/* ---------- "Let's learn mixing together": redesigned decoration ---------- */
+.learn-mixing { padding: 2.4rem 2.6rem 1.6rem; border-radius: 22px; position: relative; overflow: hidden; }
+.learn-mixing::before {                               /* faint red / cyan glow in the corners, a nod to the two droplets */
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(420px 220px at 100% 0%, rgba(40,220,230,.10), transparent 70%),
+              radial-gradient(380px 200px at 0% 100%, rgba(235,55,40,.07), transparent 70%);
+}
+.learn-mixing > * { position: relative; }
+.lm-eyebrow { margin: 0 0 .3rem; font-size: .75rem; font-weight: 500; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); }
+.learn-mixing h2 { font-size: 2rem; margin: 0 0 1.4rem; }
+
+/* numbered stepper */
+.lm-progress { counter-reset: lmstep; gap: 0; margin-bottom: 2rem; align-items: center; }
+.lm-progress li {
+  counter-increment: lmstep; display: flex; align-items: center; gap: .55rem; padding: 0; background: none !important;
+  font-size: .9rem; font-weight: 400; color: var(--muted) !important;
+}
+.lm-progress li::before {
+  content: counter(lmstep); display: grid; place-items: center; width: 1.9rem; height: 1.9rem; border-radius: 50%;
+  border: 1.5px solid var(--border); background: var(--surface); color: var(--muted); font-weight: 500; font-size: .85rem;
+}
+.lm-progress li:not(:last-child)::after { content: ""; width: 3.2rem; height: 2px; background: var(--border); margin: 0 .8rem; border-radius: 2px; }
+.lm-progress li.now { color: var(--text) !important; font-weight: 500; }
+.lm-progress li.now::before { background: var(--accent); border-color: var(--accent); color: #fff; box-shadow: 0 0 0 5px var(--accent-soft); }
+.lm-progress li.done { color: var(--accent) !important; }
+.lm-progress li.done::before { content: "✓"; border-color: var(--accent); color: var(--accent); }
+.lm-progress li.done::after { background: var(--accent); }
+
+/* stage */
+.lm-grid { grid-template-columns: minmax(0, 440px) 1fr; gap: 2.8rem; }
+.lm-stage canvas { border-radius: 18px; box-shadow: 0 18px 40px rgba(16,24,32,.22), 0 2px 6px rgba(16,24,32,.12); }
+.lm-cap { margin: .8rem 0 0; display: flex; align-items: center; gap: .5rem; justify-content: center; font-size: .8rem; color: var(--muted); }
+.lm-live { width: .5rem; height: .5rem; border-radius: 50%; background: #eb3728; box-shadow: 0 0 0 0 rgba(235,55,40,.5); animation: lmPulse 2s infinite; }
+@keyframes lmPulse { 0% { box-shadow: 0 0 0 0 rgba(235,55,40,.45); } 70% { box-shadow: 0 0 0 7px rgba(235,55,40,0); } 100% { box-shadow: 0 0 0 0 rgba(235,55,40,0); } }
+
+/* step text with a large faded number */
+.lm-step { position: relative; padding-top: .4rem; }
+.lm-step::before {
+  content: "0" attr(data-step); position: absolute; top: -1.6rem; right: 0; font-family: "Literata", Georgia, serif;
+  font-size: 5.5rem; line-height: 1; font-weight: 600; color: var(--accent); opacity: .08; pointer-events: none;
+}
+.lm-text h3 { font-size: 1.45rem; margin-bottom: .8rem; }
+.lm-text p { font-size: 1.02rem; line-height: 1.7; }
+
+/* readouts as stat tiles */
+.lm-readout { gap: .8rem; margin: 1rem 0 1rem; }
+.lm-readout span { display: flex; flex-direction: column-reverse; gap: .1rem; min-width: 9rem; padding: .7rem 1rem; border-radius: 12px; background: var(--bg); border: 1px solid var(--border); font-size: .78rem; }
+.lm-readout b { margin: 0; font-family: "Literata", Georgia, serif; font-size: 1.7rem; font-weight: 600; line-height: 1.1; color: var(--accent); }
+.lm-bar { height: 6px; }
+
+/* buttons */
+.learn-mixing .button { border-radius: 999px; padding: .65rem 1.4rem; }
+.lm-btn { border-radius: 999px; }
+
+/* references: quiet footer */
+.lm-refs { margin-top: 2rem; padding-top: 1rem; font-size: .75rem; display: grid; grid-template-columns: auto 1fr; gap: .2rem 1.2rem; align-items: baseline; }
+.lm-refs b { font-size: .7rem; font-weight: 500; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); grid-row: span 2; }
+.lm-refs p { margin: 0; }
+
+@media (max-width: 720px) {
+  .learn-mixing { padding: 1.6rem 1.1rem 1.2rem; }
+  .learn-mixing h2 { font-size: 1.5rem; }
+  .lm-progress li:not(:last-child)::after { width: 1.2rem; margin: 0 .4rem; }
+  .lm-progress li { font-size: .78rem; }
+  .lm-step::before { font-size: 3.8rem; top: -1rem; }
+  .lm-refs { grid-template-columns: 1fr; }
+}
+@media (prefers-reduced-motion: reduce) { .lm-live { animation: none; } }

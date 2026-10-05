@@ -12,8 +12,8 @@ intro: Images from my experiments and simulations. Click an image to see it larg
 </div>
 <div class="g-grid">
   {% for it in items %}
-    {% include to-list.html value=it.images %}
-    {% for img in list %}
+    {% include to-list.html value=it.images %}{% assign l1 = list %}{% include to-list.html value=it.videos %}{% assign all = l1 | concat: list %}
+    {% for img in all %}
     {% assign ext = img | split: "." | last | downcase %}
     {% assign ftype = "image" %}{% if ext == "mp4" or ext == "webm" or ext == "mov" %}{% assign ftype = "video" %}{% elsif ext == "pdf" %}{% assign ftype = "pdf" %}{% endif %}
     <figure class="g-item" data-kind="{{ it.kind | default: 'Other' }}">
