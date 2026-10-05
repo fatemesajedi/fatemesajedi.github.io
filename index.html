@@ -69,6 +69,30 @@ title: About
 </section>
 {% endif %}
 
+{% assign gal = site.gallery | where: "home", true | sort: "date" | reverse %}
+{% if gal.size > 0 %}
+<section class="home-gallery">
+  <div class="section-head">
+    <h2>{{ h.gallery.heading | default: "From the lab" }}</h2>
+    <a href="{{ '/gallery/' | relative_url }}">{{ h.gallery.link_text | default: "See the full gallery →" }}</a>
+  </div>
+  <div class="slides hg-slides" data-slides>
+    {% assign n = 0 %}
+    {% for it in gal %}
+      {% include to-list.html value=it.images %}
+      {% for img in list %}
+      <figure class="slide{% if n == 0 %} on{% endif %}">
+        <img src="{{ img | relative_url }}" alt="{{ it.title | escape }}" loading="lazy">
+        <figcaption><span class="badge">{{ it.kind | default: "Other" }}</span> <strong>{{ it.title }}</strong>{% if it.caption and it.caption != "" %}<span>{{ it.caption }}</span>{% endif %}</figcaption>
+      </figure>
+      {% assign n = n | plus: 1 %}
+      {% endfor %}
+    {% endfor %}
+    {% if n > 1 %}<div class="slide-dots">{% for i in (1..n) %}<button type="button" aria-label="Show image {{ i }}"{% if i == 1 %} class="on"{% endif %}></button>{% endfor %}</div>{% endif %}
+  </div>
+</section>
+{% endif %}
+
 {% assign L = h.lesson %}
 <section class="learn-mixing" id="learn-mixing">
   <h2>{{ L.heading }}</h2>

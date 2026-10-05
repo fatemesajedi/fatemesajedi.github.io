@@ -198,6 +198,12 @@ content:
           - { name: link_text, label: Link to the Research page, type: string }
           - { name: cup_hint, label: Hint on the cup, type: string }
           - { name: cup_caption, label: Caption under the cup, type: text }
+      - name: gallery
+        label: "From the lab (gallery slideshow)"
+        type: object
+        fields:
+          - { name: heading, label: Heading, type: string }
+          - { name: link_text, label: Link to the Gallery page, type: string }
       - name: lesson
         label: "Let's learn mixing together (the droplets)"
         type: object
@@ -216,3 +222,25 @@ content:
           - { name: step4_title, label: "Step 4 · title", type: string }
           - { name: step4_text, label: "Step 4 · text", type: text }
           - { name: references, label: References, type: text, description: "One reference per paragraph (empty line between them). *Asterisks* make italics." }
+
+  # ---------- Gallery (scientific images) ----------
+  - name: gallery
+    label: Gallery (science images)
+    type: collection
+    path: _gallery
+    filename: "{year}-{month}-{day}-{primary}.md"
+    view:
+      fields: [title, kind, date]
+      default: { sort: date, order: desc }
+    fields:
+      - { name: title, label: Title, type: string, required: true }
+      - { name: images, label: Images, type: image, options: { media: images, multiple: true }, description: "Tip: you can pick an image you already uploaded for a project or publication." }
+      - name: kind
+        label: Type
+        type: select
+        options:
+          values: [Experiment, Simulation, Other]
+      - { name: caption, label: Caption, type: text, description: "One or two sentences: what are we looking at?" }
+      - { name: date, label: Date, type: date, required: true, description: "Newest images are shown first" }
+      - { name: link, label: Link (optional), type: string, description: "Page with more details, e.g. /research/microfluidics-experiments/ or a paper's DOI link" }
+      - { name: home, label: Show in the home page slideshow, type: boolean, default: true }

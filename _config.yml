@@ -23,6 +23,8 @@ collections:
     output: false
   news:
     output: false
+  gallery:
+    output: false
 
 defaults:
   - scope: { path: "" }
