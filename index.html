@@ -44,9 +44,9 @@ title: Home
   {{ p.bio | markdownify }}
 </section>
 {% if p.interests.size > 0 %}
-<ul class="chips intro-chips" aria-label="Research interests">
-  {% for i in p.interests %}<li>{{ i }}</li>{% endfor %}
-</ul>
+{% assign kw = "" | split: "" %}
+{% for i in p.interests %}{% capture one %}<span class="kw">{{ i | downcase }}</span>{% endcapture %}{% assign one = one | split: "|no-split|" %}{% assign kw = kw | concat: one %}{% endfor %}
+<p class="interests-line">My research interests include {{ kw | array_to_sentence_string }}.</p>
 {% endif %}
 </div>
 {% assign hz = h.heroes %}

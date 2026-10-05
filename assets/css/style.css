@@ -691,3 +691,6 @@ body { container-type: inline-size; }
 .lightbox video { max-width: 100%; max-height: 78vh; border-radius: 6px; background: #000; }
 .slides .slide video { position: relative; z-index: 1; width: 100%; height: 100%; object-fit: contain; }
 .slide-bg-dark { background: #0d1116; filter: none; }
+/* research interests as part of the intro text */
+.interests-line { max-width: 760px; font-size: 1.05rem; line-height: 1.7; margin: .2rem 0 0; }
+.interests-line .kw { color: var(--accent); font-weight: 500; }
