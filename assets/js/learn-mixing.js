@@ -118,14 +118,8 @@
     for (var k = 0; k < G * G; k += 3) { s += F[k]; s2 += F[k] * F[k]; n++; }
     var m = s / n; return s2 / n - m * m;
   }
-  var gainR = 1, gainC = 1;
   function startDiffusion() {
     rasterise(red, R); rasterise(cyan, C);
-    // brightness scaled to the fully mixed concentration (amounts are conserved):
-    // at perfect mixing each dye shows at 75%, and red + cyan light add up to a pale grey
-    var sr = 0, sc = 0;
-    for (var k = 0; k < G * G; k++) { sr += R[k]; sc += C[k]; }
-    gainR = 0.75 / Math.max(1e-6, sr / (G * G)); gainC = 0.75 / Math.max(1e-6, sc / (G * G));
     diffusing = true;
   }
   function diffuseStep() {
@@ -162,7 +156,8 @@
     } else {
       var od = offImg.data;
       for (var k = 0; k < G * G; k++) {
-        var r = Math.min(1, R[k] * gainR), c = Math.min(1, C[k] * gainC);
+        var r = R[k], c = C[k], t = r + c;
+        if (t > 1) { r /= t; c /= t; }                              // natural colours: diluted dye stays dark
         var b = Math.max(0, 1 - r - c), o = k * 4;
         od[o] = 16 * b + 235 * r + 40 * c; od[o + 1] = 18 * b + 55 * r + 220 * c; od[o + 2] = 24 * b + 40 * r + 230 * c; od[o + 3] = 255;
       }

@@ -594,3 +594,21 @@ body { container-type: inline-size; }
 .slides .slide img { position: relative; z-index: 1; }
 .slides .slide figcaption { z-index: 2; }
 .g-open { position: relative; }
+
+/* Lesson in a light frame (the droplet box itself stays dark, like a real dye experiment) */
+.learn-mixing { background: var(--surface); color: var(--text); border: 1px solid var(--border); box-shadow: var(--shadow); }
+.learn-mixing h2, .lm-text h3, .lm-text strong { color: var(--text); }
+.lm-text p { color: var(--text); }
+.lm-progress li { background: var(--bg); color: var(--muted); }
+.lm-progress li.done { background: var(--accent-soft); color: var(--accent); }
+.lm-progress li.now { background: var(--accent); color: var(--surface); }
+.lm-readout { color: var(--muted); }
+.lm-readout b { color: var(--text); }
+.lm-bar { background: var(--border); }
+.lm-btn { background: var(--bg); color: var(--text); border-color: var(--border); }
+.lm-btn:hover { background: var(--accent-soft); }
+.lm-btn.on { background: var(--accent); color: var(--surface); }
+.lm-capped { background: var(--accent-soft) !important; border-color: var(--accent) !important; color: var(--text) !important; }
+.lm-refs { color: var(--muted); border-top-color: var(--border); }
+.lm-refs b { color: var(--text); }
+.lm-stage canvas { box-shadow: 0 6px 20px rgba(0,0,0,.18); }
