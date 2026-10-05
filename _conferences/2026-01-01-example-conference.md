@@ -6,5 +6,5 @@ location: Orleon, France
 role: Poster
 contribution: "Mixing in confined and heterogenous porous media "
 gallery:
-  - /assets/media/2026-10-02-205853.jpg
+  - /assets/media/photo2026-10-0220-38-02.jpg
 ---
