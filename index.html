@@ -21,6 +21,8 @@ title: About
   <p class="banner-caption" id="scene-caption" aria-live="polite"></p>
 </section>
 
+<div class="intro">
+<div class="intro-main">
 <section class="hero">
   <div class="hero-photo">
     {% if p.photo and p.photo != "" %}
@@ -41,6 +43,38 @@ title: About
 <section class="bio prose">
   {{ p.bio | markdownify }}
 </section>
+</div>
+{% assign hz = h.heroes %}
+{% if hz.list and hz.list.size > 0 %}
+<aside class="heroes" aria-label="{{ hz.heading }}">
+  <div class="heroes-head">
+    <h2>{{ hz.heading }}</h2>
+    {% if hz.list.size > 1 %}<button type="button" class="heroes-next" aria-label="Show the next scientist">Next →</button>{% endif %}
+  </div>
+  {% for x in hz.list %}
+  <figure class="hero-card{% if forloop.first %} on{% endif %}"{% unless forloop.first %} hidden{% endunless %}>
+    <div class="hero-top">
+      {% if x.photo and x.photo != "" %}<img src="{{ x.photo | relative_url }}" alt="Portrait of {{ x.name }}" loading="lazy">{% endif %}
+      <figcaption><strong>{{ x.name }}</strong><span>{{ x.years }}</span></figcaption>
+    </div>
+    {% if x.equation and x.equation != "" %}<p class="hero-eq">{{ x.equation | markdownify | remove: "<p>" | remove: "</p>" | strip }}</p>{% endif %}
+    {% if x.fact and x.fact != "" %}<p><span class="hero-label">Fun fact</span>{{ x.fact }}</p>{% endif %}
+    {% if x.use and x.use != "" %}<p><span class="hero-label">Where I use it</span>{{ x.use }}</p>{% endif %}
+  </figure>
+  {% endfor %}
+  {% if hz.credit and hz.credit != "" %}<p class="hero-credit">{{ hz.credit }}</p>{% endif %}
+</aside>
+<script>
+  (function () {                                   // one scientist at a time: "Next" button, or every 30 s
+    var cards = [].slice.call(document.querySelectorAll(".hero-card")), btn = document.querySelector(".heroes-next"), i = 0;
+    if (cards.length < 2) return;
+    function next() { cards[i].hidden = true; i = (i + 1) % cards.length; cards[i].hidden = false; }
+    btn.addEventListener("click", next);
+    if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) setInterval(function () { if (!document.hidden) next(); }, 30000);
+  })();
+</script>
+{% endif %}
+</div>
 
 {% assign r30 = h.research_30s %}
 {% if r30.text and r30.text != "" %}

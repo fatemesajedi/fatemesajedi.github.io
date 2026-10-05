@@ -204,6 +204,23 @@ content:
         fields:
           - { name: heading, label: Heading, type: string }
           - { name: link_text, label: Link to the Gallery page, type: string }
+      - name: heroes
+        label: "My equation heroes (card next to the intro)"
+        type: object
+        fields:
+          - { name: heading, label: Heading, type: string }
+          - name: list
+            label: Heroes
+            type: object
+            list: true
+            fields:
+              - { name: name, label: Name, type: string }
+              - { name: years, label: Years, type: string, description: "e.g. 1785–1836" }
+              - { name: photo, label: Portrait, type: image, options: { media: images } }
+              - { name: equation, label: Equation, type: string, description: "Plain text with symbols; **u** makes a bold vector" }
+              - { name: fact, label: Fun fact, type: text }
+              - { name: use, label: Where I use it, type: text }
+          - { name: credit, label: Image credit, type: string }
       - name: lesson
         label: "Let's learn mixing together (the droplets)"
         type: object
