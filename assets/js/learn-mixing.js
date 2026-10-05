@@ -221,7 +221,7 @@
       tallest = Math.max(tallest, s.offsetHeight);
       s.hidden = was; s.style.visibility = ""; s.style.position = ""; s.style.width = "";
     });
-    if (tallest) stage.style.width = Math.round(Math.max(300, tallest * 1.05)) + "px";
+    if (tallest) stage.style.width = Math.round(Math.max(300, tallest * 1.15)) + "px";
   }
   function resize() {
     fitToText(); fitToText();                     // twice: the text column width depends on the square
