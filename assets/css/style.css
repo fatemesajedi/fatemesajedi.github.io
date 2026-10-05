@@ -634,3 +634,19 @@ body { container-type: inline-size; }
 .hero-credit { margin: .4rem 0 0; font-size: .72rem; color: var(--muted); }
 @media (max-width: 900px) { .intro { grid-template-columns: 1fr; gap: 1rem; } .heroes { max-width: 520px; } }
 @media (prefers-reduced-motion: reduce) { .hero-card { animation: none; } }
+
+/* Equation heroes: no frame, sits on the page background */
+.heroes { background: none; border: 0; box-shadow: none; padding: .4rem 0 0; }
+.heroes-head h2 { font-size: 1.15rem; }
+.hero-top { flex-direction: column; align-items: center; text-align: center; gap: .55rem; margin-bottom: .4rem; }
+.hero-top img {                                     /* bigger, edges fade softly into the background */
+  width: 150px; height: 150px; border: 0; border-radius: 50%;
+  -webkit-mask-image: radial-gradient(circle, #000 58%, transparent 71%); mask-image: radial-gradient(circle, #000 58%, transparent 71%);
+  filter: grayscale(1) contrast(1.08);
+}
+.hero-top figcaption { align-items: center; }
+.hero-top strong { font-size: 1.15rem; }
+.hero-eq { background: none; padding: .2rem 0; margin: 0 0 .7rem; font-style: normal; font-size: 1rem; overflow-x: auto; overflow-y: hidden; }
+.hero-eq .katex-display { margin: .3rem 0; }
+.hero-eq .katex { font-size: 1.12em; color: var(--text); }
+.hero-card p { font-size: .92rem; }

@@ -217,7 +217,7 @@ content:
               - { name: name, label: Name, type: string }
               - { name: years, label: Years, type: string, description: "e.g. 1785–1836" }
               - { name: photo, label: Portrait, type: image, options: { media: images } }
-              - { name: equation, label: Equation, type: string, description: "Plain text with symbols; **u** makes a bold vector" }
+              - { name: equation, label: Equation (LaTeX), type: string, description: 'LaTeX without dollar signs, e.g. \mathbf{q} = -\frac{k}{\mu}\nabla p' }
               - { name: fact, label: Fun fact, type: text }
               - { name: use, label: Where I use it, type: text }
           - { name: credit, label: Image credit, type: string }

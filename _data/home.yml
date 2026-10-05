@@ -96,19 +96,19 @@ heroes:
     - name: Claude-Louis Navier
       years: 1785–1836
       photo: /assets/images/heroes/navier.jpg
-      equation: "ρ(∂**u**/∂t + **u**·∇**u**) = −∇p + μ∇²**u**"
+      equation: '\rho\left(\frac{\partial \mathbf{u}}{\partial t} + \mathbf{u}\cdot\nabla\mathbf{u}\right) = -\nabla p + \mu\nabla^{2}\mathbf{u}'
       fact: He was also a bridge engineer, and his name is one of the 72 engraved on the Eiffel Tower.
       use: The full equation behind every flow, from the coffee cup to the banner on this page.
     - name: George Gabriel Stokes
       years: 1819–1903
       photo: /assets/images/heroes/stokes.jpg
-      equation: "∇p = μ∇²**u**,  ∇·**u** = 0"
+      equation: '\nabla p = \mu\nabla^{2}\mathbf{u}, \qquad \nabla\cdot\mathbf{u} = 0'
       fact: He held Newton's chair at Cambridge (Lucasian Professor) for 54 years, and coined the word "fluorescence".
       use: In my pore-scale simulations and microfluidic chips, flows are so slow that Stokes is all I need (sorry, Navier!).
     - name: Henry Darcy
       years: 1803–1858
       photo: /assets/images/heroes/darcy.jpg
-      equation: "**q** = −(k/μ)∇p"
+      equation: '\mathbf{q} = -\frac{k}{\mu}\nabla p'
       fact: He gave Dijon one of Europe's first modern pressurised water systems, and found his law by pushing water through sand filters.
       use: When I zoom out from single pores to the whole porous medium, the Darcy scale. Linking these scales is the heart of my PhD.
   credit: Portraits from Wikimedia Commons (public domain).

@@ -57,13 +57,20 @@ title: Home
       {% if x.photo and x.photo != "" %}<img src="{{ x.photo | relative_url }}" alt="Portrait of {{ x.name }}" loading="lazy">{% endif %}
       <figcaption><strong>{{ x.name }}</strong><span>{{ x.years }}</span></figcaption>
     </div>
-    {% if x.equation and x.equation != "" %}<p class="hero-eq">{{ x.equation | markdownify | remove: "<p>" | remove: "</p>" | strip }}</p>{% endif %}
+    {% if x.equation and x.equation != "" %}<div class="hero-eq" data-tex="{{ x.equation | escape }}"></div>{% endif %}
     {% if x.fact and x.fact != "" %}<p><span class="hero-label">Fun fact</span>{{ x.fact }}</p>{% endif %}
     {% if x.use and x.use != "" %}<p><span class="hero-label">Where I use it</span>{{ x.use }}</p>{% endif %}
   </figure>
   {% endfor %}
   {% if hz.credit and hz.credit != "" %}<p class="hero-credit">{{ hz.credit }}</p>{% endif %}
 </aside>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script>
+  document.querySelectorAll(".hero-eq[data-tex]").forEach(function (el) {     // typeset the LaTeX equations
+    try { katex.render(el.dataset.tex, el, { displayMode: true, throwOnError: false }); } catch (e) { el.textContent = el.dataset.tex; }
+  });
+</script>
 <script>
   (function () {                                   // one scientist at a time: "Next" button, or every 30 s
     var cards = [].slice.call(document.querySelectorAll(".hero-card")), btn = document.querySelector(".heroes-next"), i = 0;
