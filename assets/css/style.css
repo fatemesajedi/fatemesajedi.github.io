@@ -585,3 +585,7 @@ main.container > *:not(.banner):first-child { margin-top: 2.5rem; }
 /* measure the page width without the scrollbar, so the banner fits exactly */
 body { container-type: inline-size; }
 @supports (width: 100cqw) { #mixing-canvas { width: 100cqw; margin-left: calc(50% - 50cqw); } }
+/* banner as wide as the content (same width as the three tabs below) */
+#mixing-canvas { width: 100%; margin-left: 0; border-radius: 14px; }
+@supports (width: 100cqw) { #mixing-canvas { width: 100%; margin-left: 0; } }
+.banner { margin-top: 1.5rem; }
