@@ -775,8 +775,8 @@ body { container-type: inline-size; }
 .lm-grid { grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: 2.6rem; }
 .lm-stage { max-width: 640px; width: 100%; }
 @media (max-width: 720px) { .lm-grid { grid-template-columns: 1fr; } .lm-stage { max-width: none; } }
-/* lesson: square about as tall as the text beside it */
-.lm-grid { grid-template-columns: minmax(0, 480px) minmax(0, 1fr); gap: 3rem; align-items: center; }
-.lm-stage { max-width: 480px; }
-.lm-text { max-width: 600px; }
-@media (max-width: 720px) { .lm-grid { grid-template-columns: 1fr; } .lm-stage { max-width: none; } }
+/* lesson: square sized by script to the tallest step text; text takes the rest */
+.lm-grid { grid-template-columns: auto minmax(0, 1fr); gap: 3rem; align-items: center; }
+.lm-stage { max-width: none; width: 440px; }
+.lm-text { position: relative; }
+@media (max-width: 720px) { .lm-grid { grid-template-columns: 1fr; } .lm-stage { width: 100% !important; } }

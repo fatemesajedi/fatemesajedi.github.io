@@ -211,7 +211,20 @@
   function up() { pointer = lastPointer = null; }
   canvas.addEventListener("pointerup", up); canvas.addEventListener("pointercancel", up);
 
+  // the square is as tall as the longest step text (+5%), so box and text look balanced
+  var stage = root.querySelector(".lm-stage"), textCol = root.querySelector(".lm-text");
+  function fitToText() {
+    if (window.innerWidth <= 720) { stage.style.width = ""; return; }   // phones: full width
+    var tallest = 0;
+    steps.forEach(function (s) {
+      var was = s.hidden; s.hidden = false; s.style.visibility = "hidden"; s.style.position = "absolute"; s.style.width = textCol.clientWidth + "px";
+      tallest = Math.max(tallest, s.offsetHeight);
+      s.hidden = was; s.style.visibility = ""; s.style.position = ""; s.style.width = "";
+    });
+    if (tallest) stage.style.width = Math.round(Math.max(300, tallest * 1.05)) + "px";
+  }
   function resize() {
+    fitToText();
     PX = Math.min(800, Math.round(canvas.clientWidth * Math.min(2, window.devicePixelRatio || 1)));
     canvas.width = canvas.height = PX;
     off.width = off.height = G; offImg = offCtx.createImageData(G, G);
@@ -252,6 +265,7 @@
 
   if ("IntersectionObserver" in window) new IntersectionObserver(function (e) { visible = e[0].isIntersecting; }).observe(canvas);
   window.addEventListener("resize", resize);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(resize);   // re-measure once the fonts are in
   resize(); reset();
   requestAnimationFrame(loop);
 })();
