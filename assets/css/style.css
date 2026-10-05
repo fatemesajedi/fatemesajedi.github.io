@@ -582,3 +582,6 @@ main.container > *:not(.banner):first-child { margin-top: 2.5rem; }
 @media (min-width: 1300px) { .container { max-width: 1320px; } #mixing-canvas { height: 300px; } }
 @media (min-width: 1700px) { .container { max-width: 1440px; } #mixing-canvas { height: 340px; } }
 @media (max-width: 600px) { #mixing-canvas { height: 190px; } .container { padding: 0 16px; } }
+/* measure the page width without the scrollbar, so the banner fits exactly */
+body { container-type: inline-size; }
+@supports (width: 100cqw) { #mixing-canvas { width: 100cqw; margin-left: calc(50% - 50cqw); } }
