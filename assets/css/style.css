@@ -676,3 +676,5 @@ body { container-type: inline-size; }
   .contact-info, .contact-form { padding: 1.6rem 1.3rem; }
   .form-row { grid-template-columns: 1fr; }
 }
+.intro-chips { margin-top: 1rem; }
+.intro-chips li { font-size: .85rem; padding: .25rem .8rem; }

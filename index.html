@@ -43,6 +43,11 @@ title: Home
 <section class="bio prose">
   {{ p.bio | markdownify }}
 </section>
+{% if p.interests.size > 0 %}
+<ul class="chips intro-chips" aria-label="Research interests">
+  {% for i in p.interests %}<li>{{ i }}</li>{% endfor %}
+</ul>
+{% endif %}
 </div>
 {% assign hz = h.heroes %}
 {% if hz.list and hz.list.size > 0 %}
@@ -192,15 +197,6 @@ title: Home
   {% endif %}
 </section>
 <script src="{{ '/assets/js/learn-mixing.js' | relative_url }}?v={{ site.time | date: '%s' }}" defer></script>
-
-{% if p.interests.size > 0 %}
-<section>
-  <h2>What I'm curious about</h2>
-  <ul class="chips">
-    {% for i in p.interests %}<li>{{ i }}</li>{% endfor %}
-  </ul>
-</section>
-{% endif %}
 
 {% assign news = site.news | sort: "date" | reverse %}
 {% if news.size > 0 %}
