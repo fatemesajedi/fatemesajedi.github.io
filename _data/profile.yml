@@ -2,16 +2,16 @@ name: Fateme Sajedi
 role: PhD Student
 lab: Environmental Fluid Mechanics Laboratory (EFMLab)
 institution: "University of Lausanne (UNIL) - Switzerland "
-bio: >+
-  Hello, I am Fateme. I am a mechanical engineer specialized in fluid mechanics,
-  and I’m currently a PhD student at EFMLab.
+bio: >
+  Hello, I am Fateme! I'm a mechanical engineer specialized in fluid mechanics,
+  and I'm currently doing my PhD in Prof. Pietro de Anna's group (EFMLab) at the
+  University of Lausanne.
 
 
   My research focuses on mixing in porous media, particularly how the **scale**
   at which we study a system affects **mixing** and the **reactions** it drives.
   I use a combination of numerical simulations and microfluidic experiments to
   investigate these processes.
-
 interests:
   - Mixing in porous media
   - Mixing-driven reactions
