@@ -15,5 +15,5 @@ Mixing controls how fast chemical reactions happen in groundwater, soils and rea
 
 ## Methodology
 
-- Numerical simulations of flow and solute transport 
+- Numerical simulations of flow and solute transport
 
