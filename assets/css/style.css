@@ -780,3 +780,5 @@ body { container-type: inline-size; }
 .lm-stage { max-width: none; width: 440px; }
 .lm-text { position: relative; }
 @media (max-width: 720px) { .lm-grid { grid-template-columns: 1fr; } .lm-stage { width: 100% !important; } }
+.lm-grid { grid-template-columns: auto minmax(0, 540px); justify-content: center; gap: 3.5rem; }
+@media (max-width: 720px) { .lm-grid { grid-template-columns: 1fr; } }
