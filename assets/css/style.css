@@ -769,3 +769,5 @@ body { container-type: inline-size; }
 }
 @media (prefers-reduced-motion: reduce) { .lm-live { animation: none; } }
 .interests-line .kw { color: inherit; }
+.heroes-sub { margin: .15rem 0 0; font-family: "Literata", Georgia, serif; font-style: italic; font-size: .9rem; color: var(--muted); }
+.heroes-head { align-items: flex-start; }

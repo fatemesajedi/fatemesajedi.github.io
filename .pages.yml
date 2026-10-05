@@ -210,6 +210,7 @@ content:
         type: object
         fields:
           - { name: heading, label: Heading, type: string }
+          - { name: subtitle, label: Subtitle (optional), type: string, description: "Small italic line under the heading, e.g. on whose shoulders I stand. Leave empty to hide it." }
           - name: list
             label: Heroes
             type: object

@@ -53,7 +53,10 @@ title: Home
 {% if hz.list and hz.list.size > 0 %}
 <aside class="heroes" aria-label="{{ hz.heading }}">
   <div class="heroes-head">
-    <h2>{{ hz.heading }}</h2>
+    <div>
+      <h2>{{ hz.heading }}</h2>
+      {% if hz.subtitle and hz.subtitle != "" %}<p class="heroes-sub">{{ hz.subtitle }}</p>{% endif %}
+    </div>
     {% if hz.list.size > 1 %}<button type="button" class="heroes-next" aria-label="Show the next scientist">Next →</button>{% endif %}
   </div>
   {% for x in hz.list %}
