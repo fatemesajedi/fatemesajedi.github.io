@@ -127,9 +127,17 @@ title: Home
     {% for it in gal %}
       {% include to-list.html value=it.images %}
       {% for img in list %}
+      {% assign ext = img | split: "." | last | downcase %}
+      {% if ext == "pdf" %}{% continue %}{% endif %}
+      {% assign is_video = false %}{% if ext == "mp4" or ext == "webm" or ext == "mov" %}{% assign is_video = true %}{% endif %}
       <figure class="slide{% if n == 0 %} on{% endif %}">
+        {% if is_video %}
+        <div class="slide-bg slide-bg-dark" aria-hidden="true"></div>
+        <video src="{{ img | relative_url }}" autoplay muted loop playsinline preload="metadata"></video>
+        {% else %}
         <div class="slide-bg" style="background-image:url('{{ img | relative_url }}')" aria-hidden="true"></div>
-        <img src="{{ img | relative_url }}" alt="{{ it.title | escape }}" loading="lazy">| relative_url }}" alt="{{ it.title | escape }}" loading="lazy">
+        <img src="{{ img | relative_url }}" alt="{{ it.title | escape }}" loading="lazy">
+        {% endif %}
         <figcaption><span class="badge">{{ it.kind | default: "Other" }}</span> <strong>{{ it.title }}</strong>{% if it.caption and it.caption != "" %}<span>{{ it.caption }}</span>{% endif %}</figcaption>
       </figure>
       {% assign n = n | plus: 1 %}

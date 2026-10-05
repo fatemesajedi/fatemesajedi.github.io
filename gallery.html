@@ -14,11 +14,21 @@ intro: Images from my experiments and simulations. Click an image to see it larg
   {% for it in items %}
     {% include to-list.html value=it.images %}
     {% for img in list %}
+    {% assign ext = img | split: "." | last | downcase %}
+    {% assign ftype = "image" %}{% if ext == "mp4" or ext == "webm" or ext == "mov" %}{% assign ftype = "video" %}{% elsif ext == "pdf" %}{% assign ftype = "pdf" %}{% endif %}
     <figure class="g-item" data-kind="{{ it.kind | default: 'Other' }}">
-      <button type="button" class="g-open" data-src="{{ img | relative_url }}" data-title="{{ it.title | escape }}"
+      {% if ftype == "pdf" %}
+      <a class="g-open g-pdf" href="{{ img | relative_url }}" target="_blank" rel="noopener" aria-label="Open the PDF {{ it.title | escape }}">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.5" d="M6 2.5h8l4 4v15H6z M14 2.5v4h4 M8.5 13h7 M8.5 16h7 M8.5 10h3"/></svg>
+        <span>PDF · open</span>
+      </a>
+      {% else %}
+      <button type="button" class="g-open" data-type="{{ ftype }}" data-src="{{ img | relative_url }}" data-title="{{ it.title | escape }}"
         data-caption="{{ it.caption | escape }}" data-link="{% if it.link and it.link != '' %}{{ it.link | relative_url }}{% endif %}" aria-label="Open {{ it.title | escape }}">
-        <img src="{{ img | relative_url }}" alt="{{ it.title | escape }}" loading="lazy">
+        {% if ftype == "video" %}<video src="{{ img | relative_url }}" autoplay muted loop playsinline preload="metadata"></video>
+        {% else %}<img src="{{ img | relative_url }}" alt="{{ it.title | escape }}" loading="lazy">{% endif %}
       </button>
+      {% endif %}
       <figcaption><span class="badge">{{ it.kind | default: "Other" }}</span> {{ it.title }}</figcaption>
     </figure>
     {% endfor %}
@@ -31,6 +41,7 @@ intro: Images from my experiments and simulations. Click an image to see it larg
   <button type="button" class="lb-prev" aria-label="Previous image">‹</button>
   <figure>
     <img alt="">
+    <video controls playsinline loop hidden></video>
     <figcaption><strong class="lb-title"></strong><span class="lb-caption"></span><a class="lb-link" hidden>Read more →</a></figcaption>
   </figure>
   <button type="button" class="lb-next" aria-label="Next image">›</button>
@@ -47,22 +58,24 @@ intro: Images from my experiments and simulations. Click an image to see it larg
         none.hidden = shown > 0;
       });
     });
-    var lb = document.querySelector(".lightbox"), lbImg = lb.querySelector("img"), cur = 0;
-    function visible() { return items.filter(function (it) { return !it.hidden; }); }
+    var lb = document.querySelector(".lightbox"), lbImg = lb.querySelector("img"), lbVid = lb.querySelector("video"), cur = 0;
+    function visible() { return items.filter(function (it) { return !it.hidden && it.querySelector("button.g-open"); }); }   // PDFs open in a new tab instead
     function open(i) {
       var v = visible(); if (!v.length) return;
       cur = (i + v.length) % v.length;
       var b = v[cur].querySelector(".g-open");
-      lbImg.src = b.dataset.src; lbImg.alt = b.dataset.title;
+      var vid = b.dataset.type === "video";
+      lbImg.hidden = vid; lbVid.hidden = !vid;
+      if (vid) { lbVid.src = b.dataset.src; lbVid.play().catch(function () {}); } else { lbVid.pause(); lbImg.src = b.dataset.src; lbImg.alt = b.dataset.title; }
       lb.querySelector(".lb-title").textContent = b.dataset.title;
       lb.querySelector(".lb-caption").textContent = b.dataset.caption;
       var a = lb.querySelector(".lb-link"); a.hidden = !b.dataset.link; if (b.dataset.link) a.href = b.dataset.link;
       lb.hidden = false; document.body.style.overflow = "hidden";
       lb.querySelector(".lb-close").focus();
     }
-    function close() { lb.hidden = true; document.body.style.overflow = ""; }
+    function close() { lb.hidden = true; lbVid.pause(); document.body.style.overflow = ""; }
     items.forEach(function (it) {
-      it.querySelector(".g-open").addEventListener("click", function () { open(visible().indexOf(it)); });
+      var ob = it.querySelector("button.g-open"); if (ob) ob.addEventListener("click", function () { open(visible().indexOf(it)); });
     });
     lb.querySelector(".lb-close").addEventListener("click", close);
     lb.querySelector(".lb-prev").addEventListener("click", function () { open(cur - 1); });
