@@ -3,7 +3,7 @@ title: Gallery
 permalink: /gallery/
 intro: Images from my experiments and simulations. Click an image to see it large.
 ---
-{% assign items = site.gallery | sort: "date" | reverse %}
+{% include gallery-order.html %}{% assign items = gal_sorted %}
 {% if items.size > 0 %}
 <div class="g-filters" role="group" aria-label="Filter images">
   <button type="button" class="on" data-filter="all">All</button>

@@ -1,0 +1,67 @@
+---
+title: Photo shrinker
+permalink: /tools/photo-shrinker/
+sitemap: false
+intro: Make photos small enough to upload in the control panel (under 3 MB). Everything happens in your browser; your photos are not sent anywhere.
+---
+<div class="shrinker">
+  <label class="shrink-drop" for="shrink-input">
+    <strong>Choose photos</strong>
+    <span>JPG or PNG, one or several. They are resized to max 2000 px and saved as high-quality JPEG.</span>
+    <input type="file" id="shrink-input" accept="image/jpeg,image/png,image/webp" multiple>
+  </label>
+  <p class="shrink-note">GIFs are animations and can't be shrunk here. If a GIF is over 3 MB, shorten it or use a short MP4 video instead (upload videos under "Videos &amp; PDFs").</p>
+  <div class="shrink-actions" hidden>
+    <button type="button" class="button" id="shrink-all">Download all</button>
+  </div>
+  <ul class="shrink-list" id="shrink-list"></ul>
+</div>
+
+<script>
+  (function () {
+    var input = document.getElementById("shrink-input"), list = document.getElementById("shrink-list");
+    var actions = document.querySelector(".shrink-actions"), results = [];
+    var MAX = 2000, QUALITY = 0.85;
+    function kb(n) { return n > 1048576 ? (n / 1048576).toFixed(1) + " MB" : Math.round(n / 1024) + " KB"; }
+    function shrink(file) {
+      return new Promise(function (resolve, reject) {
+        var url = URL.createObjectURL(file), im = new Image();
+        im.onload = function () {
+          var s = Math.min(1, MAX / Math.max(im.naturalWidth, im.naturalHeight));
+          var w = Math.round(im.naturalWidth * s), h = Math.round(im.naturalHeight * s);
+          var c = document.createElement("canvas"); c.width = w; c.height = h;
+          var g = c.getContext("2d"); g.fillStyle = "#fff"; g.fillRect(0, 0, w, h); g.drawImage(im, 0, 0, w, h);
+          URL.revokeObjectURL(url);
+          c.toBlob(function (b) { b ? resolve({ blob: b, w: w, h: h }) : reject(); }, "image/jpeg", QUALITY);
+        };
+        im.onerror = function () { URL.revokeObjectURL(url); reject(); };
+        im.src = url;
+      });
+    }
+    function save(r) {
+      var a = document.createElement("a"); a.href = URL.createObjectURL(r.blob); a.download = r.name;
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(function () { URL.revokeObjectURL(a.href); }, 4000);
+    }
+    input.addEventListener("change", function () {
+      list.innerHTML = ""; results = []; actions.hidden = true;
+      [].forEach.call(input.files, function (f) {
+        var li = document.createElement("li"); li.innerHTML = "<span class='shrink-name'></span><span class='shrink-info'>working…</span>";
+        li.querySelector(".shrink-name").textContent = f.name; list.appendChild(li);
+        shrink(f).then(function (r) {
+          r.name = f.name.replace(/\.[^.]+$/, "") + "-web.jpg"; results.push(r);
+          var ok = r.blob.size < 3 * 1048576;
+          li.querySelector(".shrink-info").innerHTML = kb(f.size) + " → <b>" + kb(r.blob.size) + "</b> · " + r.w + "×" + r.h + (ok ? " ✓" : " (still large)");
+          var b = document.createElement("button"); b.type = "button"; b.className = "lm-btn"; b.textContent = "Download";
+          b.addEventListener("click", function () { save(r); }); li.appendChild(b);
+          actions.hidden = false;
+        }).catch(function () {
+          li.querySelector(".shrink-info").textContent = "Couldn't read this file. (iPhone HEIC photos: open in Safari on the iPhone, or set Camera → Formats → Most Compatible.)";
+        });
+      });
+    });
+    document.getElementById("shrink-all").addEventListener("click", function () {
+      results.forEach(function (r, i) { setTimeout(function () { save(r); }, i * 400); });
+    });
+  })();
+</script>

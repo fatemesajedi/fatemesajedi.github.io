@@ -118,7 +118,7 @@ title: Home
 </section>
 {% endif %}
 
-{% assign gal = site.gallery | where: "home", true | sort: "date" | reverse %}
+{% include gallery-order.html %}{% assign gal = gal_sorted | where: "home", true %}
 {% if gal.size > 0 %}
 <section class="home-gallery">
   <div class="section-head">

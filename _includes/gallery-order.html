@@ -1,0 +1,1 @@
+{% comment %} Gallery entries in the chosen order: numbered ones first (1, 2, 3...), then the rest, newest first. Result: `gal_sorted` {% endcomment %}{% assign go_num = site.gallery | where_exp: "g", "g.order" | sort: "order" %}{% assign go_rest = site.gallery | where_exp: "g", "g.order == nil" | sort: "date" | reverse %}{% assign gal_sorted = go_num | concat: go_rest %}
