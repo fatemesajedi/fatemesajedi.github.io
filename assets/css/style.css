@@ -782,3 +782,5 @@ body { container-type: inline-size; }
 @media (max-width: 720px) { .lm-grid { grid-template-columns: 1fr; } .lm-stage { width: 100% !important; } }
 .lm-grid { grid-template-columns: auto minmax(0, 540px); justify-content: center; gap: 3.5rem; }
 @media (max-width: 720px) { .lm-grid { grid-template-columns: 1fr; } }
+/* slideshows: soft cross-fade, kept even when the device prefers reduced motion */
+.slides img, .slides .slide { transition: opacity 1.4s ease !important; }

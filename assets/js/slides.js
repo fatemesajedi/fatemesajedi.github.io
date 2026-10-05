@@ -15,6 +15,7 @@
     dots.forEach(function (d, q) { d.addEventListener("click", function (e) { e.preventDefault(); e.stopPropagation(); show(q); }); });
     box.addEventListener("mouseenter", function () { hover = true; });
     box.addEventListener("mouseleave", function () { hover = false; });
-    if (!calm) setTimeout(function () { setInterval(function () { if (!hover && !document.hidden) show(i + 1); }, 4500); }, n * 700);
+    // gentle cross-fade every 5 s (slower, 7 s, for visitors who prefer reduced motion)
+    setTimeout(function () { setInterval(function () { if (!hover && !document.hidden) show(i + 1); }, calm ? 7000 : 5000); }, 1500 + n * 900);
   });
 })();
