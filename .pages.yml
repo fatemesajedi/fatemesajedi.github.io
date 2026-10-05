@@ -4,20 +4,17 @@ media:
     label: Photos & GIFs
     input: assets/images
     output: /assets/images
-    rename: safe
-    extensions: [jpg, jpeg, png, webp, gif, JPG, JPEG, PNG, WEBP, GIF]
+    categories: [image]
   - name: media
     label: Videos & PDFs
     input: assets/media
     output: /assets/media
-    rename: safe
-    extensions: [mp4, webm, mov, pdf, MP4, MOV, PDF]
+    categories: [video, document]
   - name: files
     label: PDFs
     input: assets/files
     output: /assets/files
-    rename: safe
-    extensions: [pdf, PDF]
+    categories: [document]
 
 content:
   # ---------- Profile / About ----------
@@ -88,8 +85,8 @@ content:
       - { name: contribution, label: Talk / poster title, type: string }
       - { name: website, label: Conference website, type: string }
       - { name: cover, label: Cover photos, type: image, options: { media: images, multiple: true }, description: "The first one is shown on the card; all of them as a slideshow on the event page" }
-      - { name: gallery, label: "Gallery: photos & GIFs", type: image, options: { media: images, multiple: { max: 40 } } }
-      - { name: videos, label: "Gallery: videos & PDFs", type: file, options: { media: media, multiple: { max: 10 } } }
+      - { name: gallery, label: "Gallery: photos & GIFs", type: image, options: { media: images, multiple: true } }
+      - { name: videos, label: "Gallery: videos & PDFs", type: file, options: { media: media, multiple: true } }
       - { name: body, label: My story / memories, type: rich-text }
       - name: sections
         label: "Sections (title + description + photos, GIFs or videos)"
@@ -98,8 +95,8 @@ content:
         fields:
           - { name: title, label: Title, type: string }
           - { name: text, label: Description, type: rich-text }
-          - { name: media, label: "Photos & GIFs", type: image, options: { media: images, multiple: { max: 40 } } }
-          - { name: videos, label: "Videos & PDFs", type: file, options: { media: media, multiple: { max: 10 } } }
+          - { name: media, label: "Photos & GIFs", type: image, options: { media: images, multiple: true } }
+          - { name: videos, label: "Videos & PDFs", type: file, options: { media: media, multiple: true } }
 
   # ---------- Publications ----------
   - name: publications
@@ -138,8 +135,8 @@ content:
       - { name: order, label: Order on page, type: number, description: "1 = first" }
       - { name: image, label: Main images (GIFs work too!), type: image, options: { media: images, multiple: true }, description: "The first one is shown on the Research page; all of them as a slideshow on the project page" }
       - { name: video, label: Main video, type: string, description: "Paste a YouTube/Vimeo link, or the path of an uploaded video (e.g. /assets/media/flow.mp4). Shown instead of the main image." }
-      - { name: media, label: "Gallery: photos & GIFs", type: image, options: { media: images, multiple: { max: 40 } } }
-      - { name: videos, label: "Gallery: videos & PDFs", type: file, options: { media: media, multiple: { max: 10 } } }
+      - { name: media, label: "Gallery: photos & GIFs", type: image, options: { media: images, multiple: true } }
+      - { name: videos, label: "Gallery: videos & PDFs", type: file, options: { media: media, multiple: true } }
       - { name: methods, label: Methods / tags, type: string, list: true }
       - { name: body, label: Full description, type: rich-text }
       - name: sections
@@ -149,8 +146,8 @@ content:
         fields:
           - { name: title, label: Title, type: string }
           - { name: text, label: Description, type: rich-text }
-          - { name: media, label: "Photos & GIFs", type: image, options: { media: images, multiple: { max: 40 } } }
-          - { name: videos, label: "Videos & PDFs", type: file, options: { media: media, multiple: { max: 10 } } }
+          - { name: media, label: "Photos & GIFs", type: image, options: { media: images, multiple: true } }
+          - { name: videos, label: "Videos & PDFs", type: file, options: { media: media, multiple: true } }
 
   # ---------- News ----------
   - name: news
@@ -255,8 +252,8 @@ content:
       default: { sort: date, order: desc }
     fields:
       - { name: title, label: Title, type: string, required: true }
-      - { name: images, label: "Photos & GIFs", type: image, options: { media: images, multiple: { max: 40 } }, description: "Upload new ones, or Select one you already uploaded for a project or publication." }
-      - { name: videos, label: "Videos & PDFs", type: file, options: { media: media, multiple: { max: 10 } } }
+      - { name: images, label: "Photos & GIFs", type: image, options: { media: images, multiple: true }, description: "Upload new ones, or Select one you already uploaded for a project or publication." }
+      - { name: videos, label: "Videos & PDFs", type: file, options: { media: media, multiple: true } }
       - name: kind
         label: Type
         type: select
