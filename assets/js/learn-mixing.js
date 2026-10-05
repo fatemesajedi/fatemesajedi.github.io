@@ -211,15 +211,19 @@
   function up() { pointer = lastPointer = null; }
   canvas.addEventListener("pointerup", up); canvas.addEventListener("pointercancel", up);
 
-  // the square is as tall as the longest step text (+5%), so box and text look balanced
+  // the square is as tall as the longest step text (+15%), so box and text look balanced;
+  // it is measured once and then stays the same for the whole lesson
   var stage = root.querySelector(".lm-stage"), textCol = root.querySelector(".lm-text");
   function fitToText() {
     if (window.innerWidth <= 720) { stage.style.width = ""; return; }   // phones: full width
     var tallest = 0;
     steps.forEach(function (s) {
-      var was = s.hidden; s.hidden = false; s.style.visibility = "hidden"; s.style.position = "absolute"; s.style.width = textCol.clientWidth + "px";
+      var was = s.hidden, notes = s.querySelectorAll("[hidden]"), nh = [];
+      notes.forEach(function (x) { nh.push(x.hidden); x.hidden = false; });   // include messages that appear later (the x100 note)
+      s.hidden = false; s.style.visibility = "hidden"; s.style.position = "absolute"; s.style.width = textCol.clientWidth + "px";
       tallest = Math.max(tallest, s.offsetHeight);
       s.hidden = was; s.style.visibility = ""; s.style.position = ""; s.style.width = "";
+      notes.forEach(function (x, q) { x.hidden = nh[q]; });
     });
     if (tallest) stage.style.width = Math.round(Math.max(300, tallest * 1.15)) + "px";
   }
@@ -264,8 +268,9 @@
   }
 
   if ("IntersectionObserver" in window) new IntersectionObserver(function (e) { visible = e[0].isIntersecting; }).observe(canvas);
-  window.addEventListener("resize", resize);
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(resize);   // re-measure once the fonts are in
+  var lastW = window.innerWidth;                 // only a change of window width re-measures the square
+  window.addEventListener("resize", function () { if (window.innerWidth !== lastW) { lastW = window.innerWidth; resize(); } });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(resize);   // measure once the fonts are in
   resize(); reset();
   requestAnimationFrame(loop);
 })();
