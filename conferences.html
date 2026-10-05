@@ -26,15 +26,6 @@ intro: Conferences, workshops and schools, the ones coming up and the ones I've 
 </section>
 
 {% assign past_first = site.conferences | sort: "date" | reverse %}
-{% capture wall %}{% for c in past_first %}{% include to-list.html value=c.cover %}{% for img in list %}<a href="{{ c.url | relative_url }}" title="{{ c.title }}"><img src="{{ img | relative_url }}" alt="Photo from {{ c.title }}" loading="lazy"></a>{% endfor %}{% for img in c.gallery %}{% assign ext = img | split: "." | last | downcase %}{% unless ext == "mp4" or ext == "webm" or ext == "mov" %}<a href="{{ c.url | relative_url }}" title="{{ c.title }}"><img src="{{ img | relative_url }}" alt="Photo from {{ c.title }}" loading="lazy"></a>{% endunless %}{% endfor %}{% endfor %}{% endcapture %}
-{% assign wall = wall | strip %}
-{% if wall != "" %}
-<section>
-  <h2>📸 Memories</h2>
-  <div class="photo-wall">{{ wall }}</div>
-</section>
-{% endif %}
-
 <section class="been-there">
   <h2>📍 Been there</h2>
   {% assign by_year = past_first | group_by_exp: "c", "c.date | date: '%Y'" %}

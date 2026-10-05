@@ -519,3 +519,4 @@ main.container { padding-top: 2.5rem; padding-bottom: 4rem; min-height: 70vh; }
 .polaroid-slides { aspect-ratio: 4 / 3; border-radius: 2px; }
 .cover-slides { aspect-ratio: 16 / 9; border-radius: 12px; margin: 1.5rem 0; }
 @media (prefers-reduced-motion: reduce) { .slides img { transition: none; } }
+.card-slides { aspect-ratio: 16 / 10; }
