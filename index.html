@@ -82,7 +82,8 @@ title: About
       {% include to-list.html value=it.images %}
       {% for img in list %}
       <figure class="slide{% if n == 0 %} on{% endif %}">
-        <img src="{{ img | relative_url }}" alt="{{ it.title | escape }}" loading="lazy">
+        <div class="slide-bg" style="background-image:url('{{ img | relative_url }}')" aria-hidden="true"></div>
+        <img src="{{ img | relative_url }}" alt="{{ it.title | escape }}" loading="lazy">| relative_url }}" alt="{{ it.title | escape }}" loading="lazy">
         <figcaption><span class="badge">{{ it.kind | default: "Other" }}</span> <strong>{{ it.title }}</strong>{% if it.caption and it.caption != "" %}<span>{{ it.caption }}</span>{% endif %}</figcaption>
       </figure>
       {% assign n = n | plus: 1 %}

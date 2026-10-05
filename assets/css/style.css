@@ -589,3 +589,8 @@ body { container-type: inline-size; }
 #mixing-canvas { width: 100%; margin-left: 0; border-radius: 14px; }
 @supports (width: 100cqw) { #mixing-canvas { width: 100%; margin-left: 0; } }
 .banner { margin-top: 1.5rem; }
+/* gallery slideshow: the photo itself, blurred and dimmed, fills the frame behind it */
+.slides .slide-bg { position: absolute; inset: -40px; background-size: cover; background-position: center; filter: blur(28px) brightness(.55) saturate(1.2); }
+.slides .slide img { position: relative; z-index: 1; }
+.slides .slide figcaption { z-index: 2; }
+.g-open { position: relative; }
