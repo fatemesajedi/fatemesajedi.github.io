@@ -224,7 +224,7 @@
     if (tallest) stage.style.width = Math.round(Math.max(300, tallest * 1.05)) + "px";
   }
   function resize() {
-    fitToText();
+    fitToText(); fitToText();                     // twice: the text column width depends on the square
     PX = Math.min(800, Math.round(canvas.clientWidth * Math.min(2, window.devicePixelRatio || 1)));
     canvas.width = canvas.height = PX;
     off.width = off.height = G; offImg = offCtx.createImageData(G, G);
