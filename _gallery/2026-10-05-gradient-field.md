@@ -1,5 +1,5 @@
 ---
-title: "Gradient Field in a domain with discrete solid pore "
+title: "Concentration gradient field in a domain with discrete solid pore "
 images:
   - /assets/images/pdfg-pore.gif
 kind: Simulation
