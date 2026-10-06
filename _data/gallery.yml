@@ -1,0 +1,35 @@
+# Science gallery. The order of this list is the order on the website:
+# drag items up or down in the control panel (Gallery) to change it.
+items:
+  - title: Concentration field in a domain with discrete solid grains
+    images:
+      - /assets/images/Image_019.png
+    kind: Simulation
+    date: 2026-10-05
+    home: true
+  - title: Concentration gradient field in a domain with discrete solid pore
+    images:
+      - /assets/images/grad_019.png
+    kind: Simulation
+    date: 2026-10-05
+    home: true
+  - title: Concentration field in a continuum system
+    images:
+      - /assets/images/Image_019darcy.png
+    kind: Simulation
+    date: 2026-10-05
+    home: true
+  - title: Concentration gradient in continuum system
+    images:
+      - /assets/images/grad_019darcy.png
+    kind: Simulation
+    date: 2026-10-05
+    home: true
+  - title: My microfluidic chip under the microscope
+    images:
+      - /assets/images/2026-10-02-210659.jpg
+    kind: Experiment
+    date: 2026-10-05
+    caption: The transparent chip I design and fabricate, mounted on the microscope stage, with inlet tubing connected.
+    link: /research/microfluidics-experiments/
+    home: true

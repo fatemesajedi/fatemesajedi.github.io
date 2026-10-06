@@ -66,6 +66,7 @@ title: Home
       <figcaption><strong>{{ x.name }}</strong><span>{{ x.years }}</span></figcaption>
     </div>
     {% if x.equation and x.equation != "" %}<div class="hero-eq" data-tex="{{ x.equation | escape }}"></div>{% endif %}
+    {% if x.note and x.note != "" %}<p class="hero-note">{{ x.note }}</p>{% endif %}
     {% if x.fact and x.fact != "" %}<p><span class="hero-label">Fun fact</span>{{ x.fact }}</p>{% endif %}
     {% if x.use and x.use != "" %}<p><span class="hero-label">Where I use it</span>{{ x.use }}</p>{% endif %}
   </figure>

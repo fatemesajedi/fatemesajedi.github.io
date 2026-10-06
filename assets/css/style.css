@@ -797,3 +797,4 @@ body { container-type: inline-size; }
 .shrink-list li { display: flex; align-items: center; gap: .8rem; flex-wrap: wrap; padding: .6rem .9rem; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; }
 .shrink-name { font-weight: 500; word-break: break-all; }
 .shrink-info { color: var(--muted); font-size: .88rem; flex: 1; }
+.hero-card p.hero-note { margin: -.35rem 0 .8rem; text-align: center; font-family: "Literata", Georgia, serif; font-style: italic; font-size: .82rem; color: var(--muted); line-height: 1.45; }

@@ -219,6 +219,7 @@ content:
               - { name: name, label: Name, type: string }
               - { name: years, label: Years, type: string, description: "e.g. 1785–1836" }
               - { name: photo, label: Portrait, type: image, options: { media: images }, description: "Max 3 MB per photo. Shrink big phone photos first at fatemesajedi.github.io/tools/photo-shrinker/" }
+              - { name: note, label: Note under the equation (optional), type: string, description: "A short line shown in small italics under the equation" }
               - { name: equation, label: Equation (LaTeX), type: string, description: 'LaTeX without dollar signs, e.g. \mathbf{q} = -\frac{k}{\mu}\nabla p' }
               - { name: fact, label: Fun fact, type: text }
               - { name: use, label: Where I use it, type: text }
@@ -242,26 +243,27 @@ content:
           - { name: step4_text, label: "Step 4 · text", type: text }
           - { name: references, label: References, type: text, description: "One reference per paragraph (empty line between them). *Asterisks* make italics." }
 
-  # ---------- Gallery (scientific images) ----------
+  # ---------- Gallery (scientific images): one list, drag items to set the order ----------
   - name: gallery
     label: Gallery (science images)
-    type: collection
-    path: _gallery
-    filename: "{year}-{month}-{day}-{primary}.md"
-    view:
-      fields: [order, title, kind, date]
-      default: { sort: order, order: asc }
+    type: file
+    path: _data/gallery.yml
+    format: yaml
     fields:
-      - { name: title, label: Title, type: string, required: true }
-      - { name: order, label: Order, type: number, description: "1 = shown first, 2 = second, ... Leave empty to place it after the numbered ones (newest first)." }
-      - { name: images, label: "Photos & GIFs", type: image, options: { media: images, multiple: true }, description: "Upload new ones, or Select one you already uploaded for a project or publication. Max 3 MB per photo. Shrink big phone photos first at fatemesajedi.github.io/tools/photo-shrinker/" }
-      - { name: videos, label: "Videos & PDFs", type: file, options: { media: media, multiple: true } }
-      - name: kind
-        label: Type
-        type: select
-        options:
-          values: [Experiment, Simulation, Other]
-      - { name: caption, label: Caption, type: text, description: "One or two sentences: what are we looking at?" }
-      - { name: date, label: Date, type: date, required: true, description: "Newest images are shown first" }
-      - { name: link, label: Link (optional), type: string, description: "Page with more details, e.g. /research/microfluidics-experiments/ or a paper's DOI link" }
-      - { name: home, label: Show in the home page slideshow, type: boolean, default: true }
+      - name: items
+        label: "Gallery items (drag to reorder: top = shown first)"
+        type: object
+        list: true
+        fields:
+          - { name: title, label: Title, type: string, required: true }
+          - { name: images, label: "Photos & GIFs", type: image, options: { media: images, multiple: true }, description: "Upload new ones, or Select one you already uploaded for a project or publication. Max 3 MB per photo. Shrink big phone photos first at fatemesajedi.github.io/tools/photo-shrinker/" }
+          - { name: videos, label: "Videos & PDFs", type: file, options: { media: media, multiple: true } }
+          - name: kind
+            label: Type
+            type: select
+            options:
+              values: [Experiment, Simulation, Other]
+          - { name: caption, label: Caption, type: text, description: "One or two sentences: what are we looking at?" }
+          - { name: date, label: Date, type: date }
+          - { name: link, label: Link (optional), type: string, description: "Page with more details, e.g. /research/microfluidics-experiments/ or a paper's DOI link" }
+          - { name: home, label: Show in the home page slideshow, type: boolean, default: true }

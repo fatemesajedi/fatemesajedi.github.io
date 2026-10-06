@@ -97,6 +97,7 @@ heroes:
       years: 1785–1836
       photo: /assets/images/heroes/navier.jpg
       equation: '\rho\left(\frac{\partial \mathbf{u}}{\partial t} + \mathbf{u}\cdot\nabla\mathbf{u}\right) = -\nabla p + \mu\nabla^{2}\mathbf{u}'
+      note: "Its full name is the Navier–Stokes equation: Navier first wrote it in 1822, and Stokes put it on firm ground in 1845."
       fact: He was also a bridge engineer, and his name is one of the 72 engraved on the Eiffel Tower.
       use: The full equation behind every flow, from the coffee cup to the banner on this page.
     - name: George Gabriel Stokes
