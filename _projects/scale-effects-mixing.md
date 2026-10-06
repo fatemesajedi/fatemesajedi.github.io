@@ -3,6 +3,9 @@ title: The role of scale in mixing through porous media
 summary: How do mixing and mixing-driven reactions change from the pore scale to
   darcy scales? I use numerical simulations of flow and transport to find out.
 order: 1
+image:
+  - /assets/images/Image_019-1.png
+  - /assets/images/Image_019darcy-1.png
 methods:
   - Numerical simulation
   - Pore-scale modelling
