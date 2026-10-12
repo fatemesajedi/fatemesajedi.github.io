@@ -213,22 +213,28 @@
 
   // the square is as tall as the longest step text (+15%), so box and text look balanced;
   // it is measured once and then stays the same for the whole lesson
-  var stage = root.querySelector(".lm-stage"), textCol = root.querySelector(".lm-text");
+  var stage = root.querySelector(".lm-stage"), grid = root.querySelector(".lm-grid");
+  var STACK = 900;                               // below this width (phones, tablets in portrait) the square sits above the text
   function fitToText() {
-    if (window.innerWidth <= 720) { stage.style.width = ""; return; }   // phones: full width
-    var tallest = 0;
+    var gw = grid.clientWidth, vh = window.innerHeight;
+    if (window.innerWidth <= STACK) {              // stacked: as wide as fits, but never taller than 60% of the screen
+      stage.style.width = Math.round(Math.max(240, Math.min(gw, 520, vh * 0.6))) + "px";
+      return;
+    }
+    var tw = Math.min(540, gw * 0.52), tallest = 0;   // measure the text at a fixed reading width (no feedback loop)
     steps.forEach(function (s) {
       var was = s.hidden, notes = s.querySelectorAll("[hidden]"), nh = [];
       notes.forEach(function (x) { nh.push(x.hidden); x.hidden = false; });   // include messages that appear later (the x100 note)
-      s.hidden = false; s.style.visibility = "hidden"; s.style.position = "absolute"; s.style.width = textCol.clientWidth + "px";
+      s.hidden = false; s.style.visibility = "hidden"; s.style.position = "absolute"; s.style.width = tw + "px";
       tallest = Math.max(tallest, s.offsetHeight);
       s.hidden = was; s.style.visibility = ""; s.style.position = ""; s.style.width = "";
       notes.forEach(function (x, q) { x.hidden = nh[q]; });
     });
-    if (tallest) stage.style.width = Math.round(Math.max(300, tallest * 1.15)) + "px";
+    var size = Math.min(tallest * 1.15, gw - tw - 48, vh * 0.62, 560);   // capped by the space beside the text and the screen height
+    stage.style.width = Math.round(Math.max(280, size)) + "px";
   }
   function resize() {
-    fitToText(); fitToText();                     // twice: the text column width depends on the square
+    fitToText();
     PX = Math.min(800, Math.round(canvas.clientWidth * Math.min(2, window.devicePixelRatio || 1)));
     canvas.width = canvas.height = PX;
     off.width = off.height = G; offImg = offCtx.createImageData(G, G);

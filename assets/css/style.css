@@ -779,7 +779,7 @@ body { container-type: inline-size; }
 .lm-grid { grid-template-columns: auto minmax(0, 1fr); gap: 3rem; align-items: center; }
 .lm-stage { max-width: none; width: 440px; }
 .lm-text { position: relative; }
-@media (max-width: 720px) { .lm-grid { grid-template-columns: 1fr; } .lm-stage { width: 100% !important; } }
+/* (stacked layout below 900 px is defined further down) */
 .lm-grid { grid-template-columns: auto minmax(0, 540px); justify-content: center; gap: 3.5rem; }
 @media (max-width: 720px) { .lm-grid { grid-template-columns: 1fr; } }
 /* slideshows: soft cross-fade, kept even when the device prefers reduced motion */
@@ -798,3 +798,9 @@ body { container-type: inline-size; }
 .shrink-name { font-weight: 500; word-break: break-all; }
 .shrink-info { color: var(--muted); font-size: .88rem; flex: 1; }
 .hero-card p.hero-note { margin: -.35rem 0 .8rem; text-align: center; font-family: "Literata", Georgia, serif; font-style: italic; font-size: .82rem; color: var(--muted); line-height: 1.45; }
+/* lesson on phones and tablets in portrait: square on top (size set by script), text below */
+@media (max-width: 900px) {
+  .lm-grid { grid-template-columns: 1fr; justify-items: center; gap: 1.6rem; }
+  .lm-stage { max-width: 100%; }
+  .lm-text { max-width: 620px; width: 100%; }
+}
